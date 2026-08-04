@@ -40,20 +40,20 @@ Epic: [LAKE-EPIC-003](../epics/LAKE-EPIC-003-content-administration.md). Global 
 
 ## LAKE-014 — Admin authentication
 
-**Status:** open · **Phase:** MVP/M1 · **Parallel:** no (LAKE-013 successor)
+**Status:** done · **Phase:** MVP/M1 · **Parallel:** no (LAKE-013 successor)
 
 **Objective:** Credentials + mandatory TOTP authentication with role-based access (EDITOR/REVIEWER/ADMIN), session management, brute-force protection, and the transactional-email provider decision for reset flows.
 
 **User story:** As the operator, I want admin access to be phishing-resistant enough for a small team guarding the core asset.
 
-**Context:** [auth-and-anonymous-usage.md#admin-authentication](../../architecture/auth-and-anonymous-usage.md#admin-authentication) (argon2id, TOTP mandatory, cookie policy, backoff); library decision (Auth.js vs Lucia) made and recorded here; email provider decision (⚠️ EU region + DPA verified) recorded in [external-services.md](../../architecture/external-services.md#transactional-email).
+**Context:** [auth-and-anonymous-usage.md#admin-authentication](../../architecture/auth-and-anonymous-usage.md#admin-authentication) (argon2id, TOTP mandatory, cookie policy, backoff); the library decision is recorded below; email provider decision (⚠️ EU region + DPA verified) is recorded in [external-services.md](../../architecture/external-services.md#transactional-email).
 
 **In scope:** login (email+password+TOTP), TOTP enrolment on first login, session cookies (HTTP-only, SameSite=Strict, signed, 12 h absolute), role checks as server-side helpers (`requireRole('REVIEWER')`), per-account backoff + per-IP limits, login audit log, password reset via email, admin-user management page (ADMIN role; create/deactivate users, assign roles), seed admin from env.
 **Out of scope:** SSO/passkeys (later idea), tourist accounts (phase 1.5).
 
 **Dependencies:** LAKE-013, LAKE-006 (admin_user table). **Files:** `apps/web/app/admin/login/*`, `apps/web/src/auth/*`, `apps/web/app/admin/users/*`.
 
-**Approach:** 1) library decision (criterion: App-Router session + CSRF story); 2) credentials flow with argon2id; 3) TOTP (otplib) with QR enrolment + recovery codes; 4) audit log rows; 5) rate limiting via a small persistent counter (no Redis — Postgres suffices at this scale).
+**Approach:** Decision: use a small in-repository Node/App-Router auth service instead of Auth.js/Lucia. The fixed staff scope needs only credentials, TOTP, signed absolute-expiry sessions, and server-side role checks; keeping these operations in the existing route/runtime boundary avoids a second session adapter and makes the Origin-based CSRF check explicit. Passwords use argon2id, TOTP uses otplib, QR enrolment uses qrcode, audit and rate-limit state use Postgres, and email is isolated behind the configured EU provider adapter.
 
 **Domain rules:** role hierarchy EDITOR < REVIEWER < ADMIN.
 **API changes:** auth endpoints under `/api/admin/auth/*`. **DB changes:** additive: recovery-code hashes, login_audit table.

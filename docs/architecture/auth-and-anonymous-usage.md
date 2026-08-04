@@ -30,7 +30,7 @@ Consequences users must know (documented in-product, More tab): clearing site da
 ## Admin authentication {#admin-authentication}
 
 - Small fixed staff (editors/reviewers/admin). MVP: email + password (argon2id) **+ mandatory TOTP 2FA**, HTTP-only SameSite=Strict session cookies signed with `ADMIN_AUTH_SECRET`, absolute session lifetime 12 h.
-- Library: Auth.js (NextAuth v5) credentials provider or Lucia — final pick in ticket LAKE-014 (criterion: clean App-Router session handling + CSRF).
+- Library decision (LAKE-014): a small in-repository Node/App-Router auth service using argon2id, otplib, signed HMAC sessions, and explicit Origin-based CSRF checks. The fixed staff scope does not need a general account abstraction; server-side role guards remain the single authorization boundary.
 - Roles ([domain-model.md](domain-model.md#adminuser)): `EDITOR` (CRUD drafts, propose), `REVIEWER` (approve change proposals, publish), `ADMIN` (user management, source registry). Enforced server-side per route handler.
 - Brute-force protection: per-account exponential backoff + per-IP limit; login events logged ([../operations/observability.md](../operations/observability.md)).
 - `/admin` is `noindex`, excluded from sitemaps, and returns 404 for unauthenticated *page* requests (no login-page fingerprinting of the admin path beyond the standard `/admin/login`).

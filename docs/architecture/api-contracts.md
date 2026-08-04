@@ -52,6 +52,9 @@ Proxies the abstracted geocoding provider ([external-services.md](external-servi
 ### `POST /api/reports` — incorrect-information report
 Body: `{ attractionId, category, message? (≤1000 chars), locale }`. No PII fields accepted. Rate limit 5/h per IP. → review queue (REQ-REP-01).
 
+### Admin authentication
+`POST /api/admin/auth/login` accepts email, password, and TOTP or a one-time recovery code. First login returns a short-lived enrollment token; the TOTP enrollment endpoints return the QR payload and establish the signed 12-hour HTTP-only session after confirmation. `POST /api/admin/auth/logout` clears the cookie, `GET /api/admin/auth/session` reports the current role, and password reset uses the request/reset pair with one-time 30-minute tokens. All mutations require same-origin requests.
+
 ## Admin API (`/api/admin/*`, session + role guarded, noindex, CSRF-protected)
 
 | Endpoint | Purpose |

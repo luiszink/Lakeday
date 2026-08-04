@@ -130,6 +130,8 @@ Single source of truth; mirrored in `.env.example` once scaffolding exists (tick
 |---|---|
 | `DATABASE_URL` | Postgres connection |
 | `ADMIN_AUTH_SECRET` | Session signing for admin auth |
+| `ADMIN_EMAIL_ENDPOINT`, `ADMIN_EMAIL_API_KEY`, `ADMIN_EMAIL_FROM` | EU transactional email adapter for admin password resets |
+| `ADMIN_EMAIL`, `ADMIN_INITIAL_PASSWORD`, `ADMIN_ROLE` | Initial admin seed (`ADMIN_INITIAL_PASSWORD` is never stored in source) |
 | `JOB_TRIGGER_SECRET` | Bearer secret for scheduled-job endpoints |
 | `MAP_TILE_URL`, `MAP_TILE_API_KEY` | Tile provider (abstracted) |
 | `GEOCODER_URL`, `GEOCODER_API_KEY` | Geocoding provider (abstracted) |

@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
+import { LogoutButton } from './_components/logout-button';
 import { hasAdminSession } from '../../src/auth/admin-guard';
 
 const navigation = [
@@ -11,17 +12,22 @@ const navigation = [
   ['Import', '/admin/import'],
   ['Registries', '/admin/registries'],
   ['Reports', '/admin/reports'],
+  ['Users', '/admin/users'],
 ] as const;
 
 export default async function AdminLayout({ children }: Readonly<{ children: ReactNode }>) {
   const requestHeaders = await headers();
-  const isLoginPage = requestHeaders.get('x-admin-pathname') === '/admin/login';
+  const pathname = requestHeaders.get('x-admin-pathname');
+  const isPublicAuthPage =
+    pathname === '/admin/login' ||
+    pathname === '/admin/request-reset' ||
+    pathname === '/admin/reset-password';
 
-  if (!isLoginPage && !(await hasAdminSession())) {
+  if (!isPublicAuthPage && !(await hasAdminSession())) {
     notFound();
   }
 
-  if (isLoginPage) {
+  if (isPublicAuthPage) {
     return children;
   }
 
@@ -32,7 +38,10 @@ export default async function AdminLayout({ children }: Readonly<{ children: Rea
           <Link className="text-lg font-semibold tracking-tight" href="/admin">
             BodenseeGuide Admin
           </Link>
-          <span className="text-sm text-slate-400">Content workspace</span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-slate-400">Content workspace</span>
+            <LogoutButton />
+          </div>
         </div>
       </header>
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-8 md:flex-row">

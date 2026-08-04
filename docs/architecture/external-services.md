@@ -62,7 +62,7 @@ Research-phase cross-checking and external IDs. CC0 (Wikidata) ✅ / CC BY-SA (W
 **Not used in MVP.** Must not become the persistent master database without full licensing analysis — see [../data/data-source-policy.md](../data/data-source-policy.md#google-places). ⚠️
 
 ### Transactional email
-Admin-only (password reset, review notifications): any EU-region provider (e.g. Postmark, Scaleway TEM) — low volume, pick in ticket LAKE-014. No tourist-facing email in MVP (no accounts).
+Admin-only (password reset, review notifications): **Scaleway TEM** is the selected adapter target for LAKE-014 because it supports EU-region delivery. Production use remains blocked until the current DPA, retention, and sender-verification terms are checked; the adapter uses `ADMIN_EMAIL_ENDPOINT`, `ADMIN_EMAIL_API_KEY`, and `ADMIN_EMAIL_FROM` so the provider can be replaced without feature-code changes. No tourist-facing email exists in MVP.
 
 ### Analytics
 Privacy-first, cookieless, EU-hosted (Plausible self-host/cloud recommendation): [../operations/analytics-and-seo.md](../operations/analytics-and-seo.md#analytics). ⚠️ verify DPA availability for cloud variant.

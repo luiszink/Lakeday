@@ -245,6 +245,17 @@ enum AdminRole {
   ADMIN
 }
 
+enum LoginAuditEvent {
+  SUCCESS
+  PASSWORD_FAILURE
+  TOTP_FAILURE
+  RECOVERY_CODE_USED
+  LOCKED
+  PASSWORD_RESET_REQUESTED
+  PASSWORD_RESET_COMPLETED
+  TOTP_ENROLLED
+}
+
 model Attraction {
   id                    String                 @id @default(uuid()) @db.Uuid
   status                AttractionStatus       @default(DRAFT)
@@ -696,14 +707,57 @@ model AdminUser {
   role                    AdminRole
   totpSecret              String?          @map("totp_secret")
   totpVerified            Boolean          @default(false) @map("totp_verified")
+  recoveryCodeHashes      String[]         @default([]) @map("recovery_code_hashes")
+  isActive                Boolean          @default(true) @map("is_active")
+  failedLoginAttempts     Int              @default(0) @map("failed_login_attempts")
+  lockedUntil             DateTime?        @map("locked_until") @db.Timestamptz(6)
   lastLoginAt             DateTime?        @map("last_login_at") @db.Timestamptz(6)
   createdAt               DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt               DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
   reviewedFactProvenances FactProvenance[] @relation("FactProvenanceReviewer")
   reviewedChangeProposals ChangeProposal[] @relation("ChangeProposalReviewer")
   mergedAliases           AttractionAlias[]
+  loginAudits             LoginAudit[]
+  passwordResetTokens     PasswordResetToken[]
 
   @@map("admin_user")
+}
+
+model LoginAudit {
+  id          String           @id @default(uuid()) @db.Uuid
+  adminUserId String?          @map("admin_user_id") @db.Uuid
+  email       String
+  event       LoginAuditEvent
+  ipHash      String?          @map("ip_hash")
+  userAgent   String?          @map("user_agent")
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  adminUser   AdminUser?       @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+
+  @@index([email, createdAt], map: "login_audit_email_created_ix")
+  @@index([adminUserId, createdAt], map: "login_audit_user_created_ix")
+  @@map("login_audit")
+}
+
+model LoginRateLimit {
+  key            String   @id
+  failedAttempts Int      @default(0) @map("failed_attempts")
+  lockedUntil    DateTime? @map("locked_until") @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("login_rate_limit")
+}
+
+model PasswordResetToken {
+  id          String    @id @default(uuid()) @db.Uuid
+  adminUserId String    @map("admin_user_id") @db.Uuid
+  tokenHash   String    @unique @map("token_hash")
+  expiresAt   DateTime  @map("expires_at") @db.Timestamptz(6)
+  usedAt      DateTime? @map("used_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+
+  @@index([adminUserId, expiresAt], map: "password_reset_user_expiry_ix")
+  @@map("password_reset_token")
 }
 
 model Licence {

@@ -24,6 +24,8 @@ Status: **architectural decision** (requirements, CI pipeline), **recommendation
 
 Config via environment variables only ([../architecture/system-architecture.md](../architecture/system-architecture.md#environment-variables)); no environment-specific code branches.
 
+Admin login rate limiting hashes the client IP from `X-Forwarded-For`. The production ingress must strip inbound copies of that header and write the trusted client address itself; the application must only be reachable through that configured proxy.
+
 ## CI pipeline {#ci-pipeline}
 
 GitHub Actions (repo will live on GitHub — assumption, OQ-8):

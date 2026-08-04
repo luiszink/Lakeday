@@ -1,4 +1,4 @@
-export { PrismaClient } from '@prisma/client';
+export { AdminRole, LoginAuditEvent, PrismaClient } from '@prisma/client';
 export {
   assignRegion,
   computeShorelineDistanceM,
