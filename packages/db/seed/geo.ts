@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import process from 'node:process';
 
 import { seedGeoData } from '../src/geo-seed.js';
+import { seedFixtures } from './fixtures/loader.js';
 import { seedHolidayCalendars } from './holidays.js';
 import { seedLicences } from './licences.js';
 import { seedVocabularies } from './vocabularies.js';
@@ -12,9 +13,9 @@ if (
   argumentsAfterCommand.length > 0 &&
   (argumentsAfterCommand.length !== 2 ||
     argumentsAfterCommand[0] !== '--only' ||
-    !['geo', 'vocabularies', 'holidays', 'licences'].includes(seedGroup!))
+    !['geo', 'vocabularies', 'holidays', 'licences', 'fixtures'].includes(seedGroup!))
 ) {
-  throw new Error('Supported seed groups: geo, vocabularies, holidays, licences.');
+  throw new Error('Supported seed groups: geo, vocabularies, holidays, licences, fixtures.');
 }
 
 const client = new PrismaClient();
@@ -24,6 +25,7 @@ try {
   if (!seedGroup || seedGroup === 'vocabularies') await seedVocabularies(client);
   if (!seedGroup || seedGroup === 'holidays') await seedHolidayCalendars(client);
   if (!seedGroup || seedGroup === 'licences') await seedLicences(client);
+  if (!seedGroup || seedGroup === 'fixtures') await seedFixtures(client);
 } finally {
   await client.$disconnect();
 }

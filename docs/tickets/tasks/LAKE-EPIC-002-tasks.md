@@ -141,7 +141,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 
 ## LAKE-010 — Fixture dataset
 
-**Status:** open · **Phase:** MVP/M1 · **Parallel:** no (chain end; unblocks all UI lanes)
+**Status:** done · **Phase:** MVP/M1 · **Parallel:** no (chain end; unblocks all UI lanes)
 
 **Objective:** The shared synthetic fixture dataset: ~40 attractions across all 9 regions and 3 countries, deliberately covering edge cases, loadable as seed for dev/preview/tests.
 
