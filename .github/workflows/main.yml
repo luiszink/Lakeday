@@ -51,6 +51,7 @@ jobs:
           - 5432:5432
     env:
       DATABASE_URL: postgresql://lake:lake@localhost:5432/lake?schema=public
+      POSTGRES_URL: postgresql://lake:lake@localhost:5432/lake
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -61,7 +62,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: psql "$DATABASE_URL" -c "SELECT postgis_version();"
+      - run: psql "$POSTGRES_URL" -c "SELECT postgis_version();"
       - run: pnpm --filter @lake/db test
 
   migrations:
