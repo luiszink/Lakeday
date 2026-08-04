@@ -200,7 +200,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 
 ## LAKE-012 — Opening-hours engine
 
-**Status:** open · **Phase:** MVP/M1 · **Parallel:** yes (after 009; parallel to 011)
+**Status:** done · **Phase:** MVP/M1 · **Parallel:** yes (after 009; parallel to 011)
 
 **Objective:** The pure opening-hours evaluation engine: `openStateAt()` over weekly rules, seasonal schedule windows, country/subdivision holiday calendars, and exceptional-closure overrides — with honest `UNKNOWN`.
 
