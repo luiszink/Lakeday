@@ -1,0 +1,24 @@
+{
+  "name": "@lake/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit --project tsconfig.json",
+    "test": "node --eval \"process.exit(0)\""
+  },
+  "devDependencies": {
+    "eslint": "^9.32.0",
+    "typescript": "^5.7.2"
+  }
+}

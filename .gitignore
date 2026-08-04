@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+.next/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Environment files and local secrets
+.env
+.env.*
+!.env.example
+
+# Local tooling
+.turbo/
+.vercel/
+playwright-report/
+test-results/
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+*.swp

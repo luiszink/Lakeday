@@ -1,0 +1,21 @@
+{
+  "name": "bodenseeguide",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.15.1",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "corepack pnpm --filter @lake/web dev",
+    "build": "corepack pnpm -r --if-present build",
+    "lint": "corepack pnpm -r --if-present lint",
+    "typecheck": "corepack pnpm -r --if-present typecheck",
+    "test": "corepack pnpm -r --if-present test",
+    "format": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
