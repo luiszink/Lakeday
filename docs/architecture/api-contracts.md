@@ -59,7 +59,7 @@ Body: `{ attractionId, category, message? (≤1000 chars), locale }`. No PII fie
 
 | Endpoint | Purpose |
 |---|---|
-| `GET/POST/PATCH /api/admin/attractions` | CRUD incl. draft/publish transitions (`publishAttraction()` enforces invariants) |
+| `GET/POST/PATCH /api/admin/attractions` | CRUD incl. draft/publish transitions (`publishAttraction()` enforces invariants); `POST …/scope` recalculates shoreline distance and scope verdict |
 | `GET /api/admin/review-queue`, `POST …/{id}/decision` | ChangeProposal listing + approve/reject/edit (F7 in [../ux/core-user-flows.md](../ux/core-user-flows.md#f7-editor-reviews-a-change-proposal-admin)) |
 | `POST /api/admin/import/research` | Upload research-output JSON; validated against [../data/research-output-schema.md](../data/research-output-schema.md); returns per-record accept/duplicate/error results |
 | `GET/POST /api/admin/sources`, `/api/admin/licences` | Source & licence registries |

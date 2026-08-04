@@ -17,6 +17,9 @@ importers:
       '@lake/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@lake/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
       argon2:
         specifier: ^0.45.1
         version: 0.45.1

@@ -1,10 +1,54 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import process from 'node:process';
 
+export type DatabaseExecutor = PrismaClient | Prisma.TransactionClient;
+
 export type Wgs84Point = Readonly<{
   latitude: number;
   longitude: number;
 }>;
+
+export async function createAttractionShell(
+  client: DatabaseExecutor,
+  input: Readonly<{
+    id: string;
+    point: Wgs84Point;
+    countryCode: string;
+    municipality: string;
+    regionCode: string;
+    indoorOutdoor: string;
+  }>,
+): Promise<void> {
+  await client.$executeRaw(
+    Prisma.sql`
+      INSERT INTO attraction (id, location, country_code, municipality, region_code, indoor_outdoor, updated_at)
+      VALUES (
+        ${input.id}::uuid,
+        ST_SetSRID(ST_MakePoint(${input.point.longitude}, ${input.point.latitude}), 4326)::geography,
+        ${input.countryCode}::"CountryCode",
+        ${input.municipality},
+        ${input.regionCode},
+        ${input.indoorOutdoor}::"IndoorOutdoor",
+        CURRENT_TIMESTAMP
+      )
+    `,
+  );
+}
+
+export async function updateAttractionPoint(
+  client: DatabaseExecutor,
+  attractionId: string,
+  point: Wgs84Point,
+): Promise<void> {
+  await client.$executeRaw(
+    Prisma.sql`
+      UPDATE attraction
+      SET location = ST_SetSRID(ST_MakePoint(${point.longitude}, ${point.latitude}), 4326)::geography,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${attractionId}::uuid
+    `,
+  );
+}
 
 type GeoJsonPoint = Readonly<{
   coordinates: readonly [number, number];

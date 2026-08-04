@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@lake/db": "workspace:*",
+    "@lake/domain": "workspace:*",
     "argon2": "^0.45.1",
     "next": "15.5.2",
     "otplib": "^13.4.1",

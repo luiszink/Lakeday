@@ -75,7 +75,7 @@ Epic: [LAKE-EPIC-003](../epics/LAKE-EPIC-003-content-administration.md). Global 
 
 ## LAKE-015 — Attraction editor
 
-**Status:** open · **Phase:** MVP/M1 · **Parallel:** yes after 014 (lane B)
+**Status:** done · **Phase:** MVP/M1 · **Parallel:** yes after 014 (lane B)
 
 **Objective:** Full attraction CRUD for editors: bilingual form sections for all editorial fields, draft lifecycle, publish action running `publishAttraction()` with violation display, and status management (draft/in-review/published/unpublished/archived).
 
@@ -88,7 +88,7 @@ Epic: [LAKE-EPIC-003](../epics/LAKE-EPIC-003-content-administration.md). Global 
 
 **Dependencies:** LAKE-009, LAKE-014. **Files:** `apps/web/app/admin/attractions/**`, `apps/web/app/api/admin/attractions/*`.
 
-**Approach:** zod-schema-driven forms (schemas from `packages/domain`); opening-rules sub-editor as structured rows (day set, times, holiday behaviour, validity window) — no free-text hours; scope verdict recomputed on coordinate change.
+**Approach:** zod-schema-driven forms (schemas from `packages/domain`); opening-rules sub-editor as structured rows (day set, times, holiday behaviour, validity window) — no free-text hours; scope verdict recomputed on coordinate change. Geography writes stay behind `packages/db` PostGIS helpers; publish uses `publishAttraction()` and returns stable violation codes before any status transition.
 
 **Domain rules:** all writes through domain validation; publish only via `publishAttraction()`; editors can save invalid *drafts* (drafts are workspaces), never invalid published states.
 **API changes:** admin attraction CRUD endpoints. **DB changes:** none (schema exists).

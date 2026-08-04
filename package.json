@@ -11,7 +11,7 @@
     "dev": "corepack pnpm --filter @lake/web dev",
     "build": "corepack pnpm -r --if-present build",
     "lint": "corepack pnpm -r --if-present lint",
-    "typecheck": "corepack pnpm --filter @lake/db build && corepack pnpm -r --if-present typecheck",
+    "typecheck": "corepack pnpm --filter @lake/domain build && corepack pnpm --filter @lake/db build && corepack pnpm -r --if-present typecheck",
     "test": "corepack pnpm -r --if-present test",
     "db:migrate": "corepack pnpm --filter @lake/db db:migrate",
     "db:seed": "corepack pnpm --filter @lake/db db:seed",
