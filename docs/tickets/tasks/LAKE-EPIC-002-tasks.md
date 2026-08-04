@@ -171,7 +171,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 
 ## LAKE-011 — Duplicate detection scorer
 
-**Status:** open · **Phase:** MVP/M1 · **Parallel:** yes (after 009; parallel to 012)
+**Status:** done · **Phase:** MVP/M1 · **Parallel:** yes (after 009; parallel to 012)
 
 **Objective:** The deterministic duplicate scorer: candidate-pair scoring on external IDs, official URLs, coordinates, and normalized names, with configurable thresholds and merge-decision classification.
 
