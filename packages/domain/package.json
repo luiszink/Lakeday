@@ -15,10 +15,14 @@
     "build": "tsc --project tsconfig.json",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit --project tsconfig.json",
-    "test": "node --eval \"process.exit(0)\""
+    "test": "vitest run"
   },
   "devDependencies": {
     "eslint": "^9.32.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^3.2.7"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
   }
 }

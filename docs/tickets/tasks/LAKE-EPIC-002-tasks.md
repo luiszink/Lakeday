@@ -107,7 +107,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 
 ## LAKE-009 — Domain package and publish invariants
 
-**Status:** open · **Phase:** MVP/M1 · **Parallel:** no (chain; shared foundation)
+**Status:** done · **Phase:** MVP/M1 · **Parallel:** no (chain; shared foundation)
 
 **Objective:** The pure domain package: entity types, zod schemas (single source for API contracts), the `publishAttraction()` invariant choke point, and the scope-rule domain function.
 
