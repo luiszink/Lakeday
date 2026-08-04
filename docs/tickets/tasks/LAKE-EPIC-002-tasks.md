@@ -75,7 +75,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 
 ## LAKE-008 — Vocabulary and calendar seeds
 
-**Status:** open · **Phase:** MVP/M0 · **Parallel:** no (chain)
+**Status:** done · **Phase:** MVP/M0 · **Parallel:** no (chain)
 
 **Objective:** Seed all controlled vocabularies (categories, subcategories, interests, audiences) with DE/EN labels, the licence registry base rows, and public-holiday calendars for DE-BW, CH-TG, CH-SH, AT-VBG (current + next year).
 

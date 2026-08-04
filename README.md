@@ -61,7 +61,7 @@ Reset the local database and rerun the current migration and seed placeholders w
 pnpm db:reset
 ```
 
-The geographic seed data arrives in LAKE-007; vocabulary and fixture seeds arrive in LAKE-008 and LAKE-010. To verify the running database manually:
+`pnpm db:seed` loads geographic data, controlled vocabularies, holiday calendars, and the base licence registry. Use `pnpm db:seed --only geo`, `vocabularies`, `holidays`, or `licences` to load one group. Fixture seeds arrive in LAKE-010. To verify the running database manually:
 
 ```bash
 docker compose exec db psql -U lake -d lake -c "SELECT postgis_version();"
