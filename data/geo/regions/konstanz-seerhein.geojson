@@ -1,0 +1,23 @@
+{
+  "type": "Feature",
+  "properties": {
+    "code": "KONSTANZ_SEERHEIN",
+    "nameDe": "Konstanz und Seerhein",
+    "nameEn": "Konstanz and Seerhein",
+    "sortOrder": 7,
+    "source": "Product-maintained polygon traced from OpenStreetMap base geometry",
+    "licence": "ODbL-1.0"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [9.08, 47.65],
+        [9.08, 47.75],
+        [9.28, 47.75],
+        [9.28, 47.65],
+        [9.08, 47.65]
+      ]
+    ]
+  }
+}

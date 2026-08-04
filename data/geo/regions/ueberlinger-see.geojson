@@ -1,0 +1,25 @@
+{
+  "type": "Feature",
+  "properties": {
+    "code": "UEBERLINGER_SEE",
+    "nameDe": "Überlinger See",
+    "nameEn": "Überlinger See",
+    "sortOrder": 1,
+    "source": "Product-maintained polygon traced from OpenStreetMap base geometry",
+    "licence": "ODbL-1.0"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [9.12, 47.72],
+        [9.12, 47.84],
+        [9.38, 47.84],
+        [9.38, 47.67],
+        [9.25, 47.66],
+        [9.22, 47.7],
+        [9.12, 47.72]
+      ]
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "Feature",
+  "properties": {
+    "code": "OBERSEE_SUED",
+    "nameDe": "Schweizer Oberseeufer",
+    "nameEn": "Swiss Obersee shore",
+    "sortOrder": 5,
+    "source": "Product-maintained polygon traced from OpenStreetMap base geometry",
+    "licence": "ODbL-1.0"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [9.25, 47.39],
+        [9.25, 47.59],
+        [9.72, 47.59],
+        [9.72, 47.39],
+        [9.25, 47.39]
+      ]
+    ]
+  }
+}

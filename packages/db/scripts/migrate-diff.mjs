@@ -1,6 +1,8 @@
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import process from 'node:process';
+import { URL } from 'node:url';
+import { PrismaClient } from '@prisma/client';
 
 const shadowDatabaseUrl = process.env.SHADOW_DATABASE_URL;
 
@@ -10,6 +12,29 @@ if (!shadowDatabaseUrl) {
 
 const require = createRequire(import.meta.url);
 const prismaCli = require.resolve('prisma/build/index.js');
+
+const shadowDatabase = new URL(shadowDatabaseUrl);
+const shadowDatabaseName = decodeURIComponent(shadowDatabase.pathname.slice(1));
+if (!/^[A-Za-z0-9_]+$/.test(shadowDatabaseName)) {
+  throw new Error('SHADOW_DATABASE_URL must contain a simple PostgreSQL database name.');
+}
+
+shadowDatabase.pathname = '/postgres';
+shadowDatabase.search = '';
+const adminClient = new PrismaClient({
+  datasources: { db: { url: shadowDatabase.toString() } },
+});
+
+try {
+  await adminClient.$executeRawUnsafe(`CREATE DATABASE "${shadowDatabaseName}"`);
+} catch (error) {
+  if (error.code !== '42P04' && error.meta?.code !== '42P04') {
+    throw error;
+  }
+} finally {
+  await adminClient.$disconnect();
+}
+
 const result = spawnSync(
   process.execPath,
   [

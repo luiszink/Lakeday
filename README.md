@@ -61,7 +61,7 @@ Reset the local database and rerun the current migration and seed placeholders w
 pnpm db:reset
 ```
 
-Schema migrations arrive in LAKE-006; vocabulary and fixture seeds arrive in LAKE-008 and LAKE-010. To verify the running database manually:
+The geographic seed data arrives in LAKE-007; vocabulary and fixture seeds arrive in LAKE-008 and LAKE-010. To verify the running database manually:
 
 ```bash
 docker compose exec db psql -U lake -d lake -c "SELECT postgis_version();"

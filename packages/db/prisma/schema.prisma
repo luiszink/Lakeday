@@ -446,6 +446,26 @@ model Region {
   @@map("region")
 }
 
+model ShorelineGeometry {
+  id        String                                     @id @default(uuid()) @db.Uuid
+  version   String                                     @unique
+  geometry  Unsupported("geography(MultiLineString,4326)")
+  sourceUrl String                                     @map("source_url")
+  licence   String
+  loadedAt  DateTime                                   @default(now()) @map("loaded_at") @db.Timestamptz(6)
+
+  @@map("shoreline_geometry")
+}
+
+model ShorelineMunicipality {
+  code        String      @id
+  name        String
+  countryCode CountryCode @map("country_code")
+  createdAt   DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("shoreline_municipality")
+}
+
 model OpeningSchedule {
   id           String        @id @default(uuid()) @db.Uuid
   attractionId String        @unique @map("attraction_id") @db.Uuid

@@ -1,0 +1,23 @@
+{
+  "type": "Feature",
+  "properties": {
+    "code": "OBERSEE_NORD",
+    "nameDe": "Nördlicher Obersee",
+    "nameEn": "Northern Obersee",
+    "sortOrder": 2,
+    "source": "Product-maintained polygon traced from OpenStreetMap base geometry",
+    "licence": "ODbL-1.0"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [9.35, 47.58],
+        [9.35, 47.72],
+        [9.68, 47.72],
+        [9.68, 47.58],
+        [9.35, 47.58]
+      ]
+    ]
+  }
+}

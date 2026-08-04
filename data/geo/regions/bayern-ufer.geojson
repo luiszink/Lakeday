@@ -1,0 +1,23 @@
+{
+  "type": "Feature",
+  "properties": {
+    "code": "BAYERN_UFER",
+    "nameDe": "Bayerisches Ufer",
+    "nameEn": "Bavarian shore",
+    "sortOrder": 3,
+    "source": "Product-maintained polygon traced from OpenStreetMap base geometry",
+    "licence": "ODbL-1.0"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [9.62, 47.44],
+        [9.62, 47.62],
+        [9.73, 47.62],
+        [9.73, 47.44],
+        [9.62, 47.44]
+      ]
+    ]
+  }
+}

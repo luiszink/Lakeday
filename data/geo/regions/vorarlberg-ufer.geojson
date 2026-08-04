@@ -1,0 +1,23 @@
+{
+  "type": "Feature",
+  "properties": {
+    "code": "VORARLBERG_UFER",
+    "nameDe": "Vorarlberger Ufer",
+    "nameEn": "Austrian shore",
+    "sortOrder": 4,
+    "source": "Product-maintained polygon traced from OpenStreetMap base geometry",
+    "licence": "ODbL-1.0"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [9.73, 47.39],
+        [9.73, 47.61],
+        [9.99, 47.61],
+        [9.99, 47.39],
+        [9.73, 47.39]
+      ]
+    ]
+  }
+}

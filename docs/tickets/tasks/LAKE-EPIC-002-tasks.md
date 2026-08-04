@@ -41,7 +41,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 
 ## LAKE-007 — PostGIS setup and geographic seed data
 
-**Status:** open · **Phase:** MVP/M0 · **Parallel:** no (chain)
+**Status:** done · **Phase:** MVP/M0 · **Parallel:** no (chain)
 
 **Objective:** Load the shoreline geometry and the nine region polygons as versioned seed data; implement the `shorelineDistanceM` computation and the scope-rule check helpers.
 

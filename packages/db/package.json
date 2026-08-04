@@ -14,11 +14,11 @@
   "scripts": {
     "build": "prisma generate && tsc --project tsconfig.json",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "tsc --noEmit --project tsconfig.json",
+    "typecheck": "prisma generate && tsc --noEmit --project tsconfig.json",
     "test": "prisma generate && vitest run",
     "db:migrate": "prisma migrate deploy",
     "db:diff": "node scripts/migrate-diff.mjs",
-    "db:seed": "node --eval \"console.log('No database seed exists yet; LAKE-008 and LAKE-010 will add seed data.')\""
+    "db:seed": "tsx seed/geo.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0"
@@ -28,6 +28,7 @@
     "dotenv": "^16.6.1",
     "prisma": "^6.15.0",
     "typescript": "^5.7.2",
+    "tsx": "^4.20.5",
     "vitest": "^3.2.4"
   }
 }

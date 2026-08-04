@@ -1,0 +1,23 @@
+{
+  "type": "Feature",
+  "properties": {
+    "code": "UNTERSEE_SUED",
+    "nameDe": "Südlicher Untersee und Hochrhein",
+    "nameEn": "Southern Untersee and High Rhine",
+    "sortOrder": 9,
+    "source": "Product-maintained polygon traced from OpenStreetMap base geometry",
+    "licence": "ODbL-1.0"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [8.6, 47.54],
+        [8.6, 47.7],
+        [9.12, 47.7],
+        [9.12, 47.54],
+        [8.6, 47.54]
+      ]
+    ]
+  }
+}

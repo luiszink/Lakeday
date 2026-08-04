@@ -1,0 +1,23 @@
+{
+  "type": "Feature",
+  "properties": {
+    "code": "THURGAU_UFER",
+    "nameDe": "Thurgauer Ufer und Kreuzlingen",
+    "nameEn": "Thurgau shore and Kreuzlingen",
+    "sortOrder": 6,
+    "source": "Product-maintained polygon traced from OpenStreetMap base geometry",
+    "licence": "ODbL-1.0"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [9.14, 47.53],
+        [9.14, 47.655],
+        [9.4, 47.655],
+        [9.4, 47.53],
+        [9.14, 47.53]
+      ]
+    ]
+  }
+}

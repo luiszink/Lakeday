@@ -1,0 +1,23 @@
+{
+  "type": "Feature",
+  "properties": {
+    "code": "UNTERSEE_NORD",
+    "nameDe": "Nördlicher Untersee",
+    "nameEn": "Northern Untersee",
+    "sortOrder": 8,
+    "source": "Product-maintained polygon traced from OpenStreetMap base geometry",
+    "licence": "ODbL-1.0"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [8.7, 47.7],
+        [8.7, 47.88],
+        [9.15, 47.88],
+        [9.15, 47.7],
+        [8.7, 47.7]
+      ]
+    ]
+  }
+}
