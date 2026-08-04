@@ -6,7 +6,7 @@ Epic: [LAKE-EPIC-003](../epics/LAKE-EPIC-003-content-administration.md). Global 
 
 ## LAKE-013 — Admin area scaffolding
 
-**Status:** open · **Phase:** MVP/M1 · **Parallel:** no (before other admin tickets)
+**Status:** done · **Phase:** MVP/M1 · **Parallel:** no (before other admin tickets)
 
 **Objective:** The protected `/admin` route group: layout, navigation (Attractions, Review queue, Import, Registries, Reports), route-level auth guard wiring (guard logic from LAKE-014), and admin-specific error/empty patterns.
 
