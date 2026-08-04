@@ -16,7 +16,12 @@ Tables map 1:1 to the entities in [domain-model.md](domain-model.md#entities):
 
 Naming: `snake_case` tables/columns; Prisma maps to camelCase. Enums as native Postgres enums for closed sets that change with code (status, verification); as lookup tables for editor-extensible vocabularies (category, interest, audience — see [../data/tag-and-filter-taxonomy.md](../data/tag-and-filter-taxonomy.md#governance)).
 
+The source registry adds the `source_origin` table; immutable `source_record` rows may reference their registered origin.
+
 ## Key DDL decisions
+
+### Source and licence registries
+`source_origin` stores the origin URL, source type, linked licence, refresh cadence, health, public attribution, notes, and `PENDING / APPROVED / REJECTED` approval state. `source_record.source_origin_id` connects immutable evidence to its registry origin. Approval is ADMIN-controlled; import and refresh code must use the shared approval guard before consuming an origin. `licence` additionally stores terms URL, public attribution text, and permission evidence (admin-only).
 
 ### Geometry
 ```sql

@@ -44,7 +44,7 @@ Operator permissions are stored (contact, date, scope of permission) in the Lice
 
 ## Licence registry
 
-`Licence` table ([../architecture/domain-model.md](../architecture/domain-model.md#licence)) is the single machine-readable place recording: SPDX/name, attribution required?, commercial use allowed?, share-alike?, notes, and — for negotiated permissions — the permission evidence. Every attraction (`dataLicence`), image, and source registry entry references it. The About/Licences public page is **generated from the registry** (attribution completeness is thereby testable — [../quality/testing-strategy.md](../quality/testing-strategy.md)).
+`Licence` table ([../architecture/domain-model.md](../architecture/domain-model.md#licence)) is the single machine-readable place recording: SPDX/name, attribution required?, commercial use allowed?, share-alike?, terms URL, public attribution, notes, and — for negotiated permissions — the permission evidence. Every attraction (`dataLicence`), image, and source registry entry references it. The `/de/licences` and `/en/licences` public pages are **generated from approved registry rows** (attribution completeness is thereby testable — [../quality/testing-strategy.md](../quality/testing-strategy.md)).
 
 ## Weather & other runtime data
 Open-Meteo (CC BY 4.0): attribution on surfaces showing weather hints + licences page ✅. Tile/geocoder providers: per-plan attribution wording ⚠️ verify at adoption ([../architecture/external-services.md](../architecture/external-services.md)).

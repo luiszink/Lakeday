@@ -127,7 +127,10 @@ Raw research/refresh evidence: `id`, `attractionId?`, `sourceUrl`, `sourceType` 
 `id`, `email`, `passwordHash` (argon2id) or SSO subject, `role` enum `EDITOR / REVIEWER / ADMIN`, `totpSecret?`. See [auth-and-anonymous-usage.md](auth-and-anonymous-usage.md#admin-authentication).
 
 ### Licence
-Registry of content/data licences: `id`, `spdxOrName`, `attributionRequired`, `commercialUseAllowed`, `shareAlike`, `notes`. Referenced by attractions, images, source records.
+Registry of content/data licences: `id`, `spdxOrName`, `attributionRequired`, `commercialUseAllowed`, `shareAlike`, `termsUrl`, `attributionText`, `permissionEvidence`, `notes`. Referenced by attractions, images, and source origins.
+
+### SourceOrigin
+Registry entry for an origin used by research or runtime data: `originUrl`, `sourceType`, `licenceId`, `refreshCadenceHours?`, `health`, `attributionText?`, `notes?`, `approvalState`, and optional approval audit fields. New source classes remain pending until an ADMIN approves them. Immutable `SourceRecord` evidence may reference its origin.
 
 ## Duplicate detection (REQ-DATA-04)
 

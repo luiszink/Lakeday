@@ -175,6 +175,19 @@ enum SourceType {
   OTHER
 }
 
+enum SourceHealth {
+  UNKNOWN
+  HEALTHY
+  DEGRADED
+  UNAVAILABLE
+}
+
+enum SourceApprovalState {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 enum FactKey {
   OPENING_HOURS
   PRICE
@@ -558,6 +571,7 @@ model PriceInfo {
 model SourceRecord {
   id                String                @id @default(uuid()) @db.Uuid
   attractionId      String?               @map("attraction_id") @db.Uuid
+  sourceOriginId    String?               @map("source_origin_id") @db.Uuid
   sourceUrl         String                @map("source_url")
   sourceType        SourceType            @map("source_type")
   retrievedAt       DateTime              @map("retrieved_at") @db.Timestamptz(6)
@@ -566,6 +580,7 @@ model SourceRecord {
   licenceNote       String?               @map("licence_note")
   createdAt         DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
   attraction        Attraction?           @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  sourceOrigin      SourceOrigin?         @relation(fields: [sourceOriginId], references: [id], onDelete: Restrict)
   closures          ExceptionalClosure[]
   prices            PriceInfo[]
   factProvenances   FactProvenance[]
@@ -574,6 +589,29 @@ model SourceRecord {
   @@index([sourceUrl, contentHash], map: "source_record_content_hash_ix")
   @@index([attractionId], map: "source_record_attraction_ix")
   @@map("source_record")
+}
+
+model SourceOrigin {
+  id                  String              @id @default(uuid()) @db.Uuid
+  originUrl           String              @map("origin_url")
+  sourceType          SourceType          @map("source_type")
+  licenceId           String              @map("licence_id") @db.Uuid
+  refreshCadenceHours Int?                @map("refresh_cadence_hours")
+  health              SourceHealth         @default(UNKNOWN)
+  attributionText     String?             @map("attribution_text")
+  notes               String?
+  approvalState       SourceApprovalState @default(PENDING) @map("approval_state")
+  approvedById        String?             @map("approved_by") @db.Uuid
+  approvedAt          DateTime?           @map("approved_at") @db.Timestamptz(6)
+  createdAt           DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
+  licence             Licence             @relation("SourceOriginLicence", fields: [licenceId], references: [id], onDelete: Restrict)
+  approvedBy          AdminUser?          @relation("SourceOriginApprover", fields: [approvedById], references: [id], onDelete: Restrict)
+  sourceRecords       SourceRecord[]
+
+  @@unique([originUrl, sourceType])
+  @@index([approvalState], map: "source_origin_approval_state_ix")
+  @@map("source_origin")
 }
 
 model FactProvenance {
@@ -716,6 +754,7 @@ model AdminUser {
   updatedAt               DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
   reviewedFactProvenances FactProvenance[] @relation("FactProvenanceReviewer")
   reviewedChangeProposals ChangeProposal[] @relation("ChangeProposalReviewer")
+  approvedSourceOrigins   SourceOrigin[]   @relation("SourceOriginApprover")
   mergedAliases           AttractionAlias[]
   loginAudits             LoginAudit[]
   passwordResetTokens     PasswordResetToken[]
@@ -766,10 +805,14 @@ model Licence {
   attributionRequired  Boolean           @default(true) @map("attribution_required")
   commercialUseAllowed Boolean           @default(true) @map("commercial_use_allowed")
   shareAlike           Boolean           @default(false) @map("share_alike")
+  termsUrl             String?           @map("terms_url")
+  attributionText      String?           @map("attribution_text")
+  permissionEvidence   String?           @map("permission_evidence")
   notes                String?
   createdAt            DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
   attractionData       Attraction[]      @relation("AttractionDataLicence")
   attractionImages     AttractionImage[] @relation("AttractionImageLicence")
+  sourceOrigins        SourceOrigin[]    @relation("SourceOriginLicence")
 
   @@map("licence")
 }

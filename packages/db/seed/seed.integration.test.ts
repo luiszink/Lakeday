@@ -46,6 +46,13 @@ describeDatabase('vocabulary and calendar seed data', () => {
     await seedHolidayCalendars(client!);
 
     await expect(client!.licence.count()).resolves.toBe(4);
+    await expect(client!.sourceOrigin.count()).resolves.toBe(4);
+    const sources = await client!.sourceOrigin.findMany({
+      select: { attributionText: true, approvalState: true, licence: { select: { id: true } } },
+    });
+    expect(sources).toHaveLength(4);
+    expect(sources.every((source) => source.approvalState === 'APPROVED')).toBe(true);
+    expect(sources.every((source) => source.attributionText && source.licence.id)).toBe(true);
     await expect(client!.holidayCalendar.count()).resolves.toBe(4);
   });
 

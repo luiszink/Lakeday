@@ -9,6 +9,8 @@ export {
   Prisma,
   PrismaClient,
   ReviewerDecision,
+  SourceApprovalState,
+  SourceHealth,
   SourceType,
   TranslationState,
   UpdateStatus,
