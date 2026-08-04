@@ -2,9 +2,16 @@ export {
   AdminRole,
   AttractionStatus,
   ChildAgeBand,
+  ChangeProposalStatus,
+  Confidence,
+  FactKey,
   LoginAuditEvent,
   Prisma,
   PrismaClient,
+  ReviewerDecision,
+  SourceType,
+  TranslationState,
+  UpdateStatus,
 } from '@prisma/client';
 export {
   assignRegion,

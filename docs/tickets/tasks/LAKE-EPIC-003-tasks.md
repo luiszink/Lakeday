@@ -111,7 +111,7 @@ Epic: [LAKE-EPIC-003](../epics/LAKE-EPIC-003-content-administration.md). Global 
 
 ## LAKE-016 — Review queue
 
-**Status:** open · **Phase:** MVP/M3 · **Parallel:** yes (lane B)
+**Status:** done · **Phase:** MVP/M3 · **Parallel:** yes (lane B)
 
 **Objective:** The change-proposal review queue: impact-ordered listing, evidence-rich detail (field diff, source snippet, confidence, history), and approve/reject/edit decisions with full audit stamping.
 
@@ -124,7 +124,7 @@ Epic: [LAKE-EPIC-003](../epics/LAKE-EPIC-003-content-administration.md). Global 
 
 **Dependencies:** LAKE-014, LAKE-009; realistic data via LAKE-010 fixtures (seeded proposals). **Files:** `apps/web/app/admin/review/**`, `apps/web/app/api/admin/review-queue/*`.
 
-**Approach:** decision handler is a domain service (`applyProposalDecision`) reused by tests; merge protocol per [data-quality-strategy.md](../../quality/data-quality-strategy.md#duplicate-detection).
+**Approach:** `applyProposalDecision` is a pure domain matrix reused by the transactional reviewer repository. The repository applies facts, stamps provenance, invalidates EN text, supersedes competing pending proposals, and performs reviewer-approved duplicate merges (older ID retained, external IDs unioned where unique, alias recorded, loser archived) per [data-quality-strategy.md](../../quality/data-quality-strategy.md#duplicate-detection). Synthetic review seeds cover all three origins, six fact/merge cases, and idempotency.
 
 **Domain rules:** REVIEWER role; approval of textual DE change flips EN `translationState=STALE`; merge keeps older ID + alias row.
 **API changes:** review-queue endpoints. **DB changes:** none.

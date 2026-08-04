@@ -5,6 +5,7 @@ import { seedGeoData } from '../src/geo-seed.js';
 import { seedFixtures } from './fixtures/loader.js';
 import { seedHolidayCalendars } from './holidays.js';
 import { seedLicences } from './licences.js';
+import { seedReviewProposals } from './review.js';
 import { seedVocabularies } from './vocabularies.js';
 import { seedAdminUser } from './admin.js';
 
@@ -14,9 +15,13 @@ if (
   argumentsAfterCommand.length > 0 &&
   (argumentsAfterCommand.length !== 2 ||
     argumentsAfterCommand[0] !== '--only' ||
-    !['admin', 'geo', 'vocabularies', 'holidays', 'licences', 'fixtures'].includes(seedGroup!))
+    !['admin', 'geo', 'vocabularies', 'holidays', 'licences', 'fixtures', 'review'].includes(
+      seedGroup!,
+    ))
 ) {
-  throw new Error('Supported seed groups: admin, geo, vocabularies, holidays, licences, fixtures.');
+  throw new Error(
+    'Supported seed groups: admin, geo, vocabularies, holidays, licences, fixtures, review.',
+  );
 }
 
 const client = new PrismaClient();
@@ -28,6 +33,7 @@ try {
   if (!seedGroup || seedGroup === 'holidays') await seedHolidayCalendars(client);
   if (!seedGroup || seedGroup === 'licences') await seedLicences(client);
   if (!seedGroup || seedGroup === 'fixtures') await seedFixtures(client);
+  if (!seedGroup || seedGroup === 'review') await seedReviewProposals(client);
 } finally {
   await client.$disconnect();
 }
