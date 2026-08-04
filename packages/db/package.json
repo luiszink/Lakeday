@@ -12,15 +12,22 @@
     }
   },
   "scripts": {
-    "build": "tsc --project tsconfig.json",
+    "build": "prisma generate && tsc --project tsconfig.json",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit --project tsconfig.json",
-    "test": "node --eval \"process.exit(0)\"",
-    "db:migrate": "node --eval \"console.log('No database schema exists yet; LAKE-006 will add migrations.')\"",
+    "test": "prisma generate && vitest run",
+    "db:migrate": "prisma migrate deploy",
+    "db:diff": "node scripts/migrate-diff.mjs",
     "db:seed": "node --eval \"console.log('No database seed exists yet; LAKE-008 and LAKE-010 will add seed data.')\""
+  },
+  "dependencies": {
+    "@prisma/client": "^6.15.0"
   },
   "devDependencies": {
     "eslint": "^9.32.0",
-    "typescript": "^5.7.2"
+    "dotenv": "^16.6.1",
+    "prisma": "^6.15.0",
+    "typescript": "^5.7.2",
+    "vitest": "^3.2.4"
   }
 }

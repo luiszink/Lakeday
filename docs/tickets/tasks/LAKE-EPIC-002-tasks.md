@@ -6,7 +6,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 
 ## LAKE-006 — Prisma schema and initial migration
 
-**Status:** open · **Phase:** MVP/M0 · **Parallel:** no (foundation chain)
+**Status:** done · **Phase:** MVP/M0 · **Parallel:** no (foundation chain)
 
 **Objective:** Implement the complete content schema from the domain model as Prisma models + initial migration: all 27 tables, native enums, constraints, and base indexes.
 
@@ -27,6 +27,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 **Privacy/security:** `plan.start_point` stored as rounded coordinates by contract (enforced at API layer later; column comment documents it).
 
 **Acceptance criteria:**
+
 - [ ] `pnpm db:migrate` creates all tables on a clean DB; `prisma migrate diff` clean
 - [ ] Constraints verified by tests: scope-exception check, localization uniqueness, external-ID uniqueness, share-token uniqueness, plan-stop ordering
 - [ ] `attraction.location` accepts and returns WGS84 points via the geo helper stub
@@ -60,6 +61,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 **UI states / DE-EN / A11y:** n/a. **Privacy/security:** none.
 
 **Acceptance criteria:**
+
 - [ ] Known-point tests: Mainau ≈ 0 m; Konstanz Münster < 1 km; Affenberg Salem ≈ 6–8 km (outside band); Stein am Rhein Rathaus inside corridor; Säntis far outside
 - [ ] Every region polygon assigns its anchor places correctly (test per [geographic-scope.md](../../product/geographic-scope.md#product-regions) anchors)
 - [ ] Band threshold read from config; changing it changes scope results in tests
@@ -93,6 +95,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 **Privacy/security:** none.
 
 **Acceptance criteria:**
+
 - [ ] All taxonomy values from the spec exist with DE+EN labels after `pnpm db:seed`
 - [ ] Re-running seeds changes nothing (idempotency test)
 - [ ] Holiday test: Pfingstmontag is a holiday in DE-BW, not in CH-TG; Bundesfeier (1 Aug) in CH only
@@ -125,6 +128,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 **A11y:** n/a. **Privacy/security:** none.
 
 **Acceptance criteria:**
+
 - [ ] Every invariant has a positive and negative unit test (≥ 12 cases incl. STALE translation, unjustified exception, out-of-band coordinates)
 - [ ] Lint proves package purity (no framework/db imports)
 - [ ] zod schemas round-trip the fixture shapes
@@ -155,6 +159,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 **A11y / Privacy:** n/a (synthetic).
 
 **Acceptance criteria:**
+
 - [ ] ≥ 40 attractions; every region, country, category, price level, and edge case above represented (assertion test)
 - [ ] Published fixtures all pass invariants; production guard refuses fixture load when `NODE_ENV=production`
 - [ ] e2e suite can rely on stable fixture IDs (documented list)
@@ -183,6 +188,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 **API/DB/UI/DE-EN/A11y/Privacy:** n/a (pure logic).
 
 **Acceptance criteria:**
+
 - [ ] Seeded fixture duplicate pair detected as duplicate; distinct neighbors (Burg vs Neues Schloss Meersburg analog) classified distinct
 - [ ] Precision = 1.0, recall = 1.0 on the fixture set (small set — perfect score expected; thresholds tuned when pilot data arrives)
 - [ ] Trigram similarity handles umlauts/ß correctly (`Schloß`≈`Schloss`)
@@ -214,6 +220,7 @@ Epic: [LAKE-EPIC-002](../epics/LAKE-EPIC-002-domain-and-database.md). Global [de
 **A11y/Privacy:** n/a.
 
 **Acceptance criteria:**
+
 - [ ] Golden tests pass: Sunday in CH vs DE, Pfingstmontag divergence, seasonal switch boundary, closure override, DST spring-forward day, `AS_WEEKDAY` holiday, unknown-hours attraction
 - [ ] Property test: engine never returns OPEN outside any rule interval
 - [ ] Performance: ≤ 1 ms per evaluation (it runs per list row)

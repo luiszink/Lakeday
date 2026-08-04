@@ -1,0 +1,715 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AttractionStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  UNPUBLISHED
+  ARCHIVED
+}
+
+enum CountryCode {
+  DE
+  CH
+  AT
+}
+
+enum IndoorOutdoor {
+  INDOOR
+  OUTDOOR
+  MIXED
+}
+
+enum Suitability {
+  POOR
+  OK
+  GOOD
+  EXCELLENT
+}
+
+enum Season {
+  SPRING
+  SUMMER
+  AUTUMN
+  WINTER
+  ALL_YEAR
+}
+
+enum PriceLevel {
+  FREE
+  LOW
+  MEDIUM
+  HIGH
+  PREMIUM
+}
+
+enum BookingRequirement {
+  NONE
+  RECOMMENDED
+  REQUIRED
+}
+
+enum ChildAgeBand {
+  AGE_0_2 @map("0-2")
+  AGE_3_5 @map("3-5")
+  AGE_6_9 @map("6-9")
+  AGE_10_13 @map("10-13")
+  AGE_14_PLUS @map("14+")
+}
+
+enum StrollerSuitability {
+  YES
+  PARTIAL
+  NO
+  UNKNOWN
+}
+
+enum WheelchairAccess {
+  FULL
+  PARTIAL
+  NONE
+  UNKNOWN
+}
+
+enum DogPolicy {
+  ALLOWED
+  LEASHED
+  NO
+  UNKNOWN
+}
+
+enum VisitorLanguage {
+  DE
+  EN
+  FR
+  IT
+}
+
+enum TransportMode {
+  WALK
+  BICYCLE
+  PUBLIC_TRANSPORT
+  CAR
+}
+
+enum ParkingAvailability {
+  ON_SITE
+  NEARBY
+  DIFFICULT
+  NONE
+}
+
+enum VerificationState {
+  UNVERIFIED
+  PARTIALLY_VERIFIED
+  VERIFIED
+}
+
+enum Confidence {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Locale {
+  de
+  en
+}
+
+enum TranslationState {
+  SOURCE
+  TRANSLATED
+  NEEDS_REVIEW
+  STALE
+}
+
+enum CategoryLevel {
+  PRIMARY
+  SUB
+}
+
+enum DayOfWeek {
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+  SUN
+}
+
+enum HolidayRule {
+  AS_WEEKDAY
+  CLOSED
+  SPECIAL
+}
+
+enum PriceAudience {
+  ADULT
+  CHILD
+  FAMILY
+  SENIOR
+  GROUP
+  OTHER
+}
+
+enum Currency {
+  EUR
+  CHF
+}
+
+enum SourceType {
+  OFFICIAL_WEBSITE
+  TOURISM_ORG
+  PUBLIC_FEED
+  OSM
+  WIKIDATA
+  WIKIPEDIA
+  OTHER
+}
+
+enum FactKey {
+  OPENING_HOURS
+  PRICE
+  CLOSURE
+  WHEELCHAIR_ACCESS
+  FOOD_ON_SITE
+  CAFE_ON_SITE
+  PICNIC_ALLOWED
+  TOILETS
+  DOG_POLICY
+  BOOKING_REQUIREMENT
+  LOCATION
+  CONTACT
+}
+
+enum UpdateStatus {
+  FRESH
+  DUE
+  STALE
+  SOURCE_UNAVAILABLE
+  IN_REVIEW
+}
+
+enum ReviewerDecision {
+  APPROVED
+  REJECTED
+}
+
+enum ChangeOrigin {
+  SCHEDULED_REFRESH
+  RESEARCH_IMPORT
+  USER_REPORT
+}
+
+enum ChangeProposalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUPERSEDED
+}
+
+enum ExternalSystem {
+  OSM
+  WIKIDATA
+  GOOGLE_PLACE_ID
+  OFFICIAL
+}
+
+enum UserReportCategory {
+  WRONG_HOURS
+  WRONG_PRICE
+  CLOSED
+  ACCESS_ISSUE
+  INCORRECT_INFO
+  OTHER
+}
+
+enum UserReportStatus {
+  NEW
+  TRIAGED
+  RESOLVED
+  DISMISSED
+}
+
+enum AdminRole {
+  EDITOR
+  REVIEWER
+  ADMIN
+}
+
+model Attraction {
+  id                    String                 @id @default(uuid()) @db.Uuid
+  status                AttractionStatus       @default(DRAFT)
+  location              Unsupported("geography(Point,4326)")
+  countryCode           CountryCode            @map("country_code")
+  municipality          String
+  regionCode            String                 @map("region_code")
+  shorelineDistanceM    Int?                   @map("shoreline_distance_m")
+  scopeException        Boolean                @default(false) @map("scope_exception")
+  scopeExceptionReason  String?                @map("scope_exception_reason")
+  indoorOutdoor         IndoorOutdoor          @map("indoor_outdoor")
+  rainSuitability       Suitability?           @map("rain_suitability")
+  heatSuitability       Suitability?           @map("heat_suitability")
+  seasons               Season[]
+  typicalDurationMin    Int?                   @map("typical_duration_min")
+  typicalDurationMax    Int?                   @map("typical_duration_max")
+  priceLevel            PriceLevel?            @map("price_level")
+  bookingRequirement    BookingRequirement     @default(NONE) @map("booking_requirement")
+  bookingUrl            String?                @map("booking_url")
+  officialWebsite       String?                @map("official_website")
+  childAgeBands         ChildAgeBand[]         @map("child_age_bands")
+  foodOnSite            Boolean?               @map("food_on_site")
+  cafeOnSite            Boolean?               @map("cafe_on_site")
+  picnicAllowed         Boolean?               @map("picnic_allowed")
+  toilets               Boolean?
+  strollerSuitable      StrollerSuitability?   @map("stroller_suitable")
+  wheelchairAccess      WheelchairAccess?      @map("wheelchair_access")
+  wheelchairToilet      Boolean?               @map("wheelchair_toilet")
+  dogPolicy             DogPolicy?             @map("dog_policy")
+  visitorLanguages      VisitorLanguage[]      @map("visitor_languages")
+  transportModes        TransportMode[]        @map("transport_modes")
+  nearestStopName       String?                @map("nearest_stop_name")
+  nearestStopDistanceM  Int?                   @map("nearest_stop_distance_m")
+  parkingAvailability   ParkingAvailability?   @map("parking_availability")
+  parkingNote           String?                @map("parking_note")
+  bicycleAccess         Boolean?               @map("bicycle_access")
+  bicycleNote           String?                @map("bicycle_note")
+  editorialImportance   Decimal                @default(0.5) @map("editorial_importance") @db.Decimal(3, 2)
+  verificationState     VerificationState      @default(UNVERIFIED) @map("verification_state")
+  lastVerifiedAt        DateTime?              @map("last_verified_at") @db.Timestamptz(6)
+  confidence            Confidence             @default(MEDIUM)
+  dataLicenceId         String?                @map("data_licence_id") @db.Uuid
+  createdAt             DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime               @updatedAt @map("updated_at") @db.Timestamptz(6)
+  region                Region                 @relation(fields: [regionCode], references: [code], onDelete: Restrict)
+  dataLicence           Licence?               @relation("AttractionDataLicence", fields: [dataLicenceId], references: [id], onDelete: Restrict)
+  localizations         AttractionLocalization[]
+  categories            AttractionCategory[]
+  interests             AttractionInterest[]
+  audiences             AttractionAudience[]
+  tags                  AttractionTag[]
+  openingSchedule       OpeningSchedule?
+  closures              ExceptionalClosure[]
+  prices                PriceInfo[]
+  sourceRecords         SourceRecord[]
+  factProvenances       FactProvenance[]
+  changeProposals       ChangeProposal[]
+  externalIdentifiers   ExternalIdentifier[]
+  images                AttractionImage[]
+  planStops             PlanStop[]
+  userReports           UserReport[]
+  aliasesMergedInto     AttractionAlias[]      @relation("AliasMergedInto")
+  aliasesMergedFrom     AttractionAlias[]      @relation("AliasMergedFrom")
+
+  @@index([status, regionCode], map: "attraction_status_region_ix")
+  @@index([location], type: Gist, map: "attraction_location_gix")
+  @@map("attraction")
+}
+
+model AttractionLocalization {
+  id               String           @id @default(uuid()) @db.Uuid
+  attractionId     String           @map("attraction_id") @db.Uuid
+  locale           Locale
+  name             String
+  slug             String
+  summary          String?
+  description      String?
+  practicalNotes   String?          @map("practical_notes")
+  translationState TranslationState @default(SOURCE) @map("translation_state")
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  attraction       Attraction       @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+
+  @@unique([attractionId, locale], map: "attraction_localization_attraction_locale_key")
+  @@unique([locale, slug], map: "attraction_localization_locale_slug_key")
+  @@map("attraction_localization")
+}
+
+model Category {
+  id               String               @id @default(uuid()) @db.Uuid
+  code             String               @unique
+  level            CategoryLevel
+  parentCategoryId String?              @map("parent_category_id") @db.Uuid
+  labelDe          String               @map("label_de")
+  labelEn          String               @map("label_en")
+  sortOrder        Int                  @default(0) @map("sort_order")
+  createdAt        DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  parentCategory   Category?            @relation("CategoryHierarchy", fields: [parentCategoryId], references: [id], onDelete: Restrict)
+  subcategories    Category[]           @relation("CategoryHierarchy")
+  attractions      AttractionCategory[]
+
+  @@map("category")
+}
+
+model AttractionCategory {
+  id           String     @id @default(uuid()) @db.Uuid
+  attractionId String     @map("attraction_id") @db.Uuid
+  categoryId   String     @map("category_id") @db.Uuid
+  isPrimary    Boolean    @default(false) @map("is_primary")
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  attraction   Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  category     Category   @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@unique([attractionId, categoryId])
+  @@map("attraction_category")
+}
+
+model Interest {
+  id         String                @id @default(uuid()) @db.Uuid
+  code       String                @unique
+  labelDe    String                @map("label_de")
+  labelEn    String                @map("label_en")
+  sortOrder  Int                   @default(0) @map("sort_order")
+  createdAt  DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  attractions AttractionInterest[]
+
+  @@map("interest")
+}
+
+model AttractionInterest {
+  id           String     @id @default(uuid()) @db.Uuid
+  attractionId String     @map("attraction_id") @db.Uuid
+  interestId   String     @map("interest_id") @db.Uuid
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  attraction   Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  interest     Interest   @relation(fields: [interestId], references: [id], onDelete: Restrict)
+
+  @@unique([attractionId, interestId])
+  @@map("attraction_interest")
+}
+
+model Audience {
+  id         String                @id @default(uuid()) @db.Uuid
+  code       String                @unique
+  labelDe    String                @map("label_de")
+  labelEn    String                @map("label_en")
+  sortOrder  Int                   @default(0) @map("sort_order")
+  createdAt  DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  attractions AttractionAudience[]
+
+  @@map("audience")
+}
+
+model AttractionAudience {
+  id           String     @id @default(uuid()) @db.Uuid
+  attractionId String     @map("attraction_id") @db.Uuid
+  audienceId   String     @map("audience_id") @db.Uuid
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  attraction   Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  audience     Audience   @relation(fields: [audienceId], references: [id], onDelete: Restrict)
+
+  @@unique([attractionId, audienceId])
+  @@map("attraction_audience")
+}
+
+model EditorialTag {
+  id         String          @id @default(uuid()) @db.Uuid
+  value      String
+  locale     Locale
+  createdAt  DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  attractions AttractionTag[]
+
+  @@unique([value, locale])
+  @@map("editorial_tag")
+}
+
+model AttractionTag {
+  id           String       @id @default(uuid()) @db.Uuid
+  attractionId String       @map("attraction_id") @db.Uuid
+  tagId        String       @map("tag_id") @db.Uuid
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  attraction   Attraction   @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  tag          EditorialTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([attractionId, tagId])
+  @@map("attraction_tag")
+}
+
+model Region {
+  code        String                                  @id
+  nameDe      String                                  @map("name_de")
+  nameEn      String                                  @map("name_en")
+  polygon     Unsupported("geography(MultiPolygon,4326)")?
+  sortOrder   Int                                     @default(0) @map("sort_order")
+  createdAt   DateTime                                @default(now()) @map("created_at") @db.Timestamptz(6)
+  attractions Attraction[]
+
+  @@index([polygon], type: Gist, map: "region_polygon_gix")
+  @@map("region")
+}
+
+model OpeningSchedule {
+  id           String        @id @default(uuid()) @db.Uuid
+  attractionId String        @unique @map("attraction_id") @db.Uuid
+  validFrom    DateTime      @map("valid_from") @db.Date
+  validTo      DateTime      @map("valid_to") @db.Date
+  hoursUnknown Boolean       @default(false) @map("hours_unknown")
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  attraction   Attraction    @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  rules        OpeningRule[]
+
+  @@map("opening_schedule")
+}
+
+model OpeningRule {
+  id                      String          @id @default(uuid()) @db.Uuid
+  scheduleId              String          @map("schedule_id") @db.Uuid
+  daysOfWeek              DayOfWeek[]     @map("days_of_week")
+  opens                   DateTime?       @db.Time(6)
+  closes                  DateTime?       @db.Time(6)
+  appliesOnPublicHolidays HolidayRule     @default(AS_WEEKDAY) @map("applies_on_public_holidays")
+  holidayCalendarCode     String?         @map("holiday_calendar_code")
+  createdAt               DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  schedule                OpeningSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  holidayCalendar         HolidayCalendar? @relation(fields: [holidayCalendarCode], references: [code], onDelete: Restrict)
+
+  @@map("opening_rule")
+}
+
+model HolidayCalendar {
+  code         String        @id
+  name         String
+  countryCode  CountryCode   @map("country_code")
+  subdivision  String?
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  openingRules OpeningRule[]
+
+  @@map("holiday_calendar")
+}
+
+model ExceptionalClosure {
+  id             String        @id @default(uuid()) @db.Uuid
+  attractionId   String        @map("attraction_id") @db.Uuid
+  dateFrom       DateTime      @map("date_from") @db.Date
+  dateTo         DateTime      @map("date_to") @db.Date
+  reason         String?
+  sourceRecordId String?       @map("source_record_id") @db.Uuid
+  lastCheckedAt  DateTime?     @map("last_checked_at") @db.Timestamptz(6)
+  confidence     Confidence    @default(MEDIUM)
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  attraction     Attraction    @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  sourceRecord   SourceRecord? @relation(fields: [sourceRecordId], references: [id], onDelete: Restrict)
+
+  @@map("exceptional_closure")
+}
+
+model PriceInfo {
+  id             String        @id @default(uuid()) @db.Uuid
+  attractionId   String        @map("attraction_id") @db.Uuid
+  audience       PriceAudience
+  amount         Decimal       @db.Decimal(10, 2)
+  currency       Currency
+  validFrom      DateTime?     @map("valid_from") @db.Date
+  validTo        DateTime?     @map("valid_to") @db.Date
+  note           String?
+  sourceRecordId String?       @map("source_record_id") @db.Uuid
+  lastCheckedAt  DateTime?     @map("last_checked_at") @db.Timestamptz(6)
+  confidence     Confidence    @default(MEDIUM)
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  attraction     Attraction    @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  sourceRecord   SourceRecord? @relation(fields: [sourceRecordId], references: [id], onDelete: Restrict)
+
+  @@index([attractionId, audience], map: "price_info_attraction_audience_ix")
+  @@map("price_info")
+}
+
+model SourceRecord {
+  id                String                @id @default(uuid()) @db.Uuid
+  attractionId      String?               @map("attraction_id") @db.Uuid
+  sourceUrl         String                @map("source_url")
+  sourceType        SourceType            @map("source_type")
+  retrievedAt       DateTime              @map("retrieved_at") @db.Timestamptz(6)
+  contentHash       String                @map("content_hash")
+  rawPayload        Json?                 @map("raw_payload")
+  licenceNote       String?               @map("licence_note")
+  createdAt         DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  attraction        Attraction?           @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  closures          ExceptionalClosure[]
+  prices            PriceInfo[]
+  factProvenances   FactProvenance[]
+  changeProposals   ChangeProposal[]
+
+  @@index([sourceUrl, contentHash], map: "source_record_content_hash_ix")
+  @@index([attractionId], map: "source_record_attraction_ix")
+  @@map("source_record")
+}
+
+model FactProvenance {
+  id               String           @id @default(uuid()) @db.Uuid
+  attractionId     String           @map("attraction_id") @db.Uuid
+  factKey          FactKey          @map("fact_key")
+  sourceRecordId   String           @map("source_record_id") @db.Uuid
+  sourceType       SourceType       @map("source_type")
+  lastCheckedAt    DateTime         @map("last_checked_at") @db.Timestamptz(6)
+  nextRefreshAt    DateTime         @map("next_refresh_at") @db.Timestamptz(6)
+  confidence       Confidence
+  updateStatus     UpdateStatus     @map("update_status")
+  detectedChange   Json?            @map("detected_change")
+  reviewerDecision ReviewerDecision? @map("reviewer_decision")
+  reviewedById     String?          @map("reviewed_by") @db.Uuid
+  reviewedAt       DateTime?        @map("reviewed_at") @db.Timestamptz(6)
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  attraction       Attraction       @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  sourceRecord     SourceRecord     @relation(fields: [sourceRecordId], references: [id], onDelete: Restrict)
+  reviewedBy       AdminUser?       @relation("FactProvenanceReviewer", fields: [reviewedById], references: [id], onDelete: Restrict)
+
+  @@unique([attractionId, factKey, sourceRecordId])
+  @@index([nextRefreshAt], map: "fact_provenance_next_refresh_ix")
+  @@index([updateStatus], map: "fact_provenance_update_status_ix")
+  @@map("fact_provenance")
+}
+
+model ChangeProposal {
+  id             String               @id @default(uuid()) @db.Uuid
+  attractionId   String               @map("attraction_id") @db.Uuid
+  factKey        FactKey              @map("fact_key")
+  currentValue   Json?                @map("current_value")
+  proposedValue  Json                 @map("proposed_value")
+  sourceRecordId String?              @map("source_record_id") @db.Uuid
+  confidence     Confidence           @default(MEDIUM)
+  origin         ChangeOrigin
+  status         ChangeProposalStatus @default(PENDING)
+  reviewedById   String?              @map("reviewed_by") @db.Uuid
+  reviewedAt     DateTime?            @map("reviewed_at") @db.Timestamptz(6)
+  reviewNote     String?              @map("review_note")
+  createdAt      DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
+  attraction     Attraction           @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  sourceRecord   SourceRecord?        @relation(fields: [sourceRecordId], references: [id], onDelete: Restrict)
+  reviewedBy     AdminUser?           @relation("ChangeProposalReviewer", fields: [reviewedById], references: [id], onDelete: Restrict)
+
+  @@index([status], map: "change_proposal_status_ix")
+  @@index([attractionId], map: "change_proposal_attraction_ix")
+  @@map("change_proposal")
+}
+
+model ExternalIdentifier {
+  id           String         @id @default(uuid()) @db.Uuid
+  attractionId String         @map("attraction_id") @db.Uuid
+  system       ExternalSystem
+  externalId   String         @map("external_id")
+  createdAt    DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  attraction   Attraction     @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+
+  @@unique([system, externalId])
+  @@map("external_identifier")
+}
+
+model AttractionImage {
+  id              String     @id @default(uuid()) @db.Uuid
+  attractionId    String     @map("attraction_id") @db.Uuid
+  storagePath     String     @map("storage_path")
+  licenceId       String     @map("licence_id") @db.Uuid
+  attributionText String     @map("attribution_text")
+  sourceUrl       String?    @map("source_url")
+  sortOrder       Int        @default(0) @map("sort_order")
+  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  attraction      Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  licence         Licence    @relation("AttractionImageLicence", fields: [licenceId], references: [id], onDelete: Restrict)
+
+  @@map("attraction_image")
+}
+
+model Plan {
+  id              String     @id @default(uuid()) @db.Uuid
+  shareToken      String?    @unique @map("share_token")
+  locale          Locale
+  date            DateTime? @db.Date
+  startPointX     Decimal?   @map("start_point_x") @db.Decimal(9, 6)
+  startPointY     Decimal?   @map("start_point_y") @db.Decimal(9, 6)
+  startPointLabel String?    @map("start_point_label")
+  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  lastAccessedAt  DateTime   @default(now()) @map("last_accessed_at") @db.Timestamptz(6)
+  stops           PlanStop[]
+
+  @@index([lastAccessedAt], map: "plan_last_accessed_ix")
+  @@map("plan")
+}
+
+model PlanStop {
+  id                 String     @id @default(uuid()) @db.Uuid
+  planId             String     @map("plan_id") @db.Uuid
+  attractionId       String     @map("attraction_id") @db.Uuid
+  sortIndex          Int        @map("sort_index")
+  plannedDurationMin Int?       @map("planned_duration_min")
+  createdAt          DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  plan               Plan       @relation(fields: [planId], references: [id], onDelete: Cascade)
+  attraction         Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+
+  @@unique([planId, sortIndex])
+  @@index([planId], map: "plan_stop_plan_ix")
+  @@map("plan_stop")
+}
+
+model UserReport {
+  id           String             @id @default(uuid()) @db.Uuid
+  attractionId String             @map("attraction_id") @db.Uuid
+  category     UserReportCategory
+  message      String?
+  locale       Locale
+  status       UserReportStatus   @default(NEW)
+  createdAt    DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+  attraction   Attraction         @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+
+  @@index([status], map: "user_report_status_ix")
+  @@map("user_report")
+}
+
+model AdminUser {
+  id                      String           @id @default(uuid()) @db.Uuid
+  email                   String           @unique
+  passwordHash            String?          @map("password_hash")
+  ssoSubject              String?          @unique @map("sso_subject")
+  role                    AdminRole
+  totpSecret              String?          @map("totp_secret")
+  totpVerified            Boolean          @default(false) @map("totp_verified")
+  lastLoginAt             DateTime?        @map("last_login_at") @db.Timestamptz(6)
+  createdAt               DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt               DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  reviewedFactProvenances FactProvenance[] @relation("FactProvenanceReviewer")
+  reviewedChangeProposals ChangeProposal[] @relation("ChangeProposalReviewer")
+  mergedAliases           AttractionAlias[]
+
+  @@map("admin_user")
+}
+
+model Licence {
+  id                   String            @id @default(uuid()) @db.Uuid
+  spdxOrName           String            @unique @map("spdx_or_name")
+  attributionRequired  Boolean           @default(true) @map("attribution_required")
+  commercialUseAllowed Boolean           @default(true) @map("commercial_use_allowed")
+  shareAlike           Boolean           @default(false) @map("share_alike")
+  notes                String?
+  createdAt            DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  attractionData       Attraction[]      @relation("AttractionDataLicence")
+  attractionImages     AttractionImage[] @relation("AttractionImageLicence")
+
+  @@map("licence")
+}
+
+model AttractionAlias {
+  id           String     @id @default(uuid()) @db.Uuid
+  mergedIntoId String     @map("merged_into_id") @db.Uuid
+  mergedFromId String     @unique @map("merged_from_id") @db.Uuid
+  reason       String?
+  mergedAt     DateTime   @default(now()) @map("merged_at") @db.Timestamptz(6)
+  mergedById   String?    @map("merged_by") @db.Uuid
+  mergedInto   Attraction @relation("AliasMergedInto", fields: [mergedIntoId], references: [id], onDelete: Restrict)
+  mergedFrom   Attraction @relation("AliasMergedFrom", fields: [mergedFromId], references: [id], onDelete: Restrict)
+  mergedBy     AdminUser? @relation(fields: [mergedById], references: [id], onDelete: Restrict)
+
+  @@map("attraction_alias")
+}

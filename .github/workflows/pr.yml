@@ -61,11 +61,29 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: psql "$POSTGRES_URL" -c "SELECT postgis_version();"
+      - run: pnpm db:migrate
       - run: pnpm --filter @lake/db test
 
   migrations:
     name: Prisma migration consistency
     runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgis/postgis:16-3.5
+        env:
+          POSTGRES_DB: lake
+          POSTGRES_PASSWORD: lake
+          POSTGRES_USER: lake
+        options: >-
+          --health-cmd "pg_isready -U lake -d lake"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    env:
+      DATABASE_URL: postgresql://lake:lake@localhost:5432/lake?schema=public
+      SHADOW_DATABASE_URL: postgresql://lake:lake@localhost:5432/lake_shadow?schema=public
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -78,11 +96,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Check schema and migrations
         if: ${{ hashFiles('packages/db/prisma/schema.prisma') != '' }}
-        run: >-
-          pnpm --filter @lake/db exec prisma migrate diff
-          --from-migrations packages/db/prisma/migrations
-          --to-schema-datamodel packages/db/prisma/schema.prisma
-          --exit-code
+        run: pnpm db:diff
       - name: Skip until Prisma is introduced
         if: ${{ hashFiles('packages/db/prisma/schema.prisma') == '' }}
         run: echo "No Prisma schema yet; LAKE-006 will activate this check."
