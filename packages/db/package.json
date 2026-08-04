@@ -15,7 +15,9 @@
     "build": "tsc --project tsconfig.json",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit --project tsconfig.json",
-    "test": "node --eval \"process.exit(0)\""
+    "test": "node --eval \"process.exit(0)\"",
+    "db:migrate": "node --eval \"console.log('No database schema exists yet; LAKE-006 will add migrations.')\"",
+    "db:seed": "node --eval \"console.log('No database seed exists yet; LAKE-008 and LAKE-010 will add seed data.')\""
   },
   "devDependencies": {
     "eslint": "^9.32.0",

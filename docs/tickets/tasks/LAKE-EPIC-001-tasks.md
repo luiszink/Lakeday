@@ -76,7 +76,7 @@ Epic: [LAKE-EPIC-001](../epics/LAKE-EPIC-001-repository-foundation.md). All tick
 
 ## LAKE-003 — CI pipeline
 
-**Status:** open · **Phase:** MVP/M0 · **Parallel:** yes (after LAKE-001)
+**Status:** done · **Phase:** MVP/M0 · **Parallel:** yes (after LAKE-001)
 
 **Objective:** GitHub Actions pipeline gating every PR: lint, typecheck, unit, integration (Testcontainers PG+PostGIS), build, gitleaks, `prisma migrate diff` cleanliness; e2e smoke + Lighthouse once those exist.
 

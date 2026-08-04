@@ -13,6 +13,9 @@
     "lint": "corepack pnpm -r --if-present lint",
     "typecheck": "corepack pnpm -r --if-present typecheck",
     "test": "corepack pnpm -r --if-present test",
+    "db:migrate": "corepack pnpm --filter @lake/db db:migrate",
+    "db:seed": "corepack pnpm --filter @lake/db db:seed",
+    "db:reset": "docker compose down --volumes && docker compose up --detach --wait && corepack pnpm db:migrate && corepack pnpm db:seed",
     "format": "prettier --check ."
   },
   "devDependencies": {
