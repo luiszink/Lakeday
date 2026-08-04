@@ -15,12 +15,12 @@ Status: **architectural decision** (requirements, CI pipeline), **recommendation
 
 ## Environments
 
-| Env | Purpose | Data |
-|---|---|---|
-| Local | Development | Docker Compose Postgres+PostGIS, fixture seed |
-| Preview (per PR) | Review UI/behaviour | Fixture seed, isolated ephemeral DB (or schema-per-preview) |
-| Staging | Pre-production, research-import rehearsal, pilot dataset | Copy of production schema; pilot/real content |
-| Production | Public | Real content; backups + PITR |
+| Env              | Purpose                                                  | Data                                                        |
+| ---------------- | -------------------------------------------------------- | ----------------------------------------------------------- |
+| Local            | Development                                              | Docker Compose Postgres+PostGIS, fixture seed               |
+| Preview (per PR) | Review UI/behaviour                                      | Fixture seed, isolated ephemeral DB (or schema-per-preview) |
+| Staging          | Pre-production, research-import rehearsal, pilot dataset | Copy of production schema; pilot/real content               |
+| Production       | Public                                                   | Real content; backups + PITR                                |
 
 Config via environment variables only ([../architecture/system-architecture.md](../architecture/system-architecture.md#environment-variables)); no environment-specific code branches.
 
@@ -39,19 +39,23 @@ prod: manual promotion from staging (tag) → migration deploy (expand-only gate
 - Rollback: previous app image/build kept warm; DB rollbacks are **not** performed (forward-fix policy; additive-first makes old app + new schema compatible).
 - Deployment notifications + release notes generated from merged ticket IDs.
 
+### Branch protection
+
+Protect `main` in GitHub before accepting feature pull requests. Require the `Lint, typecheck, unit, and build`, `PostGIS integration`, `Prisma migration consistency`, and `Secret scan` checks from the **Pull request checks** workflow; require branches to be up to date and restrict direct pushes. Administrators should follow the same rules. The staging deployment job remains disabled until LAKE-002 configures the selected provider and its secrets.
+
 ## Scheduled jobs
 
 Host scheduler (or GitHub Actions cron as stopgap) → authenticated `POST /api/jobs/*`:
 
-| Schedule | Job |
-|---|---|
-| `0 */2 * * *` | refresh?type=weather |
-| `30 4 * * *` | refresh?type=closures |
-| `0 3 * * 1` | refresh?type=hours |
-| `0 4 1 * *` | refresh?type=prices |
+| Schedule                     | Job                   |
+| ---------------------------- | --------------------- |
+| `0 */2 * * *`                | refresh?type=weather  |
+| `30 4 * * *`                 | refresh?type=closures |
+| `0 3 * * 1`                  | refresh?type=hours    |
+| `0 4 1 * *`                  | refresh?type=prices   |
 | seasonal (4×/yr, pre-season) | refresh?type=seasonal |
-| `0 2 * * *` | data-quality sweep |
-| `0 5 * * *` | sitemap |
+| `0 2 * * *`                  | data-quality sweep    |
+| `0 5 * * *`                  | sitemap               |
 
 Job runs are idempotent and monitored ([observability.md](observability.md#job-monitoring)); a missed run is recoverable by re-trigger.
 

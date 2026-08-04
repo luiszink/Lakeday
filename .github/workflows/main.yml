@@ -1,0 +1,111 @@
+name: Main branch checks
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: main-${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  quality:
+    name: Lint, typecheck, unit, and build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm --filter @lake/domain test
+      - run: pnpm build
+
+  integration:
+    name: PostGIS integration
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgis/postgis:16-3.5
+        env:
+          POSTGRES_DB: lake
+          POSTGRES_PASSWORD: lake
+          POSTGRES_USER: lake
+        options: >-
+          --health-cmd "pg_isready -U lake -d lake"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    env:
+      DATABASE_URL: postgresql://lake:lake@localhost:5432/lake?schema=public
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: psql "$DATABASE_URL" -c "SELECT postgis_version();"
+      - run: pnpm --filter @lake/db test
+
+  migrations:
+    name: Prisma migration consistency
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Check schema and migrations
+        if: ${{ hashFiles('packages/db/prisma/schema.prisma') != '' }}
+        run: >-
+          pnpm --filter @lake/db exec prisma migrate diff
+          --from-migrations packages/db/prisma/migrations
+          --to-schema-datamodel packages/db/prisma/schema.prisma
+          --exit-code
+      - name: Skip until Prisma is introduced
+        if: ${{ hashFiles('packages/db/prisma/schema.prisma') == '' }}
+        run: echo "No Prisma schema yet; LAKE-006 will activate this check."
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+
+  deploy-staging:
+    name: Deploy staging
+    needs:
+      - quality
+      - integration
+      - migrations
+      - secrets
+    runs-on: ubuntu-24.04
+    if: ${{ false }}
+    steps:
+      # LAKE-002 adds provider-specific deployment after all checks succeed.
+      - run: echo "Staging deployment is configured by LAKE-002."

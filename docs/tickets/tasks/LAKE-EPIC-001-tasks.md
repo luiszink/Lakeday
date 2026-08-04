@@ -26,6 +26,7 @@ Epic: [LAKE-EPIC-001](../epics/LAKE-EPIC-001-repository-foundation.md). All tick
 **DE/EN:** none yet (no user-facing strings). **A11y:** n/a. **Privacy/security:** `.env` gitignored; no secrets committed.
 
 **Acceptance criteria:**
+
 - [ ] `pnpm install && pnpm -r build` and `pnpm lint && pnpm typecheck` succeed from a clean clone
 - [ ] `pnpm dev` serves a page from `apps/web`
 - [ ] Importing `next` from `packages/domain` fails lint (prove with a temporary test)
@@ -60,6 +61,7 @@ Epic: [LAKE-EPIC-001](../epics/LAKE-EPIC-001-repository-foundation.md). All tick
 **Privacy/security:** EU region verified; DB not publicly reachable (private networking or IP allow-list); secrets only in host store.
 
 **Acceptance criteria:**
+
 - [ ] Staging URL serves the app; `/api/health` returns 200 with DB connectivity confirmed
 - [ ] `SELECT postgis_version()` works on the staging DB
 - [ ] Merge to `main` deploys automatically; failed builds do not deploy
@@ -93,6 +95,7 @@ Epic: [LAKE-EPIC-001](../epics/LAKE-EPIC-001-repository-foundation.md). All tick
 **Privacy/security:** no secrets in PR workflows from forks; gitleaks blocking.
 
 **Acceptance criteria:**
+
 - [ ] A PR with a lint error, type error, failing test, or committed secret is blocked
 - [ ] Green PR completes in < 10 min with caching
 - [ ] Merge to main triggers staging deploy after checks
@@ -125,6 +128,7 @@ Epic: [LAKE-EPIC-001](../epics/LAKE-EPIC-001-repository-foundation.md). All tick
 **Privacy/security:** local DB credentials are non-secrets by convention (documented as local-only).
 
 **Acceptance criteria:**
+
 - [ ] `docker compose up -d && pnpm db:migrate && pnpm db:seed && pnpm dev` works from clean clone on Windows (PowerShell + Git Bash)
 - [ ] `pnpm db:reset` returns to a clean seeded state
 - [ ] `SELECT postgis_version()` succeeds in the container
@@ -158,6 +162,7 @@ Epic: [LAKE-EPIC-001](../epics/LAKE-EPIC-001-repository-foundation.md). All tick
 **Privacy/security:** locale persistence in localStorage only.
 
 **Acceptance criteria:**
+
 - [ ] Shell renders correctly at 360 px and ≥1024 px in both locales
 - [ ] Language switch on any screen lands on the same screen in the other locale
 - [ ] Keyboard-only navigation reaches every nav element with visible focus
