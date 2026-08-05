@@ -12,6 +12,7 @@ type AppShellProps = Readonly<{
 
 const navigation = [
   { href: '/', key: 'discover' },
+  { href: '/map', key: 'map' },
   { href: '/favorites', key: 'favorites' },
   { href: '/my-day', key: 'myDay' },
   { href: '/more', key: 'more' },
@@ -23,7 +24,11 @@ export function AppShell({ children }: AppShellProps) {
 
   function isActive(href: string) {
     if (href === '/') return pathname === '/';
-    return pathname === href || pathname.startsWith(`${href}/`) || (href === '/more' && pathname === '/licences');
+    return (
+      pathname === href ||
+      pathname.startsWith(`${href}/`) ||
+      (href === '/more' && pathname === '/licences')
+    );
   }
 
   return (
@@ -59,7 +64,7 @@ export function AppShell({ children }: AppShellProps) {
         aria-label={translate('label')}
         className="fixed inset-x-0 bottom-0 z-20 border-t border-slate-800 bg-slate-950/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur md:hidden"
       >
-        <ul className="mx-auto grid max-w-md grid-cols-4 gap-1">
+        <ul className="mx-auto grid max-w-md grid-cols-5 gap-1">
           {navigation.map((item) => (
             <li key={item.key}>
               <Link

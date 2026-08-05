@@ -4,7 +4,13 @@ import {
   openStateAt,
   type OpeningSchedule,
 } from '@lake/domain';
-import { Locale, readWgs84Point, searchPublishedAttractions } from '@lake/db';
+import {
+  findAttractionIdsWithinBounds,
+  Locale,
+  readWgs84Point,
+  searchPublishedAttractions,
+  type Wgs84Bounds,
+} from '@lake/db';
 import { NextResponse } from 'next/server';
 
 import { database } from '../../../src/auth/database';
@@ -43,6 +49,26 @@ function parseCursor(value: string | undefined): Cursor | null {
 
 function encodeCursor(cursor: Cursor) {
   return Buffer.from(JSON.stringify(cursor), 'utf8').toString('base64url');
+}
+
+function parseBounds(value: string | undefined): Wgs84Bounds | null {
+  if (!value) return null;
+  const coordinates = value.split(',').map(Number);
+  if (coordinates.length !== 4 || coordinates.some((coordinate) => !Number.isFinite(coordinate))) {
+    return null;
+  }
+  const [west, south, east, north] = coordinates;
+  if (
+    west! < -180 ||
+    east! > 180 ||
+    west! >= east! ||
+    south! < -90 ||
+    north! > 90 ||
+    south! >= north!
+  ) {
+    return null;
+  }
+  return { east: east!, north: north!, south: south!, west: west! };
 }
 
 function requestKey(request: Request) {
@@ -92,6 +118,18 @@ export async function GET(request: Request) {
     );
   }
 
+  const bounds = parseBounds(parsedQuery.data.bbox);
+  if (parsedQuery.data.bbox && !bounds) {
+    return errorResponse('VALIDATION_ERROR', 'Invalid attraction map bounds.', [
+      { path: ['bbox'], code: 'invalid_bbox', message: 'Bounds must be west,south,east,north.' },
+    ]);
+  }
+  if (!bounds && parsedQuery.data.limit > 50) {
+    return errorResponse('VALIDATION_ERROR', 'List queries cannot request more than 50 items.', [
+      { path: ['limit'], code: 'too_big', message: 'Limit must be at most 50 without bbox.' },
+    ]);
+  }
+
   const cursor = parseCursor(parsedQuery.data.cursor);
   if (parsedQuery.data.cursor && !cursor) {
     return errorResponse('VALIDATION_ERROR', 'Invalid cursor.', [
@@ -105,8 +143,11 @@ export async function GET(request: Request) {
     status: 'PUBLISHED' as const,
     localizations: { some: { locale: databaseLocale } },
   };
+  const boundsIds = bounds ? await findAttractionIdsWithinBounds(database, bounds) : null;
+  const scopedIds = boundsIds ? [...boundsIds] : null;
   const search = parsedQuery.data.q
     ? await searchPublishedAttractions(database, {
+        ...(bounds ? { bounds } : {}),
         query: parsedQuery.data.q,
         locale,
         limit: parsedQuery.data.limit,
@@ -132,10 +173,14 @@ export async function GET(request: Request) {
             { updatedAt: new Date(cursor.updatedAt), id: { lt: cursor.id } },
           ],
         }
-      : baseWhere;
+      : scopedIds
+        ? { ...baseWhere, id: { in: scopedIds } }
+        : baseWhere;
 
   const [total, records] = await Promise.all([
-    search ? Promise.resolve(search.total) : database.attraction.count({ where: baseWhere }),
+    search
+      ? Promise.resolve(search.total)
+      : database.attraction.count({ where: scopedIds ? { ...baseWhere, id: { in: scopedIds } } : baseWhere }),
     database.attraction.findMany({
       where,
       orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],
@@ -257,7 +302,12 @@ export async function GET(request: Request) {
               },
         )
       : null;
-  const response = attractionListResponseSchema.parse({ items: validItems, nextCursor, total });
+  const response = attractionListResponseSchema.parse({
+    items: validItems,
+    nextCursor,
+    total,
+    ...(bounds ? { truncated: hasNextPage } : {}),
+  });
 
   return NextResponse.json(response, {
     headers: {

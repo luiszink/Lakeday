@@ -18,6 +18,7 @@ export class FakeMapProvider implements MapProvider {
     this.container = container;
     this.list = document.createElement('ol');
     this.list.dataset.mapProvider = 'fake';
+    this.list.className = 'map-fake-list';
     this.list.setAttribute('aria-label', 'Map markers');
     this.container.replaceChildren(this.list);
     this.renderMarkers();
@@ -58,8 +59,13 @@ export class FakeMapProvider implements MapProvider {
     this.list.replaceChildren(
       ...this.markers.map((marker) => {
         const item = document.createElement('li');
-        item.dataset.markerId = marker.id;
-        item.textContent = `${marker.label} (${marker.coordinates.latitude}, ${marker.coordinates.longitude})`;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.ariaLabel = marker.label;
+        button.dataset.markerId = marker.id;
+        button.className = 'map-marker-button';
+        button.textContent = `${marker.label} (${marker.coordinates.latitude}, ${marker.coordinates.longitude})`;
+        item.replaceChildren(button);
         return item;
       }),
     );

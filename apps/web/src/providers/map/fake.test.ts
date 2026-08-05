@@ -42,7 +42,7 @@ describe('FakeMapProvider', () => {
     ]);
 
     expect(container.children[0]!.dataset.mapProvider).toBe('fake');
-    expect(container.children[0]!.children[0]!.textContent).toContain('Mainau Island');
+    expect(container.children[0]!.children[0]!.children[0]!.textContent).toContain('Mainau Island');
     expect(provider.getAttribution().text).toBe('Test tiles');
   });
 });

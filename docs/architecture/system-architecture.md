@@ -92,14 +92,14 @@ flowchart TD
 
 ### Component responsibilities
 
-| Component | Responsibility | Spec |
-|---|---|---|
-| Public app | Discovery, detail, favorites, plans, guides; PWA shell | [../ux/](../ux/information-architecture.md) |
-| Domain layer | Pure TypeScript: entities, opening-hours evaluation, filter semantics, plan validation, dedup scoring. No framework or I/O imports — unit-testable in isolation, reusable by the phase-2 planner | [domain-model.md](domain-model.md) |
-| Public API | Read-only attraction queries (filter/search/bbox), plan share create/read. Rate-limited | [api-contracts.md](api-contracts.md) |
-| Admin | Attraction CRUD, review queue, research import, source registry. Session-authenticated, role-based | [auth-and-anonymous-usage.md](auth-and-anonymous-usage.md#admin-authentication) |
-| Scheduled jobs | Freshness refresh, data-quality sweeps, sitemaps. Idempotent, observable, safe on source failure | [../data/refresh-and-review-pipeline.md](../data/refresh-and-review-pipeline.md) |
-| Database | Single PostgreSQL with PostGIS; source of truth for content; user data limited to shared plans and reports | [database-schema.md](database-schema.md) |
+| Component      | Responsibility                                                                                                                                                                                   | Spec                                                                             |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Public app     | Discovery, detail, favorites, plans, guides; PWA shell                                                                                                                                           | [../ux/](../ux/information-architecture.md)                                      |
+| Domain layer   | Pure TypeScript: entities, opening-hours evaluation, filter semantics, plan validation, dedup scoring. No framework or I/O imports — unit-testable in isolation, reusable by the phase-2 planner | [domain-model.md](domain-model.md)                                               |
+| Public API     | Read-only attraction queries (filter/search/bbox), plan share create/read. Rate-limited                                                                                                          | [api-contracts.md](api-contracts.md)                                             |
+| Admin          | Attraction CRUD, review queue, research import, source registry. Session-authenticated, role-based                                                                                               | [auth-and-anonymous-usage.md](auth-and-anonymous-usage.md#admin-authentication)  |
+| Scheduled jobs | Freshness refresh, data-quality sweeps, sitemaps. Idempotent, observable, safe on source failure                                                                                                 | [../data/refresh-and-review-pipeline.md](../data/refresh-and-review-pipeline.md) |
+| Database       | Single PostgreSQL with PostGIS; source of truth for content; user data limited to shared plans and reports                                                                                       | [database-schema.md](database-schema.md)                                         |
 
 ### Architectural style (decision)
 
@@ -134,6 +134,7 @@ Single source of truth; mirrored in `.env.example` once scaffolding exists (tick
 | `ADMIN_EMAIL`, `ADMIN_INITIAL_PASSWORD`, `ADMIN_ROLE` | Initial admin seed (`ADMIN_INITIAL_PASSWORD` is never stored in source) |
 | `JOB_TRIGGER_SECRET` | Bearer secret for scheduled-job endpoints |
 | `MAP_TILE_URL`, `MAP_TILE_API_KEY` | Tile provider (abstracted) |
+| `MAP_TILE_PROVIDER_NAME`, `MAP_TILE_PROVIDER_URL`, `MAP_TILE_ATTRIBUTION` | Permanent map provider attribution |
 | `GEOCODER_URL`, `GEOCODER_API_KEY` | Geocoding provider (abstracted) |
 | `WEATHER_API_URL`, `WEATHER_API_KEY` | Weather provider |
 | `ANALYTICS_DOMAIN` | Privacy-friendly analytics host |

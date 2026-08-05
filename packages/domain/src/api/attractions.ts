@@ -6,8 +6,9 @@ export const attractionLocaleSchema = z.enum(['de', 'en']);
 
 export const attractionListQuerySchema = z
   .object({
+    bbox: z.string().trim().min(7).max(160).optional(),
     cursor: z.string().trim().min(1).optional(),
-    limit: z.coerce.number().int().min(1).max(50).default(20),
+    limit: z.coerce.number().int().min(1).max(200).default(20),
     locale: attractionLocaleSchema.default('de'),
     q: z.string().trim().min(2).max(120).optional(),
   })
@@ -56,6 +57,7 @@ export const attractionListResponseSchema = z.object({
   items: z.array(attractionCardSchema),
   nextCursor: z.string().nullable(),
   total: z.number().int().nonnegative(),
+  truncated: z.boolean().optional(),
 });
 
 export type AttractionListQuery = z.infer<typeof attractionListQuerySchema>;

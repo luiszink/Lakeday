@@ -99,6 +99,7 @@ export class MapLibreAdapter implements MapProvider {
       element.type = 'button';
       element.ariaLabel = marker.label;
       element.dataset.markerId = marker.id;
+      element.className = 'map-marker-button';
       const mapMarker = new module.Marker({ element })
         .setLngLat([marker.coordinates.longitude, marker.coordinates.latitude])
         .addTo(map);

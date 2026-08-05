@@ -1,5 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 
+import type { Wgs84Bounds } from './geo.js';
+
 export type SearchCursor = Readonly<{
   id: string;
   rank: number;
@@ -14,6 +16,7 @@ export type SearchMatch = Readonly<{
 
 type SearchInput = Readonly<{
   cursor?: SearchCursor;
+  bounds?: Wgs84Bounds;
   limit: number;
   locale: 'de' | 'en';
   query: string;
@@ -121,6 +124,19 @@ const searchMatchesCte = (input: SearchInput) => Prisma.sql`
             OR similarity(public.search_normalize(attraction.municipality), search_input.normalized) >= 0.3
           )
         )
+      )
+      AND (
+        ${
+          input.bounds
+            ? Prisma.sql`
+                location IS NOT NULL
+                AND ST_Intersects(
+                  location::geometry,
+                  ST_MakeEnvelope(${input.bounds.west}, ${input.bounds.south}, ${input.bounds.east}, ${input.bounds.north}, 4326)
+                )
+              `
+            : Prisma.sql`TRUE`
+        }
       )
   )
 `;

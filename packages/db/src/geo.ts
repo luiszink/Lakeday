@@ -8,6 +8,13 @@ export type Wgs84Point = Readonly<{
   longitude: number;
 }>;
 
+export type Wgs84Bounds = Readonly<{
+  east: number;
+  north: number;
+  south: number;
+  west: number;
+}>;
+
 export async function createAttractionShell(
   client: DatabaseExecutor,
   input: Readonly<{
@@ -71,6 +78,25 @@ export async function readWgs84Point(
     longitude: point.coordinates[0],
     latitude: point.coordinates[1],
   };
+}
+
+export async function findAttractionIdsWithinBounds(
+  client: PrismaClient,
+  bounds: Wgs84Bounds,
+): Promise<readonly string[]> {
+  const rows = await client.$queryRaw<ReadonlyArray<{ id: string }>>(
+    Prisma.sql`
+      SELECT id::text AS id
+      FROM attraction
+      WHERE location IS NOT NULL
+        AND ST_Intersects(
+          location::geometry,
+          ST_MakeEnvelope(${bounds.west}, ${bounds.south}, ${bounds.east}, ${bounds.north}, 4326)
+        )
+      ORDER BY updated_at DESC, id DESC;
+    `,
+  );
+  return rows.map((row) => row.id);
 }
 
 export function readShorelineBandKm(value = process.env.SCOPE_SHORELINE_BAND_KM): number {
