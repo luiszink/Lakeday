@@ -13,5 +13,30 @@
     "de": "German",
     "en": "English",
     "label": "Language"
+  },
+  "nav": {
+    "discover": "Discover",
+    "favorites": "Favorites",
+    "label": "Main navigation",
+    "more": "More",
+    "myDay": "My Day"
+  },
+  "screens": {
+    "favorites": {
+      "description": "Save places to visit here so you can find them quickly later.",
+      "eyebrow": "Your selection",
+      "title": "Favorites"
+    },
+    "more": {
+      "description": "Guides, sources and more information for your day at Lake Constance.",
+      "eyebrow": "More sections",
+      "licences": "Sources and licences",
+      "title": "More"
+    },
+    "myDay": {
+      "description": "Plan your next route once you have selected places to visit.",
+      "eyebrow": "Your plan",
+      "title": "My Day"
+    }
   }
 }

@@ -13,5 +13,30 @@
     "de": "Deutsch",
     "en": "English",
     "label": "Sprache"
+  },
+  "nav": {
+    "discover": "Entdecken",
+    "favorites": "Favoriten",
+    "label": "Hauptnavigation",
+    "more": "Mehr",
+    "myDay": "Mein Tag"
+  },
+  "screens": {
+    "favorites": {
+      "description": "Speichere Ausflugsziele hier, um sie später schnell wiederzufinden.",
+      "eyebrow": "Deine Auswahl",
+      "title": "Favoriten"
+    },
+    "more": {
+      "description": "Guides, Quellen und weitere Informationen für deinen Bodensee-Tag.",
+      "eyebrow": "Weitere Bereiche",
+      "licences": "Quellen und Lizenzen",
+      "title": "Mehr"
+    },
+    "myDay": {
+      "description": "Plane deine nächste Route, sobald du Ausflugsziele ausgewählt hast.",
+      "eyebrow": "Deine Planung",
+      "title": "Mein Tag"
+    }
   }
 }
