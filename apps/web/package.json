@@ -11,6 +11,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1103.0",
     "@lake/db": "workspace:*",
     "@lake/domain": "workspace:*",
     "argon2": "^0.45.1",
@@ -20,7 +21,8 @@
     "otplib": "^13.4.1",
     "qrcode": "^1.5.4",
     "react": "19.1.1",
-    "react-dom": "19.1.1"
+    "react-dom": "19.1.1",
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.13",

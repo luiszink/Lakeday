@@ -422,7 +422,7 @@ export async function GET(request: Request) {
         images: {
           orderBy: { sortOrder: 'asc' },
           take: 1,
-          select: { storagePath: true, attributionText: true },
+          select: { altDe: true, altEn: true, storagePath: true, attributionText: true },
         },
       },
     }),

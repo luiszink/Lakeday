@@ -240,6 +240,8 @@ export async function GET(request: Request, context: DetailRouteProps) {
     heatSuitability: attraction.heatSuitability,
     id: attraction.id,
     images: attraction.images.map((image) => ({
+      altDe: image.altDe,
+      altEn: image.altEn,
       attributionText: image.attributionText,
       licence: image.licence.spdxOrName,
       sourceUrl: safeUrl(image.sourceUrl),

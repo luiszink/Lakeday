@@ -58,7 +58,13 @@ export function AttractionCard({ attraction, distanceM }: AttractionCardProps) {
   return (
     <article className="group grid gap-4 border-b border-slate-800/80 py-5 first:pt-0 sm:grid-cols-[12rem_1fr] sm:gap-5">
       <div
-        aria-label={attraction.thumbnail?.attributionText ?? translate('imagePlaceholder')}
+        aria-label={
+          attraction.thumbnail
+            ? locale === 'de'
+              ? attraction.thumbnail.altDe
+              : attraction.thumbnail.altEn
+            : translate('imagePlaceholder')
+        }
         className="relative min-h-44 overflow-hidden rounded-lg border border-slate-800 bg-slate-900 sm:min-h-40"
         role="img"
         style={

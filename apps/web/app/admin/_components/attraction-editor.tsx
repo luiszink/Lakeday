@@ -20,6 +20,11 @@ type ScopeState = Readonly<{
   inScope: boolean;
 }>;
 
+type LicenceOption = Readonly<{
+  id: string;
+  spdxOrName: string;
+}>;
+
 const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'] as const;
 const seasons = ['SPRING', 'SUMMER', 'AUTUMN', 'WINTER', 'ALL_YEAR'] as const;
 
@@ -48,6 +53,16 @@ export function AttractionEditor({ initialPayload, isNew }: EditorProps) {
   const [error, setError] = useState<string | null>(null);
   const [conflict, setConflict] = useState(false);
   const [violations, setViolations] = useState<string[]>([]);
+  const [licences, setLicences] = useState<LicenceOption[]>([]);
+  const [mediaFile, setMediaFile] = useState<File | null>(null);
+  const [mediaAltDe, setMediaAltDe] = useState('');
+  const [mediaAltEn, setMediaAltEn] = useState('');
+  const [mediaAttribution, setMediaAttribution] = useState('');
+  const [mediaLicenceId, setMediaLicenceId] = useState('');
+  const [mediaSourceUrl, setMediaSourceUrl] = useState('');
+  const [mediaUploading, setMediaUploading] = useState(false);
+  const [mediaMessage, setMediaMessage] = useState<string | null>(null);
+  const [mediaError, setMediaError] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(async () => {
@@ -70,6 +85,17 @@ export function AttractionEditor({ initialPayload, isNew }: EditorProps) {
     payload.scopeException,
     payload.scopeExceptionReason,
   ]);
+
+  useEffect(() => {
+    if (isNew) return;
+    void fetch('/api/admin/licences')
+      .then(async (response) => {
+        if (!response.ok) return;
+        const body = (await response.json()) as { licences?: LicenceOption[] };
+        setLicences(body.licences ?? []);
+      })
+      .catch(() => undefined);
+  }, [isNew]);
 
   useEffect(() => {
     function beforeUnload(event: BeforeUnloadEvent) {
@@ -207,6 +233,43 @@ export function AttractionEditor({ initialPayload, isNew }: EditorProps) {
       setError(body?.error?.message ?? 'Unable to save attraction.');
     }
     setSaving(false);
+  }
+
+  async function uploadImage() {
+    if (!payload.id || !mediaFile) {
+      setMediaError('Save the attraction and select an image first.');
+      return;
+    }
+    setMediaUploading(true);
+    setMediaError(null);
+    setMediaMessage(null);
+    const form = new FormData();
+    form.set('file', mediaFile);
+    form.set('altDe', mediaAltDe);
+    form.set('altEn', mediaAltEn);
+    form.set('attributionText', mediaAttribution);
+    form.set('licenceId', mediaLicenceId);
+    form.set('sourceUrl', mediaSourceUrl);
+    form.set('sortOrder', '0');
+    const response = await fetch(`/api/admin/attractions/${payload.id}/images`, {
+      method: 'POST',
+      body: form,
+    });
+    const body = (await response.json().catch(() => null)) as {
+      image?: { licence: string; storagePath: string };
+      error?: { message?: string };
+    } | null;
+    if (response.ok && body?.image) {
+      setMediaMessage(`Image uploaded with ${body.image.licence}.`);
+      setMediaFile(null);
+      setMediaAltDe('');
+      setMediaAltEn('');
+      setMediaAttribution('');
+      setMediaSourceUrl('');
+    } else {
+      setMediaError(body?.error?.message ?? 'Unable to upload image.');
+    }
+    setMediaUploading(false);
   }
 
   const schedule = payload.openingSchedule;
@@ -462,6 +525,95 @@ export function AttractionEditor({ initialPayload, isNew }: EditorProps) {
             </fieldset>
           ))}
         </div>
+      </section>
+
+      <section
+        aria-labelledby="media-title"
+        className="space-y-4 rounded-md border border-slate-800 bg-slate-900 p-6"
+      >
+        <div>
+          <h2 id="media-title" className="text-xl font-semibold">
+            Licensed images
+          </h2>
+          <p className="mt-1 text-sm text-slate-400">
+            Every uploaded image requires bilingual alt text, attribution, and a registered licence.
+          </p>
+        </div>
+        {isNew ? (
+          <p className="text-sm text-slate-400">Save the attraction before adding images.</p>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="space-y-2 text-sm md:col-span-2">
+              <span>Image file</span>
+              <input
+                accept="image/jpeg,image/png,image/webp"
+                className={fieldClass()}
+                onChange={(event) => setMediaFile(event.target.files?.[0] ?? null)}
+                type="file"
+              />
+            </label>
+            <label className="space-y-2 text-sm">
+              <span>German alt text</span>
+              <input
+                className={fieldClass()}
+                value={mediaAltDe}
+                onChange={(event) => setMediaAltDe(event.target.value)}
+              />
+            </label>
+            <label className="space-y-2 text-sm">
+              <span>English alt text</span>
+              <input
+                className={fieldClass()}
+                value={mediaAltEn}
+                onChange={(event) => setMediaAltEn(event.target.value)}
+              />
+            </label>
+            <label className="space-y-2 text-sm">
+              <span>Attribution</span>
+              <input
+                className={fieldClass()}
+                value={mediaAttribution}
+                onChange={(event) => setMediaAttribution(event.target.value)}
+              />
+            </label>
+            <label className="space-y-2 text-sm">
+              <span>Licence</span>
+              <select
+                className={fieldClass()}
+                value={mediaLicenceId}
+                onChange={(event) => setMediaLicenceId(event.target.value)}
+              >
+                <option value="">Select a registered licence</option>
+                {licences.map((licence) => (
+                  <option key={licence.id} value={licence.id}>
+                    {licence.spdxOrName}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="space-y-2 text-sm md:col-span-2">
+              <span>Source URL (optional)</span>
+              <input
+                className={fieldClass()}
+                type="url"
+                value={mediaSourceUrl}
+                onChange={(event) => setMediaSourceUrl(event.target.value)}
+              />
+            </label>
+            <div className="space-y-2 md:col-span-2">
+              <button
+                className="rounded-md bg-cyan-500 px-3 py-2 text-sm font-medium text-slate-950 disabled:opacity-50"
+                disabled={mediaUploading}
+                onClick={uploadImage}
+                type="button"
+              >
+                {mediaUploading ? 'Uploading…' : 'Upload licensed image'}
+              </button>
+              {mediaMessage ? <p className="text-sm text-emerald-300">{mediaMessage}</p> : null}
+              {mediaError ? <p className="text-sm text-rose-300">{mediaError}</p> : null}
+            </div>
+          </div>
+        )}
       </section>
 
       <section

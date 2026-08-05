@@ -31,6 +31,8 @@ const priceInfoSchema = z.object({
 });
 
 const imageSchema = z.object({
+  altDe: z.string().min(1),
+  altEn: z.string().min(1),
   attributionText: z.string().min(1),
   licence: z.string().min(1),
   sourceUrl: z.string().url().nullable(),

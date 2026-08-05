@@ -682,6 +682,8 @@ model AttractionImage {
   storagePath     String     @map("storage_path")
   licenceId       String     @map("licence_id") @db.Uuid
   attributionText String     @map("attribution_text")
+  altDe           String     @map("alt_de")
+  altEn           String     @map("alt_en")
   sourceUrl       String?    @map("source_url")
   sortOrder       Int        @default(0) @map("sort_order")
   createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)

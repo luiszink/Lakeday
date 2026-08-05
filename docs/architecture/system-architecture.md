@@ -126,20 +126,24 @@ pnpm workspaces + Turborepo-optional (start with plain pnpm; add task caching on
 
 Single source of truth; mirrored in `.env.example` once scaffolding exists (ticket LAKE-001).
 
-| Variable | Purpose |
-|---|---|
-| `DATABASE_URL` | Postgres connection |
-| `ADMIN_AUTH_SECRET` | Session signing for admin auth |
-| `ADMIN_EMAIL_ENDPOINT`, `ADMIN_EMAIL_API_KEY`, `ADMIN_EMAIL_FROM` | EU transactional email adapter for admin password resets |
-| `ADMIN_EMAIL`, `ADMIN_INITIAL_PASSWORD`, `ADMIN_ROLE` | Initial admin seed (`ADMIN_INITIAL_PASSWORD` is never stored in source) |
-| `JOB_TRIGGER_SECRET` | Bearer secret for scheduled-job endpoints |
-| `MAP_TILE_URL`, `MAP_TILE_API_KEY` | Tile provider (abstracted) |
-| `MAP_TILE_PROVIDER_NAME`, `MAP_TILE_PROVIDER_URL`, `MAP_TILE_ATTRIBUTION` | Permanent map provider attribution |
-| `GEOCODER_URL`, `GEOCODER_API_KEY` | Geocoding provider (abstracted) |
-| `WEATHER_API_URL`, `WEATHER_API_KEY` | Weather provider |
-| `ANALYTICS_DOMAIN` | Privacy-friendly analytics host |
-| `SCOPE_SHORELINE_BAND_KM` | Inclusion-rule threshold (default 5) |
-| `PUBLIC_BASE_URL` | Canonical URL for sitemaps/share links |
+| Variable                                                                                                                                   | Purpose                                                                 |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `DATABASE_URL`                                                                                                                             | Postgres connection                                                     |
+| `ADMIN_AUTH_SECRET`                                                                                                                        | Session signing for admin auth                                          |
+| `ADMIN_EMAIL_ENDPOINT`, `ADMIN_EMAIL_API_KEY`, `ADMIN_EMAIL_FROM`                                                                          | EU transactional email adapter for admin password resets                |
+| `ADMIN_EMAIL`, `ADMIN_INITIAL_PASSWORD`, `ADMIN_ROLE`                                                                                      | Initial admin seed (`ADMIN_INITIAL_PASSWORD` is never stored in source) |
+| `JOB_TRIGGER_SECRET`                                                                                                                       | Bearer secret for scheduled-job endpoints                               |
+| `MAP_TILE_URL`, `MAP_TILE_API_KEY`                                                                                                         | Tile provider (abstracted)                                              |
+| `MAP_TILE_PROVIDER_NAME`, `MAP_TILE_PROVIDER_URL`, `MAP_TILE_ATTRIBUTION`                                                                  | Permanent map provider attribution                                      |
+| `GEOCODER_URL`, `GEOCODER_API_KEY`                                                                                                         | Geocoding provider (abstracted)                                         |
+| `WEATHER_API_URL`, `WEATHER_API_KEY`                                                                                                       | Weather provider                                                        |
+| `ANALYTICS_DOMAIN`                                                                                                                         | Privacy-friendly analytics host                                         |
+| `SCOPE_SHORELINE_BAND_KM`                                                                                                                  | Inclusion-rule threshold (default 5)                                    |
+| `PUBLIC_BASE_URL`                                                                                                                          | Canonical URL for sitemaps/share links                                  |
+| `IMAGE_STORAGE_BUCKET`, `IMAGE_STORAGE_REGION`, `IMAGE_STORAGE_ENDPOINT`, `IMAGE_STORAGE_ACCESS_KEY_ID`, `IMAGE_STORAGE_SECRET_ACCESS_KEY` | S3-compatible storage for processed attraction images                   |
+| `IMAGE_STORAGE_PUBLIC_BASE_URL`, `IMAGE_STORAGE_FORCE_PATH_STYLE`, `IMAGE_STORAGE_DRIVER`                                                 | Public image URL base, S3 endpoint URL style, and `s3`/`memory` driver  |
+| `RUN_IMPORT_INTEGRATION`, `RUN_REVIEW_INTEGRATION`                                                                                         | Opt-in database integration tests                                        |
+| `SHADOW_DATABASE_URL`                                                                                                                      | Separate PostgreSQL database for Prisma migration diffs                 |
 
 Secrets management: [../quality/security-and-privacy.md](../quality/security-and-privacy.md#secret-management).
 

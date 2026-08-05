@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 import { ReportForm } from './report-form';
+import { ImageGallery } from './image-gallery';
 
 type AttractionDetailPageProps = Readonly<{
   detail: AttractionDetailResponse;
@@ -77,26 +78,12 @@ export function AttractionDetailPage({ detail, locale }: AttractionDetailPagePro
               </p>
             ) : null}
           </div>
-          <div
-            aria-label={detail.images[0]?.attributionText ?? translate('imagePlaceholder')}
-            className="min-h-64 rounded-lg border border-slate-800 bg-slate-900 bg-cover bg-center"
-            role="img"
-            style={
-              detail.images[0]
-                ? { backgroundImage: `url(${JSON.stringify(detail.images[0].storagePath)})` }
-                : undefined
-            }
-          >
-            {!detail.images[0] ? (
-              <span className="flex min-h-64 items-center justify-center text-slate-600">
-                {translate('imagePlaceholder')}
-              </span>
-            ) : (
-              <span className="mt-52 block bg-slate-950/80 px-3 py-2 text-xs text-slate-200">
-                {detail.images[0].attributionText}
-              </span>
-            )}
-          </div>
+          <ImageGallery
+            categoryCode={detail.categories[0]?.code}
+            images={detail.images}
+            locale={locale}
+            placeholderLabel={translate('imagePlaceholder')}
+          />
         </section>
 
         <section

@@ -55,6 +55,8 @@ export const attractionCardSchema = z.object({
   }),
   thumbnail: z
     .object({
+      altDe: z.string().min(1),
+      altEn: z.string().min(1),
       storagePath: z.string().min(1),
       attributionText: z.string().min(1),
     })
