@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { config } from 'dotenv';
+import { fileURLToPath } from 'node:url';
 import process from 'node:process';
 
 import { seedGeoData } from '../src/geo-seed.js';
@@ -8,6 +10,10 @@ import { seedLicences } from './licences.js';
 import { seedReviewProposals } from './review.js';
 import { seedVocabularies } from './vocabularies.js';
 import { seedAdminUser } from './admin.js';
+
+const workspaceEnv = (name: string) => fileURLToPath(new URL(`../../../${name}`, import.meta.url));
+config({ path: workspaceEnv('.env') });
+config({ path: workspaceEnv('.env.local'), override: true });
 
 const argumentsAfterCommand = process.argv.slice(2);
 const seedGroup = argumentsAfterCommand.length === 0 ? undefined : argumentsAfterCommand[1];

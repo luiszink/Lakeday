@@ -8,6 +8,11 @@ export function middleware(request: NextRequest) {
   responseHeaders.set('x-admin-pathname', request.nextUrl.pathname);
 
   const pathname = request.nextUrl.pathname;
+  const localeMatch = pathname.match(/^\/(de|en)(?:\/|$)/);
+  if (localeMatch?.[1]) {
+    responseHeaders.set('x-locale', localeMatch[1]);
+  }
+
   const publicAuthRoutes = new Set([
     '/admin/login',
     '/admin/request-reset',
@@ -22,6 +27,10 @@ export function middleware(request: NextRequest) {
   const hasSessionCookie = request.cookies.has(ADMIN_SESSION_COOKIE);
   const isApiRequest = pathname.startsWith('/api/admin/');
 
+  if (!pathname.startsWith('/admin') && !pathname.startsWith('/api/admin')) {
+    return NextResponse.next({ request: { headers: responseHeaders } });
+  }
+
   const response =
     isPublicAuthRoute || hasSessionCookie
       ? NextResponse.next({ request: { headers: responseHeaders } })
@@ -34,5 +43,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/', '/(de|en)/:path*', '/admin/:path*', '/api/admin/:path*'],
 };

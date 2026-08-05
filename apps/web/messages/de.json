@@ -1,0 +1,17 @@
+{
+  "app": {
+    "description": "Entdecke Ausflugsziele rund um den Bodensee.",
+    "title": "BodenseeGuide"
+  },
+  "home": {
+    "eyebrow": "Die Region entdecken",
+    "intro": "Finde verlässliche Ausflugsziele rund um den gesamten Bodensee.",
+    "licences": "Quellen und Lizenzen öffnen",
+    "title": "Dein Tag am Bodensee beginnt hier"
+  },
+  "locale": {
+    "de": "Deutsch",
+    "en": "English",
+    "label": "Sprache"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "app": {
+    "description": "Discover places to visit around Lake Constance.",
+    "title": "BodenseeGuide"
+  },
+  "home": {
+    "eyebrow": "Explore the region",
+    "intro": "Find reliable places to visit around the entire Lake Constance shoreline.",
+    "licences": "Open sources and licences",
+    "title": "Your day at Lake Constance starts here"
+  },
+  "locale": {
+    "de": "German",
+    "en": "English",
+    "label": "Language"
+  }
+}

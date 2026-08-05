@@ -1,7 +1,25 @@
+'use client';
+
+import { useEffect } from 'react';
+
+const supportedLocales = ['de', 'en'] as const;
+type SupportedLocale = (typeof supportedLocales)[number];
+
+function isSupportedLocale(value: string | null): value is SupportedLocale {
+  return value === 'de' || value === 'en';
+}
+
 export default function HomePage() {
-  return (
-    <main className="grid min-h-screen place-items-center p-6">
-      <p>App shell pending.</p>
-    </main>
-  );
+  useEffect(() => {
+    const storedLocale = window.localStorage.getItem('bodensee-locale');
+    const locale = isSupportedLocale(storedLocale)
+      ? storedLocale
+      : window.navigator.language.toLowerCase().startsWith('de')
+        ? 'de'
+        : 'en';
+
+    window.location.replace(`/${locale}`);
+  }, []);
+
+  return null;
 }
