@@ -29,6 +29,7 @@ type MapExperienceProps = Readonly<{
   locale: 'de' | 'en';
   providerConfig: MapProviderConfig;
   providerKind: 'fake' | 'maplibre';
+  searchQuery?: string | undefined;
 }>;
 
 type LoadState = 'loading' | 'ready' | 'error';
@@ -43,6 +44,7 @@ export function MapExperience({
   locale,
   providerConfig,
   providerKind,
+  searchQuery,
 }: MapExperienceProps) {
   const translate = useTranslations('map');
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -115,6 +117,7 @@ export function MapExperience({
         limit: '200',
         locale,
       });
+      if (searchQuery) query.set('q', searchQuery);
       const response = await fetch(`/api/attractions?${query.toString()}`);
       if (!response.ok) throw new Error('Map query failed.');
       const data = (await response.json()) as AttractionListResponse;
@@ -133,6 +136,11 @@ export function MapExperience({
     } finally {
       setAreaLoading(false);
     }
+  }
+
+  function focusAttraction(id: string) {
+    setSelectedId(id);
+    provider.current?.focusMarker(id);
   }
 
   const selected = items.find((item) => item.id === selectedId) ?? null;
@@ -193,6 +201,27 @@ export function MapExperience({
         </div>
       ) : null}
 
+      {items.length > 0 ? (
+        <div
+          aria-label={translate('carouselLabel')}
+          className="flex gap-3 overflow-x-auto pb-2 lg:hidden"
+          role="list"
+        >
+          {items.map((item) => (
+            <div key={item.id} role="listitem">
+              <button
+                aria-label={translate('focusMarker', { name: item.name })}
+                className="min-w-56 rounded-md border border-slate-700 bg-slate-900 px-4 py-3 text-left text-sm text-slate-200 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                onClick={() => focusAttraction(item.id)}
+                type="button"
+              >
+                <span className="block font-semibold text-white">{item.name}</span>
+                <span className="mt-1 block text-slate-400">{item.municipality}</span>
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : null}
       {selected ? (
         <aside
           aria-label={selected.name}

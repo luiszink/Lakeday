@@ -58,6 +58,7 @@ export class MapProviderError extends Error {
 export interface MapProvider {
   destroy(): void;
   fitBounds(bounds: MapBounds): void;
+  focusMarker(markerId: string): void;
   getAttribution(): MapAttribution;
   init(container: HTMLElement): Promise<void>;
   locateDot(coordinates: MapCoordinate | null): void;

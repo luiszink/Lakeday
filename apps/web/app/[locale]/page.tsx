@@ -3,10 +3,11 @@ import { getTranslations } from 'next-intl/server';
 
 import { DiscoverExperience } from '../../src/components/discover-experience';
 import { SearchBox } from '../../src/components/search-box';
+import { getMapProviderSettings } from '../../src/providers/map/config';
 
 type LocaleHomePageProps = Readonly<{
   params: Promise<{ locale: 'de' | 'en' }>;
-  searchParams: Promise<{ q?: string | string[] }>;
+  searchParams: Promise<{ q?: string | string[]; view?: string | string[] }>;
 }>;
 
 export const revalidate = 60;
@@ -42,8 +43,10 @@ export default async function LocaleHomePage({ params, searchParams }: LocaleHom
   const { locale } = await params;
   const queryParameters = await searchParams;
   const searchQuery = typeof queryParameters.q === 'string' ? queryParameters.q.trim() : undefined;
+  const initialView = queryParameters.view === 'map' ? 'map' : 'list';
   const translate = await getTranslations('discover');
   const initialLoad = await loadInitialAttractions(locale, searchQuery);
+  const providerSettings = getMapProviderSettings(process.env);
 
   return (
     <main className="min-h-[calc(100vh-73px)] bg-slate-950 px-5 py-10 text-slate-100 sm:px-6 sm:py-14">
@@ -65,7 +68,10 @@ export default async function LocaleHomePage({ params, searchParams }: LocaleHom
           <DiscoverExperience
             initialData={initialLoad.data}
             initialError={!initialLoad.data}
+            initialView={initialView}
             locale={locale}
+            mapProviderConfig={providerSettings.config}
+            mapProviderKind={providerSettings.kind}
             searchError={initialLoad.searchFailed}
             searchQuery={searchQuery}
           />

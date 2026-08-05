@@ -12,6 +12,7 @@ import {
 
 type MapLibreMap = {
   fitBounds: (bounds: [[number, number], [number, number]]) => void;
+  flyTo: (options: Readonly<{ center: [number, number]; zoom?: number }>) => void;
   getBounds: () => {
     getEast: () => number;
     getNorth: () => number;
@@ -56,6 +57,7 @@ export class MapLibreAdapter implements MapProvider {
   private module: MapLibreModule | null = null;
   private clusterConfig: MapClusterConfig | undefined;
   private readonly markers = new Map<string, MapLibreMarker>();
+  private readonly markerCoordinates = new Map<string, [number, number]>();
   private locationMarker: MapLibreMarker | null = null;
   private readonly listeners = new Set<(viewport: MapViewport) => void>();
 
@@ -78,6 +80,7 @@ export class MapLibreAdapter implements MapProvider {
     this.markers.forEach((marker) => marker.remove());
     this.locationMarker?.remove();
     this.markers.clear();
+    this.markerCoordinates.clear();
     this.locationMarker = null;
     this.map?.remove();
     this.map = null;
@@ -93,6 +96,7 @@ export class MapLibreAdapter implements MapProvider {
     this.clusterConfig = _clusterConfig;
     this.markers.forEach((marker) => marker.remove());
     this.markers.clear();
+    this.markerCoordinates.clear();
     const map = this.map;
     markers.forEach((marker) => {
       const element = document.createElement('button');
@@ -104,6 +108,10 @@ export class MapLibreAdapter implements MapProvider {
         .setLngLat([marker.coordinates.longitude, marker.coordinates.latitude])
         .addTo(map);
       this.markers.set(marker.id, mapMarker);
+      this.markerCoordinates.set(marker.id, [
+        marker.coordinates.longitude,
+        marker.coordinates.latitude,
+      ]);
     });
   }
 
@@ -114,6 +122,14 @@ export class MapLibreAdapter implements MapProvider {
       [bounds.west, bounds.south],
       [bounds.east, bounds.north],
     ]);
+  }
+
+  focusMarker(markerId: string): void {
+    if (!this.map)
+      throw new MapProviderError('NOT_INITIALIZED', 'Map provider is not initialized.');
+    const coordinates = this.markerCoordinates.get(markerId);
+    if (!coordinates) return;
+    this.map.flyTo({ center: coordinates, zoom: Math.max(this.map.getZoom(), 14) });
   }
 
   locateDot(coordinates: MapCoordinate | null): void {

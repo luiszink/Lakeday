@@ -2,7 +2,7 @@ import type { AttractionListResponse } from '@lake/domain';
 import { getTranslations } from 'next-intl/server';
 
 import { MapExperience } from '../../../src/components/map/map-experience';
-import type { MapProviderConfig } from '../../../src/providers/map/types';
+import { getMapProviderSettings } from '../../../src/providers/map/config';
 
 const wholeLakeBbox = '8.3,47.1,10.7,48.1';
 
@@ -29,21 +29,7 @@ export default async function MapPage({
   const { locale } = await params;
   const translate = await getTranslations('map');
   const initialData = await fetchInitialMapData(locale);
-  const providerConfig: MapProviderConfig = {
-    ...(process.env.MAP_TILE_API_KEY ? { apiKey: process.env.MAP_TILE_API_KEY } : {}),
-    providerAttribution: process.env.MAP_TILE_ATTRIBUTION ?? 'Map tiles',
-    providerName: process.env.MAP_TILE_PROVIDER_NAME ?? 'Configured tile provider',
-    ...(process.env.MAP_TILE_PROVIDER_URL
-      ? { providerUrl: process.env.MAP_TILE_PROVIDER_URL }
-      : {}),
-    styleUrl: process.env.MAP_TILE_URL ?? 'https://example.invalid/style.json',
-  };
-  const providerKind =
-    process.env.MAP_TILE_URL &&
-    process.env.MAP_TILE_PROVIDER_NAME &&
-    process.env.MAP_TILE_ATTRIBUTION
-      ? 'maplibre'
-      : 'fake';
+  const providerSettings = getMapProviderSettings(process.env);
 
   return (
     <main className="min-h-[calc(100vh-73px)] bg-slate-950 px-5 py-10 text-slate-100 sm:px-6 sm:py-14">
@@ -61,8 +47,8 @@ export default async function MapPage({
           initialData={initialData}
           initialError={!initialData}
           locale={locale}
-          providerConfig={providerConfig}
-          providerKind={providerKind}
+          providerConfig={providerSettings.config}
+          providerKind={providerSettings.kind}
         />
       </div>
     </main>

@@ -38,6 +38,8 @@ export class FakeMapProvider implements MapProvider {
 
   fitBounds(): void {}
 
+  focusMarker(): void {}
+
   locateDot(): void {}
 
   onViewportChange(listener: (viewport: MapViewport) => void): () => void {

@@ -100,10 +100,12 @@
   "map": {
     "areaSearch": "Gebiet durchsuchen",
     "attribution": "Kartendaten",
+    "carouselLabel": "Sichtbare Ziele",
     "closeSelection": "Auswahl schließen",
     "empty": "In diesem Kartenausschnitt wurden keine Ausflugsziele gefunden.",
     "error": "Die Karte konnte gerade nicht geladen werden.",
     "eyebrow": "Karte",
+    "focusMarker": "{name} auf der Karte anzeigen",
     "intro": "Sieh geprüfte Ausflugsziele rund um den gesamten Bodensee.",
     "loading": "Karte wird geladen …",
     "markerCount": "{count, plural, =0 {Keine Ziele} one {# Ziel} other {# Ziele}}",
@@ -112,7 +114,12 @@
     "retry": "Erneut versuchen",
     "searching": "Gebiet wird geladen …",
     "title": "Ausflugsziele auf der Karte",
-    "truncated": "Es werden nur die relevantesten Ziele angezeigt. Zoome hinein, um weitere zu sehen."
+    "truncated": "Es werden nur die relevantesten Ziele angezeigt. Zoome hinein, um weitere zu sehen.",
+    "view": {
+      "label": "Ansicht auswählen",
+      "list": "Liste",
+      "map": "Karte"
+    }
   },
   "nav": {
     "discover": "Entdecken",

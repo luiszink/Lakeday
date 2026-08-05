@@ -100,10 +100,12 @@
   "map": {
     "areaSearch": "Search this area",
     "attribution": "Map data",
+    "carouselLabel": "Visible destinations",
     "closeSelection": "Close selection",
     "empty": "No places to visit were found in this map area.",
     "error": "The map could not be loaded right now.",
     "eyebrow": "Map",
+    "focusMarker": "Show {name} on the map",
     "intro": "See verified places to visit around the entire Lake Constance shoreline.",
     "loading": "Loading map …",
     "markerCount": "{count, plural, =0 {No destinations} one {# destination} other {# destinations}}",
@@ -112,7 +114,12 @@
     "retry": "Try again",
     "searching": "Loading area …",
     "title": "Places to visit on the map",
-    "truncated": "Only the most relevant places are shown. Zoom in to see more."
+    "truncated": "Only the most relevant places are shown. Zoom in to see more.",
+    "view": {
+      "label": "Choose view",
+      "list": "List",
+      "map": "Map"
+    }
   },
   "nav": {
     "discover": "Discover",
