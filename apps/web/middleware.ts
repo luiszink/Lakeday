@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
 
 import { ADMIN_SESSION_COOKIE } from './src/auth/admin-session';
+import { routing } from './src/i18n/routing';
+
+const handleI18nRouting = createMiddleware(routing);
 
 export function middleware(request: NextRequest) {
   const responseHeaders = new Headers(request.headers);
@@ -28,7 +32,11 @@ export function middleware(request: NextRequest) {
   const isApiRequest = pathname.startsWith('/api/admin/');
 
   if (!pathname.startsWith('/admin') && !pathname.startsWith('/api/admin')) {
-    return NextResponse.next({ request: { headers: responseHeaders } });
+    if (pathname === '/') {
+      return NextResponse.next({ request: { headers: responseHeaders } });
+    }
+
+    return handleI18nRouting(new NextRequest(request, { headers: responseHeaders }));
   }
 
   const response =
