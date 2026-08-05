@@ -40,7 +40,7 @@ Epic: [LAKE-EPIC-010](../epics/LAKE-EPIC-010-favorites.md). Global [definition o
 
 ## LAKE-044 — Favorites screen
 
-**Status:** open · **Phase:** MVP/M4 · **Parallel:** yes (after 043)
+**Status:** done · **Phase:** MVP/M4 · **Parallel:** yes (after 043)
 
 **Objective:** The Favorites tab: saved attractions with live current data, standard sorting/filtering, unpublished-item degradation, and add-to-plan integration.
 

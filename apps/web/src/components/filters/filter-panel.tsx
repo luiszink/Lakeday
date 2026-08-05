@@ -107,6 +107,7 @@ type FilterPanelProps = Readonly<{
   initialTotal: number;
   locale: 'de' | 'en';
   location: LocalLocation | null;
+  preservedQuery?: string;
 }>;
 
 function roundedLocation(location: LocalLocation) {
@@ -124,7 +125,13 @@ function localDate(value: Date) {
   return `${values.year}-${values.month}-${values.day}`;
 }
 
-export function FilterPanel({ initialQuery, initialTotal, locale, location }: FilterPanelProps) {
+export function FilterPanel({
+  initialQuery,
+  initialTotal,
+  locale,
+  location,
+  preservedQuery,
+}: FilterPanelProps) {
   const translate = useTranslations('discover');
   const pathname = usePathname();
   const router = useRouter();
@@ -150,6 +157,10 @@ export function FilterPanel({ initialQuery, initialTotal, locale, location }: Fi
   useEffect(() => {
     const controller = new AbortController();
     const parameters = new URLSearchParams(window.location.search);
+    const preservedParameters = new URLSearchParams(preservedQuery);
+    for (const [key, value] of preservedParameters) {
+      if (!parameters.has(key)) parameters.set(key, value);
+    }
     for (const key of filterKeys) parameters.delete(key);
     for (const [key, value] of Object.entries(state)) parameters.set(key, value);
     parameters.set('locale', locale);
@@ -169,7 +180,7 @@ export function FilterPanel({ initialQuery, initialTotal, locale, location }: Fi
         if (!controller.signal.aborted) setPreviewLoading(false);
       });
     return () => controller.abort();
-  }, [initialTotal, locale, state]);
+  }, [initialTotal, locale, preservedQuery, state]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -238,6 +249,10 @@ export function FilterPanel({ initialQuery, initialTotal, locale, location }: Fi
 
   function applyState(nextState = state) {
     const parameters = new URLSearchParams(window.location.search);
+    const preservedParameters = new URLSearchParams(preservedQuery);
+    for (const [key, value] of preservedParameters) {
+      if (!parameters.has(key)) parameters.set(key, value);
+    }
     for (const key of filterKeys) parameters.delete(key);
     for (const [key, value] of Object.entries(nextState)) {
       if (value) parameters.set(key, value);

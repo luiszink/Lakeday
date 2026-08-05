@@ -482,7 +482,30 @@
     "favorites": {
       "description": "Save places to visit here so you can find them quickly later.",
       "eyebrow": "Your selection",
-      "title": "Favorites"
+      "title": "Favorites",
+      "empty": {
+        "cta": "Discover places",
+        "description": "Save places to visit with the heart button and they will appear here.",
+        "title": "No favorites yet"
+      },
+      "error": {
+        "description": "Your saved places could not be refreshed right now.",
+        "retry": "Try again",
+        "title": "Favorites unavailable"
+      },
+      "loading": "Loading favorites …",
+      "offline": "You are offline. Showing the last saved favorite data where available.",
+      "remove": "Remove saved place",
+      "resultsLabel": "Saved places",
+      "sort": {
+        "added": "Recently saved",
+        "distance": "Distance",
+        "label": "Sort by",
+        "locationRequired": "Choose a location to sort by distance.",
+        "relevance": "Relevance"
+      },
+      "stale": "Some favorite data may be out of date.",
+      "unavailable": "This place is no longer published and cannot be loaded."
     },
     "more": {
       "description": "Guides, sources and more information for your day at Lake Constance.",

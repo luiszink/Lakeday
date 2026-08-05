@@ -238,7 +238,7 @@ export async function GET(request: Request) {
       { path: ['bbox'], code: 'invalid_bbox', message: 'Bounds must be west,south,east,north.' },
     ]);
   }
-  if (!bounds && parsedQuery.data.limit > 50) {
+  if (!bounds && parsedQuery.data.limit > 50 && !parsedQuery.data.ids) {
     return errorResponse('VALIDATION_ERROR', 'List queries cannot request more than 50 items.', [
       { path: ['limit'], code: 'too_big', message: 'Limit must be at most 50 without bbox.' },
     ]);
@@ -300,7 +300,7 @@ export async function GET(request: Request) {
       })
       .map((candidate) => candidate.id);
   }
-  const scopedIds = openIds
+  const baseScopedIds = openIds
     ? boundsIds
       ? openIds.filter((id) => boundsIds.includes(id))
       : [...openIds]
@@ -311,6 +311,12 @@ export async function GET(request: Request) {
       : boundsIds
         ? [...boundsIds]
         : null;
+  const requestedIds = parsedQuery.data.ids;
+  const scopedIds = requestedIds
+    ? baseScopedIds
+      ? baseScopedIds.filter((id) => requestedIds.includes(id))
+      : [...requestedIds]
+    : baseScopedIds;
   async function countMatches(
     filterVariant: typeof filter,
     openVariant: string | undefined,

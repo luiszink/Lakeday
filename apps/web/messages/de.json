@@ -490,7 +490,30 @@
     "favorites": {
       "description": "Speichere Ausflugsziele hier, um sie später schnell wiederzufinden.",
       "eyebrow": "Deine Auswahl",
-      "title": "Favoriten"
+      "title": "Favoriten",
+      "empty": {
+        "cta": "Ausflugsziele entdecken",
+        "description": "Speichere Ausflugsziele über das Herzsymbol. Sie erscheinen anschließend hier.",
+        "title": "Noch keine Favoriten"
+      },
+      "error": {
+        "description": "Deine gespeicherten Ausflugsziele konnten gerade nicht aktualisiert werden.",
+        "retry": "Erneut versuchen",
+        "title": "Favoriten nicht verfügbar"
+      },
+      "loading": "Favoriten werden geladen …",
+      "offline": "Du bist offline. Zuletzt gespeicherte Favoritendaten werden angezeigt, sofern vorhanden.",
+      "remove": "Gespeichertes Ausflugsziel entfernen",
+      "resultsLabel": "Gespeicherte Ausflugsziele",
+      "sort": {
+        "added": "Zuletzt gespeichert",
+        "distance": "Entfernung",
+        "label": "Sortieren nach",
+        "locationRequired": "Wähle einen Ort für die Sortierung nach Entfernung.",
+        "relevance": "Relevanz"
+      },
+      "stale": "Einige Favoritendaten sind möglicherweise nicht aktuell.",
+      "unavailable": "Dieses Ausflugsziel ist nicht mehr veröffentlicht und kann nicht geladen werden."
     },
     "more": {
       "description": "Guides, Quellen und weitere Informationen für deinen Bodensee-Tag.",

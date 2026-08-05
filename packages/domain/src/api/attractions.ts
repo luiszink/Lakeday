@@ -5,10 +5,28 @@ import { filterSpecSchema } from '../filter/index.js';
 
 export const attractionLocaleSchema = z.enum(['de', 'en']);
 
+const attractionIdsQuerySchema = z
+  .string()
+  .trim()
+  .min(1)
+  .transform((value, context) => {
+    const ids = [...new Set(value.split(',').map((item) => item.trim()).filter(Boolean))];
+    if (ids.length > 100) {
+      context.addIssue({ code: 'too_big', maximum: 100, origin: 'array', inclusive: true });
+      return z.NEVER;
+    }
+    if (ids.some((id) => !z.string().uuid().safeParse(id).success)) {
+      context.addIssue({ code: 'custom', message: 'ids must contain UUIDs.' });
+      return z.NEVER;
+    }
+    return ids;
+  });
+
 export const attractionListQuerySchema = z
   .object({
     bbox: z.string().trim().min(7).max(160).optional(),
     cursor: z.string().trim().min(1).optional(),
+    ids: attractionIdsQuerySchema.optional(),
     limit: z.coerce.number().int().min(1).max(200).default(20),
     locale: attractionLocaleSchema.default('de'),
     q: z.string().trim().min(2).max(120).optional(),
