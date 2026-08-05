@@ -1,4 +1,5 @@
 export * from './dedup/index.js';
+export * from './api/attractions.js';
 export * from './editor/index.js';
 export * from './entities/index.js';
 export * from './opening-hours/index.js';

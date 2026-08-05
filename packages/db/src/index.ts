@@ -6,6 +6,7 @@ export {
   Confidence,
   FactKey,
   LoginAuditEvent,
+  Locale,
   Prisma,
   PrismaClient,
   ReviewerDecision,
