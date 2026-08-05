@@ -40,7 +40,7 @@ Epic: [LAKE-EPIC-012](../epics/LAKE-EPIC-012-sharing.md). Global [definition of 
 
 ## LAKE-049 — Shared plan view and copy
 
-**Status:** open · **Phase:** MVP/M4 · **Parallel:** yes (after 048)
+**Status:** done · **Phase:** MVP/M4 · **Parallel:** yes (after 048)
 
 **Objective:** REQ-PLAN-09 (consumption side): the read-only `/{locale}/plan/{token}` page with current-data validation display, map overview, and "Copy to My Day".
 

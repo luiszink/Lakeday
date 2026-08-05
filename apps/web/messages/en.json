@@ -549,6 +549,72 @@
     "unavailableDescription": "This place is no longer published. Remove it from your plan.",
     "undo": "Undo"
   },
+  "sharedPlan": {
+    "copy": "Copy to My Day",
+    "copied": "The plan was copied to My Day.",
+    "copyDialog": {
+      "cancel": "Cancel",
+      "description": "Your local plan already has stops. Replace it completely or add only new stops.",
+      "merge": "Merge",
+      "mergeLimit": "Merging would exceed the limit of 20 stops.",
+      "replace": "Replace",
+      "title": "Copy plan"
+    },
+    "copyError": "The plan could not be copied.",
+    "copying": "Copying …",
+    "date": "Date",
+    "description": "A shared day plan with currently verified information.",
+    "error": {
+      "description": "The shared plan could not be loaded right now.",
+      "title": "Unable to load"
+    },
+    "eyebrow": "Shared day plan",
+    "locale": {
+      "de": "Deutsch",
+      "en": "English",
+      "label": "Language"
+    },
+    "loading": "Loading shared plan …",
+    "map": {
+      "fallback": "The map is currently unavailable. The stop list remains available.",
+      "title": "Map overview"
+    },
+    "noDate": "No date",
+    "notFound": {
+      "cta": "Discover attractions",
+      "description": "This link has expired or is no longer available.",
+      "title": "Plan not found"
+    },
+    "openMyDay": "Open My Day",
+    "stale": "Some opening hours may be out of date. Check official pages before visiting.",
+    "start": "Start",
+    "stopCount": "{count, plural, one {# stop} other {# stops}}",
+    "stopsLabel": "Shared plan stops",
+    "timeline": "Arrive {arrival} · Leave {departure}",
+    "title": "Lake Constance day plan",
+    "totals": {
+      "label": "Plan duration",
+      "overall": "Total {minutes} min",
+      "travel": "Travel {minutes} min",
+      "visit": "Visits {minutes} min"
+    },
+    "conflicts": {
+      "arrival": "Arrival at {arrival}; this place closes at {closes}.",
+      "closed": "Closed on this date. Next opening: {nextOpenDate}.",
+      "dayLong": "This plan appears longer than a 12-hour day.",
+      "noDate": "No date selected; typical opening hours are used.",
+      "severity": {
+        "error": "Check",
+        "info": "Info",
+        "warning": "Warning"
+      },
+      "stale": "Opening hours may be out of date.",
+      "unknown": "Opening hours are not verified.",
+      "visit": "The visit ends at {departure}, after closing at {closes}."
+    },
+    "unavailable": "Attraction no longer available",
+    "unavailableDescription": "This attraction is no longer published."
+  },
   "screens": {
     "favorites": {
       "description": "Save places to visit here so you can find them quickly later.",

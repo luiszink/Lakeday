@@ -37,10 +37,18 @@ export type PlanAddResult =
   | Readonly<{ status: 'duplicate'; plan: LocalPlan }>
   | Readonly<{ status: 'limit'; plan: LocalPlan }>;
 
+export type SharedPlanCopy = Readonly<{
+  date: string | null;
+  locale: 'de' | 'en';
+  startPoint: PlanStartPoint | null;
+  stops: readonly Readonly<Pick<PlanStop, 'attractionId' | 'plannedDurationMin'>>[];
+}>;
+
 export type PlanStorageMode = 'persistent' | 'session';
 
 export type PlansStore = Readonly<{
   add: (attractionId: string, plannedDurationMin?: number | null) => Promise<PlanAddResult>;
+  copySharedPlan: (sharedPlan: SharedPlanCopy, mode: 'merge' | 'replace') => Promise<LocalPlan>;
   getActive: () => Promise<LocalPlan>;
   getSnapshots: () => Promise<readonly LocalPlan[]>;
   deleteSnapshot: (id: string) => Promise<void>;
@@ -127,6 +135,24 @@ class BrowserPlansStore implements PlansStore {
     });
     await this.persistActive(next);
     return { status: 'added', plan: next };
+  }
+
+  async copySharedPlan(sharedPlan: SharedPlanCopy, mode: 'merge' | 'replace') {
+    await this.hydrate();
+    const incomingStops = sharedPlan.stops.map((stop, sortIndex) => ({ ...stop, sortIndex }));
+    const stops = mode === 'replace'
+      ? incomingStops
+      : [
+          ...this.active.stops,
+          ...incomingStops.filter(
+            (incomingStop) => !this.active.stops.some((stop) => stop.attractionId === incomingStop.attractionId),
+          ),
+        ]
+          .slice(0, maximumStops)
+          .map((stop, sortIndex) => ({ ...stop, sortIndex }));
+    const next = this.update({ date: sharedPlan.date, locale: sharedPlan.locale, startPoint: sharedPlan.startPoint, stops });
+    await this.persistActive(next);
+    return next;
   }
 
   async getActive() {
@@ -285,7 +311,7 @@ class BrowserPlansStore implements PlansStore {
     return next;
   }
 
-  private update(change: Partial<Pick<LocalPlan, 'date' | 'dayStart' | 'startPoint' | 'stops'>>) {
+  private update(change: Partial<Pick<LocalPlan, 'date' | 'dayStart' | 'locale' | 'startPoint' | 'stops'>>) {
     return { ...this.active, ...change, updatedAt: new Date().toISOString() };
   }
 

@@ -557,6 +557,72 @@
     "unavailableDescription": "Dieser Ort ist nicht mehr veröffentlicht. Entferne ihn aus deinem Plan.",
     "undo": "Rückgängig"
   },
+  "sharedPlan": {
+    "copy": "In Mein Tag kopieren",
+    "copied": "Der Plan wurde in Mein Tag kopiert.",
+    "copyDialog": {
+      "cancel": "Abbrechen",
+      "description": "Dein lokaler Plan enthält bereits Stopps. Ersetze ihn vollständig oder ergänze nur neue Stopps.",
+      "merge": "Zusammenführen",
+      "mergeLimit": "Zusammenführen würde das Limit von 20 Stopps überschreiten.",
+      "replace": "Ersetzen",
+      "title": "Plan kopieren"
+    },
+    "copyError": "Der Plan konnte nicht kopiert werden.",
+    "copying": "Wird kopiert …",
+    "date": "Datum",
+    "description": "Ein geteilter Tagesplan mit aktuell geprüften Informationen.",
+    "error": {
+      "description": "Der geteilte Plan konnte gerade nicht geladen werden.",
+      "title": "Laden nicht möglich"
+    },
+    "eyebrow": "Geteilter Tagesplan",
+    "locale": {
+      "de": "Deutsch",
+      "en": "English",
+      "label": "Sprache"
+    },
+    "loading": "Geteilter Plan wird geladen …",
+    "map": {
+      "fallback": "Die Kartenansicht ist gerade nicht verfügbar. Die Stoppliste bleibt verfügbar.",
+      "title": "Kartenübersicht"
+    },
+    "noDate": "Kein Datum",
+    "notFound": {
+      "cta": "Ausflugsziele entdecken",
+      "description": "Dieser Link ist abgelaufen oder nicht mehr verfügbar.",
+      "title": "Plan nicht gefunden"
+    },
+    "openMyDay": "Mein Tag öffnen",
+    "stale": "Einige Öffnungszeiten könnten veraltet sein. Prüfe die offiziellen Seiten vor dem Besuch.",
+    "start": "Start",
+    "stopCount": "{count, plural, one {# Stopp} other {# Stopps}}",
+    "stopsLabel": "Stopps des geteilten Plans",
+    "timeline": "Ankunft {arrival} · Abfahrt {departure}",
+    "title": "Bodensee-Tagesplan",
+    "totals": {
+      "label": "Plan-Gesamtdauer",
+      "overall": "Gesamt {minutes} Min.",
+      "travel": "Fahrt {minutes} Min.",
+      "visit": "Besuche {minutes} Min."
+    },
+    "conflicts": {
+      "arrival": "Ankunft um {arrival}; der Ort schließt um {closes}.",
+      "closed": "An diesem Datum geschlossen. Nächste Öffnung: {nextOpenDate}.",
+      "dayLong": "Dieser Plan wirkt länger als ein 12-Stunden-Tag.",
+      "noDate": "Kein Datum gewählt; typische Öffnungszeiten werden verwendet.",
+      "severity": {
+        "error": "Prüfen",
+        "info": "Info",
+        "warning": "Warnung"
+      },
+      "stale": "Die Öffnungszeiten könnten veraltet sein.",
+      "unknown": "Öffnungszeiten sind nicht verifiziert.",
+      "visit": "Der Besuch endet um {departure}, nach der Schließzeit um {closes}."
+    },
+    "unavailable": "Ort nicht mehr verfügbar",
+    "unavailableDescription": "Dieser Ort ist nicht mehr veröffentlicht."
+  },
   "screens": {
     "favorites": {
       "description": "Speichere Ausflugsziele hier, um sie später schnell wiederzufinden.",

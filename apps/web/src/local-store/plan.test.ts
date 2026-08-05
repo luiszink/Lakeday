@@ -64,4 +64,24 @@ describe('plans-store', () => {
     await store.deleteSnapshot(saved.id);
     expect((await store.getSnapshots()).map((snapshot) => snapshot.id)).not.toContain(saved.id);
   });
+
+  it('copies shared plans by replacing or merging the active plan', async () => {
+    const store = createPlansStore({ indexedDB: undefined });
+    await store.add(firstId, 60);
+    const sharedPlan = {
+      date: '2026-08-12',
+      locale: 'en' as const,
+      startPoint: { coordinates: { latitude: 47.66, longitude: 9.17 }, label: 'Konstanz' },
+      stops: [{ attractionId: secondId, plannedDurationMin: 90 }],
+    };
+
+    const merged = await store.copySharedPlan(sharedPlan, 'merge');
+    expect(merged.stops.map((stop) => stop.attractionId)).toEqual([firstId, secondId]);
+    expect(merged.date).toBe('2026-08-12');
+    expect(merged.startPoint?.label).toBe('Konstanz');
+
+    const replaced = await store.copySharedPlan(sharedPlan, 'replace');
+    expect(replaced.stops.map((stop) => stop.attractionId)).toEqual([secondId]);
+    expect(replaced.stops[0]?.plannedDurationMin).toBe(90);
+  });
 });
