@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0.0",
+  "researchMeta": {
+    "sector": "BS-01",
+    "researchedAt": "2026-08-05T14:37:20Z",
+    "agent": "OpenAI Codex web research",
+    "promptVersion": "attraction-discovery/1.0.0",
+    "pipelineStep": "discovery"
+  },
+  "identity": {
+    "candidateId": "01KZ95Q9N4DXYHVBRQMFWHSK7C",
+    "nameDe": {
+      "value": "Rheintor- und Pulverturm",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/rheintor-pulverturm-169aa02ccf",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Rheintor- & Pulverturm"
+        }
+      ]
+    },
+    "officialWebsite": {
+      "value": "https://www.konstanz-info.com/attraktionen/rheintor-pulverturm-169aa02ccf",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [{ "sourceUrl": "https://www.konstanz-info.com/attraktionen/rheintor-pulverturm-169aa02ccf", "sourceType": "tourism_org", "retrievedAt": "2026-08-05T14:37:20Z", "quoteOrData": "Official attraction page." }]
+    },
+    "externalIds": [
+      { "system": "official", "id": "https://www.konstanz-info.com/attraktionen/rheintor-pulverturm-169aa02ccf" }
+    ]
+  },
+  "geo": {
+    "coordinates": {
+      "value": { "lat": 47.66602, "lon": 9.17741 },
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://sco.wikipedia.org/wiki/File:Rheintorturm_in_Konstanz.jpg",
+          "sourceType": "wikipedia",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Object location: 47.666020; 9.177410",
+          "note": "Point represents the Rheintorturm within the combined tourism listing."
+        }
+      ]
+    },
+    "countryCode": "DE",
+    "municipality": {
+      "value": "Konstanz",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/rheintor-pulverturm-169aa02ccf",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Rheinsteig 6, 78462 Konstanz"
+        }
+      ]
+    },
+    "scopeCheck": { "withinBand": true, "exceptionProposed": false },
+    "suggestedRegionCode": "KONSTANZ_SEERHEIN"
+  },
+  "classification": {
+    "primaryCategory": {
+      "value": "CULTURE_HISTORY",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/rheintor-pulverturm-169aa02ccf",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Stadttor & Gefängnis"
+        }
+      ]
+    },
+    "subcategories": {
+      "value": ["monument"],
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/rheintor-pulverturm-169aa02ccf",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Stadtbefestigung",
+          "note": "Mapped to monument."
+        }
+      ]
+    },
+    "interests": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "audiences": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "childAgeBands": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "indoorOutdoor": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "rainSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "heatSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "seasons": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMin": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMax": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] }
+  },
+  "localizations": {
+    "de": {
+      "name": "Rheintor- und Pulverturm",
+      "summary": "Die offizielle Konstanzer Tourismusseite führt Rheintor und Pulverturm gemeinsam als eine Sehenswürdigkeit, daher bleibt die Kombination im Discovery-Output zunächst erhalten. Der Koordinatenpunkt bezeichnet den Rheintorturm; der Pulverturm liegt separat in unmittelbarer Nähe. Im Detail- und Duplikatschritt muss redaktionell entschieden werden, ob zwei eigenständige Attraktionen angelegt werden."
+    }
+  },
+  "reviewFlags": [
+    {
+      "reason": "other",
+      "detail": "Combined official listing covers two distinct towers; the details step must decide whether to split the candidate."
+    }
+  ]
+}

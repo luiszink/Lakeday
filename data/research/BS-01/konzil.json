@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+  "researchMeta": {
+    "sector": "BS-01",
+    "researchedAt": "2026-08-05T14:37:20Z",
+    "agent": "OpenAI Codex web research",
+    "promptVersion": "attraction-discovery/1.0.0",
+    "pipelineStep": "discovery"
+  },
+  "identity": {
+    "candidateId": "01KZ95Q9N43YCHP0PJETHG8435",
+    "nameDe": {
+      "value": "Konzil",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/konzil-d6a3efdf9d",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Berühmtes Bauwerk: Konzil"
+        }
+      ]
+    },
+    "officialWebsite": {
+      "value": "https://www.konzil-konstanz.de/",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [{ "sourceUrl": "https://www.konzil-konstanz.de/", "sourceType": "official_website", "retrievedAt": "2026-08-05T14:37:20Z", "quoteOrData": "Official website identifier from discovery output." }]
+    },
+    "externalIds": [
+      { "system": "official", "id": "https://www.konzil-konstanz.de/" },
+      { "system": "wikidata", "id": "Q1285506" }
+    ]
+  },
+  "geo": {
+    "coordinates": {
+      "value": { "lat": 47.6608889, "lon": 9.1781944 },
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q1285506",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "47°39'39.2\"N, 9°10'41.5\"E"
+        }
+      ]
+    },
+    "countryCode": "DE",
+    "municipality": {
+      "value": "Konstanz",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/konzil-d6a3efdf9d",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Hafenstraße 2, 78462 Konstanz"
+        }
+      ]
+    },
+    "scopeCheck": { "withinBand": true, "exceptionProposed": false },
+    "suggestedRegionCode": "KONSTANZ_SEERHEIN"
+  },
+  "classification": {
+    "primaryCategory": {
+      "value": "CULTURE_HISTORY",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/konzil-d6a3efdf9d",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Berühmtes Bauwerk"
+        }
+      ]
+    },
+    "subcategories": {
+      "value": ["monument"],
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/konzil-d6a3efdf9d",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Konzilgebäude",
+          "note": "Mapped to monument."
+        }
+      ]
+    },
+    "interests": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "audiences": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "childAgeBands": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "indoorOutdoor": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "rainSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "heatSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "seasons": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMin": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMax": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] }
+  },
+  "localizations": {
+    "de": {
+      "name": "Konzil",
+      "summary": "Das Konzilgebäude wird von der offiziellen Tourismusseite als berühmtes Bauwerk am Konstanzer Hafen geführt und ist deshalb ein klarer BS-01-Kandidat. Die Koordinaten und die Wikidata-Kennung stammen aus dem geöffneten Wikidata-Datensatz. Nutzung, Öffnungszeiten, Preise und weitere Detailmerkmale bleiben der nachfolgenden Evidenzsammlung vorbehalten."
+    }
+  },
+  "reviewFlags": []
+}

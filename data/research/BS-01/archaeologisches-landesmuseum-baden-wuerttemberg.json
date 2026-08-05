@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "researchMeta": {
+    "sector": "BS-01",
+    "researchedAt": "2026-08-05T14:37:20Z",
+    "agent": "OpenAI Codex web research",
+    "promptVersion": "attraction-discovery/1.0.0",
+    "pipelineStep": "discovery"
+  },
+  "identity": {
+    "candidateId": "01KZ95Q9N4E3V62XT2A0Y27E1T",
+    "nameDe": {
+      "value": "Archäologisches Landesmuseum Baden-Württemberg",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.alm-konstanz.de/",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Archäologisches Landesmuseum Baden-Württemberg"
+        }
+      ]
+    },
+    "officialWebsite": {
+      "value": "https://www.alm-konstanz.de/",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [{ "sourceUrl": "https://www.alm-konstanz.de/", "sourceType": "official_website", "retrievedAt": "2026-08-05T14:37:20Z", "quoteOrData": "Archäologisches Landesmuseum Baden-Württemberg" }]
+    },
+    "externalIds": [
+      { "system": "official", "id": "https://www.alm-konstanz.de/" },
+      { "system": "wikidata", "id": "Q636861" }
+    ]
+  },
+  "geo": {
+    "coordinates": {
+      "value": { "lat": 47.6683889, "lon": 9.179 },
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q636861",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "47°40'6.2\"N, 9°10'44.4\"E"
+        }
+      ]
+    },
+    "countryCode": "DE",
+    "municipality": {
+      "value": "Konstanz",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.alm-konstanz.de/",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Benediktinerplatz 5, 78467 Konstanz"
+        }
+      ]
+    },
+    "scopeCheck": { "withinBand": true, "exceptionProposed": false },
+    "suggestedRegionCode": "KONSTANZ_SEERHEIN"
+  },
+  "classification": {
+    "primaryCategory": {
+      "value": "CULTURE_HISTORY",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.alm-konstanz.de/",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "zentrale Institution für Landesarchäologie",
+          "note": "Direct subject mapping."
+        }
+      ]
+    },
+    "subcategories": {
+      "value": ["museum"],
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q636861",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "instance of: archaeological museum",
+          "note": "Mapped to museum."
+        }
+      ]
+    },
+    "interests": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "audiences": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "childAgeBands": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "indoorOutdoor": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "rainSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "heatSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "seasons": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMin": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMax": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] }
+  },
+  "localizations": {
+    "de": {
+      "name": "Archäologisches Landesmuseum Baden-Württemberg",
+      "summary": "Der Konstanzer Hauptsitz des Archäologischen Landesmuseums ist auf seiner geöffneten offiziellen Website eindeutig benannt und adressiert. Wikidata ergänzt einen Punkt innerhalb des BS-01-Gebiets und eine stabile externe Kennung. Für Discovery wird der Kandidat als Kultur- und Geschichtsmuseum mit archäologischem Schwerpunkt eingeordnet; Besuchs- und Ausstattungsdaten folgen erst später."
+    }
+  },
+  "reviewFlags": []
+}

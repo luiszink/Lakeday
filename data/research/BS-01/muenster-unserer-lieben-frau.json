@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "researchMeta": {
+    "sector": "BS-01",
+    "researchedAt": "2026-08-05T14:37:20Z",
+    "agent": "OpenAI Codex web research",
+    "promptVersion": "attraction-discovery/1.0.0",
+    "pipelineStep": "discovery"
+  },
+  "identity": {
+    "candidateId": "01KZ95Q9N4J8PRQM9CW8788BWM",
+    "nameDe": {
+      "value": "Münster Unserer Lieben Frau",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/muenster-u.l.f.-6fe792a68a",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Münster U.L.F."
+        }
+      ]
+    },
+    "officialWebsite": {
+      "value": "https://www.kath-konstanz.de/kirchen/muenster-unserer-lieben-frau/",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [{ "sourceUrl": "https://www.kath-konstanz.de/kirchen/muenster-unserer-lieben-frau/", "sourceType": "official_website", "retrievedAt": "2026-08-05T14:37:20Z", "quoteOrData": "Official website identifier from discovery output." }]
+    },
+    "externalIds": [
+      { "system": "official", "id": "https://www.kath-konstanz.de/kirchen/muenster-unserer-lieben-frau/" },
+      { "system": "wikidata", "id": "Q427812" }
+    ]
+  },
+  "geo": {
+    "coordinates": {
+      "value": { "lat": 47.6633333, "lon": 9.1763889 },
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q427812",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "47°39'48\"N, 9°10'35\"E"
+        }
+      ]
+    },
+    "countryCode": "DE",
+    "municipality": {
+      "value": "Konstanz",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/muenster-u.l.f.-6fe792a68a",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Münsterplatz 1, 78462 Konstanz"
+        }
+      ]
+    },
+    "scopeCheck": { "withinBand": true, "exceptionProposed": false },
+    "suggestedRegionCode": "KONSTANZ_SEERHEIN"
+  },
+  "classification": {
+    "primaryCategory": {
+      "value": "CULTURE_HISTORY",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/muenster-u.l.f.-6fe792a68a",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Münster",
+          "note": "Direct taxonomy fit."
+        }
+      ]
+    },
+    "subcategories": {
+      "value": ["church_monastery"],
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q427812",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "instance of: cathedral",
+          "note": "Mapped to church_monastery."
+        }
+      ]
+    },
+    "interests": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "audiences": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "childAgeBands": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "indoorOutdoor": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "rainSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "heatSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "seasons": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMin": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMax": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] }
+  },
+  "localizations": {
+    "de": {
+      "name": "Münster Unserer Lieben Frau",
+      "summary": "Das Konstanzer Münster erscheint in der offiziellen Sehenswürdigkeitenliste und erhält daher einen eigenen Discovery-Datensatz. Der geöffnete Wikidata-Eintrag bestätigt einen Punkt in der Altstadt sowie die Identität des Kirchenbaus. Der Kandidat ist nicht mit dem separat gelisteten Münsterturm zusammengeführt; eine mögliche Beziehung wird erst bei Details und Duplikatprüfung bewertet."
+    }
+  },
+  "reviewFlags": []
+}

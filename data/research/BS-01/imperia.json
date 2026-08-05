@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "researchMeta": {
+    "sector": "BS-01",
+    "researchedAt": "2026-08-05T14:37:20Z",
+    "agent": "OpenAI Codex web research",
+    "promptVersion": "attraction-discovery/1.0.0",
+    "pipelineStep": "discovery"
+  },
+  "identity": {
+    "candidateId": "01KZ95Q9N30DMHPXGD8A3J3KN8",
+    "nameDe": {
+      "value": "Imperia",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/imperia-6d97be7535",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Berühmtes Bauwerk: Imperia"
+        }
+      ]
+    },
+    "officialWebsite": {
+      "value": "https://www.konstanz-info.com/attraktionen/imperia-6d97be7535",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [{ "sourceUrl": "https://www.konstanz-info.com/attraktionen/imperia-6d97be7535", "sourceType": "tourism_org", "retrievedAt": "2026-08-05T14:37:20Z", "quoteOrData": "Official attraction page." }]
+    },
+    "externalIds": [
+      { "system": "official", "id": "https://www.konstanz-info.com/attraktionen/imperia-6d97be7535" },
+      { "system": "wikidata", "id": "Q449017" },
+      { "system": "osm", "id": "node/262949019" }
+    ]
+  },
+  "geo": {
+    "coordinates": {
+      "value": { "lat": 47.6607519, "lon": 9.1811081 },
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q449017",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "47°39'38.707\"N, 9°10'51.989\"E"
+        }
+      ]
+    },
+    "countryCode": "DE",
+    "municipality": {
+      "value": "Konstanz",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/imperia-6d97be7535",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "78462 Konstanz"
+        }
+      ]
+    },
+    "scopeCheck": { "withinBand": true, "exceptionProposed": false },
+    "suggestedRegionCode": "KONSTANZ_SEERHEIN"
+  },
+  "classification": {
+    "primaryCategory": {
+      "value": "CULTURE_HISTORY",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/imperia-6d97be7535",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Berühmtes Bauwerk"
+        }
+      ]
+    },
+    "subcategories": {
+      "value": ["monument"],
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/imperia-6d97be7535",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Hafenfigur Imperia",
+          "note": "Mapped to monument."
+        }
+      ]
+    },
+    "interests": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "audiences": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "childAgeBands": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "indoorOutdoor": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "rainSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "heatSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "seasons": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMin": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMax": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] }
+  },
+  "localizations": {
+    "de": {
+      "name": "Imperia",
+      "summary": "Die Imperia ist als eigenständiger Discovery-Kandidat aufgenommen, weil die offizielle Konstanzer Tourismusseite sie als berühmtes Bauwerk am Hafen führt. Wikidata liefert einen passenden Punkt innerhalb des BS-01-Sektors sowie Wikidata- und OSM-Kennungen. Historische, praktische und barrierebezogene Angaben sind in diesem Discovery-Schritt bewusst noch nicht erhoben."
+    }
+  },
+  "reviewFlags": []
+}

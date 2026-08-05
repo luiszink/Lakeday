@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "researchMeta": {
+    "sector": "BS-01",
+    "researchedAt": "2026-08-05T14:37:20Z",
+    "agent": "OpenAI Codex web research",
+    "promptVersion": "attraction-discovery/1.0.0",
+    "pipelineStep": "discovery"
+  },
+  "identity": {
+    "candidateId": "01KZ95Q9N410C059JHET7HS1YW",
+    "nameDe": {
+      "value": "Rosgartenmuseum",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q2167344",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Rosgartenmuseum"
+        }
+      ]
+    },
+    "officialWebsite": {
+      "value": "https://www.rosgartenmuseum.de/",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [{ "sourceUrl": "https://www.rosgartenmuseum.de/", "sourceType": "official_website", "retrievedAt": "2026-08-05T14:37:20Z", "quoteOrData": "Official website identifier from discovery output." }]
+    },
+    "externalIds": [
+      { "system": "official", "id": "https://www.rosgartenmuseum.de/" },
+      { "system": "wikidata", "id": "Q2167344" }
+    ]
+  },
+  "geo": {
+    "coordinates": {
+      "value": { "lat": 47.6598889, "lon": 9.1748056 },
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q2167344",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "47°39'35.6\"N, 9°10'29.3\"E"
+        }
+      ]
+    },
+    "countryCode": "DE",
+    "municipality": {
+      "value": "Konstanz",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q2167344",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "located in: Constance"
+        }
+      ]
+    },
+    "scopeCheck": { "withinBand": true, "exceptionProposed": false },
+    "suggestedRegionCode": "KONSTANZ_SEERHEIN"
+  },
+  "classification": {
+    "primaryCategory": {
+      "value": "CULTURE_HISTORY",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/erleben-entdecken/kultur-geschichte",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Museen wie das Rosgartenmuseum",
+          "note": "Direct tourism classification."
+        }
+      ]
+    },
+    "subcategories": {
+      "value": ["museum"],
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q2167344",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Rosgartenmuseum",
+          "note": "Direct taxonomy fit."
+        }
+      ]
+    },
+    "interests": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "audiences": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "childAgeBands": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "indoorOutdoor": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "rainSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "heatSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "seasons": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMin": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMax": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] }
+  },
+  "localizations": {
+    "de": {
+      "name": "Rosgartenmuseum",
+      "summary": "Das Rosgartenmuseum wird im geöffneten Kulturangebot der Konstanzer Tourismusorganisation ausdrücklich als Museum genannt. Der Wikidata-Datensatz liefert Identität, Koordinaten, Gemeindezuordnung und die offizielle Website. Damit erfüllt es die Discovery-Anforderungen für BS-01; konkrete Ausstellungen, Öffnungszeiten, Preise, Zielgruppen und Zugänglichkeitsmerkmale werden erst im Detailschritt recherchiert."
+    }
+  },
+  "reviewFlags": []
+}

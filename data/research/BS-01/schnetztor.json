@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+  "researchMeta": {
+    "sector": "BS-01",
+    "researchedAt": "2026-08-05T14:37:20Z",
+    "agent": "OpenAI Codex web research",
+    "promptVersion": "attraction-discovery/1.0.0",
+    "pipelineStep": "discovery"
+  },
+  "identity": {
+    "candidateId": "01KZ95Q9N45Y3CKSW1RX3DV9EW",
+    "nameDe": {
+      "value": "Schnetztor",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/schnetztor-3951374a0f",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Fachwerkhaus: Schnetztor"
+        }
+      ]
+    },
+    "officialWebsite": {
+      "value": "https://www.konstanz-info.com/attraktionen/schnetztor-3951374a0f",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [{ "sourceUrl": "https://www.konstanz-info.com/attraktionen/schnetztor-3951374a0f", "sourceType": "tourism_org", "retrievedAt": "2026-08-05T14:37:20Z", "quoteOrData": "Official attraction page." }]
+    },
+    "externalIds": [
+      { "system": "official", "id": "https://www.konstanz-info.com/attraktionen/schnetztor-3951374a0f" },
+      { "system": "wikidata", "id": "Q104034798" }
+    ]
+  },
+  "geo": {
+    "coordinates": {
+      "value": { "lat": 47.6587306, "lon": 9.1709389 },
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q104034798",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "47°39'31.43\"N, 9°10'15.38\"E"
+        }
+      ]
+    },
+    "countryCode": "DE",
+    "municipality": {
+      "value": "Konstanz",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/schnetztor-3951374a0f",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Hussenstraße 68, 78462 Konstanz"
+        }
+      ]
+    },
+    "scopeCheck": { "withinBand": true, "exceptionProposed": false },
+    "suggestedRegionCode": "KONSTANZ_SEERHEIN"
+  },
+  "classification": {
+    "primaryCategory": {
+      "value": "CULTURE_HISTORY",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz-info.com/attraktionen/schnetztor-3951374a0f",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "malerischer Stadtturm"
+        }
+      ]
+    },
+    "subcategories": {
+      "value": ["monument"],
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q104034798",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "instance of: city gate",
+          "note": "Mapped to monument."
+        }
+      ]
+    },
+    "interests": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "audiences": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "childAgeBands": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "indoorOutdoor": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "rainSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "heatSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "seasons": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMin": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMax": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] }
+  },
+  "localizations": {
+    "de": {
+      "name": "Schnetztor",
+      "summary": "Das Schnetztor ist auf der geöffneten offiziellen Tourismusseite als Sehenswürdigkeit mit Konstanzer Adresse aufgeführt. Wikidata liefert dazu einen passenden Punkt und eine eigenständige Kennung. Für die Discovery-Klassifikation wird das Stadttor vorläufig dem Kultur- und Geschichtsbereich sowie der Unterkategorie Denkmal zugeordnet; Detailaussagen werden noch nicht übernommen."
+    }
+  },
+  "reviewFlags": []
+}

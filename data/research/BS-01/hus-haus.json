@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "1.0.0",
+  "researchMeta": {
+    "sector": "BS-01",
+    "researchedAt": "2026-08-05T14:37:20Z",
+    "agent": "OpenAI Codex web research",
+    "promptVersion": "attraction-discovery/1.0.0",
+    "pipelineStep": "discovery"
+  },
+  "identity": {
+    "candidateId": "01KZ95Q9N4XN3Y6G2DBM6AKT20",
+    "nameDe": {
+      "value": "Hus-Haus",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz.de/kultur%2B_%2Bfreizeit/museen%2B_%2Bausstellungshaeuser/hus-haus",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Hus-Haus"
+        }
+      ]
+    },
+    "officialWebsite": {
+      "value": "https://www.konstanz.de/kultur%2B_%2Bfreizeit/museen%2B_%2Bausstellungshaeuser/hus-haus",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [{ "sourceUrl": "https://www.konstanz.de/kultur%2B_%2Bfreizeit/museen%2B_%2Bausstellungshaeuser/hus-haus", "sourceType": "official_website", "retrievedAt": "2026-08-05T14:37:20Z", "quoteOrData": "Hus-Haus" }]
+    },
+    "externalIds": [
+      { "system": "official", "id": "https://www.konstanz.de/kultur%2B_%2Bfreizeit/museen%2B_%2Bausstellungshaeuser/hus-haus" },
+      { "system": "wikidata", "id": "Q17575851" },
+      { "system": "osm", "id": "way/136353728" }
+    ]
+  },
+  "geo": {
+    "coordinates": {
+      "value": { "lat": 47.6589281, "lon": 9.1708569 },
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q17575851",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "47°39'32.141\"N, 9°10'15.085\"E"
+        }
+      ]
+    },
+    "countryCode": "DE",
+    "municipality": {
+      "value": "Konstanz",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz.de/kultur%2B_%2Bfreizeit/museen%2B_%2Bausstellungshaeuser/hus-haus",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Hussenstraße 64, 78462 Konstanz"
+        }
+      ]
+    },
+    "scopeCheck": { "withinBand": true, "exceptionProposed": false },
+    "suggestedRegionCode": "KONSTANZ_SEERHEIN"
+  },
+  "classification": {
+    "primaryCategory": {
+      "value": "CULTURE_HISTORY",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.konstanz.de/kultur%2B_%2Bfreizeit/museen%2B_%2Bausstellungshaeuser/hus-haus",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "Hus-Museum",
+          "note": "Direct subject mapping."
+        }
+      ]
+    },
+    "subcategories": {
+      "value": ["museum"],
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://www.wikidata.org/wiki/Q17575851",
+          "sourceType": "wikidata",
+          "retrievedAt": "2026-08-05T14:37:20Z",
+          "quoteOrData": "instance of: museum",
+          "note": "Direct taxonomy fit."
+        }
+      ]
+    },
+    "interests": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "audiences": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "childAgeBands": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "indoorOutdoor": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "rainSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "heatSuitability": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "seasons": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMin": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] },
+    "typicalDurationMax": { "value": null, "status": "not_found", "confidence": "low", "evidence": [] }
+  },
+  "localizations": {
+    "de": {
+      "name": "Hus-Haus",
+      "summary": "Das Hus-Haus ist auf der geöffneten Website der Stadt Konstanz als Museum und Erinnerungsort mit vollständiger Adresse ausgewiesen. Der geöffnete Wikidata-Eintrag liefert Koordinaten sowie Wikidata- und OSM-Kennungen. Der Kandidat liegt nahe dem Schnetztor, bleibt aber wegen eigener Identität und Museumsfunktion zunächst ein separater Discovery-Datensatz."
+    }
+  },
+  "reviewFlags": []
+}
