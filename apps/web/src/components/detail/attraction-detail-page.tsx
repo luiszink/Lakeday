@@ -2,6 +2,8 @@ import type { AttractionDetailResponse } from '@lake/domain';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
+import { ReportForm } from './report-form';
+
 type AttractionDetailPageProps = Readonly<{
   detail: AttractionDetailResponse;
   locale: 'de' | 'en';
@@ -346,16 +348,26 @@ export function AttractionDetailPage({ detail, locale }: AttractionDetailPagePro
               </p>
               {detail.factFreshness.length > 0 ? (
                 <ul className="mt-4 space-y-2 text-xs text-slate-500">
-                  {detail.factFreshness.map((fact) => (
-                    <li key={`${fact.factKey}-${fact.lastCheckedAt}`}>
-                      {valueLabel(fact.factKey)}:{' '}
-                      {fact.lastCheckedAt
-                        ? dateTimeLabel(fact.lastCheckedAt, locale)
-                        : translate('unknown')}
-                    </li>
-                  ))}
+                  {detail.factFreshness.map((fact) => {
+                    const warning = ['STALE', 'SOURCE_UNAVAILABLE'].includes(fact.status);
+                    const date = fact.lastCheckedAt
+                      ? dateTimeLabel(fact.lastCheckedAt, locale)
+                      : translate('unknown');
+                    return (
+                      <li
+                        className={warning ? 'text-amber-200' : undefined}
+                        key={`${fact.factKey}-${fact.lastCheckedAt}`}
+                      >
+                        {valueLabel(fact.factKey)}:{' '}
+                        {warning
+                          ? translate('freshnessWarning', { date })
+                          : translate('freshnessVerified', { date })}
+                      </li>
+                    );
+                  })}
                 </ul>
               ) : null}
+              <ReportForm attractionId={detail.id} locale={locale} />
             </section>
 
             <section aria-labelledby="links-heading" className="border-t border-slate-800 pt-5">

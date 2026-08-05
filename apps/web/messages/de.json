@@ -320,6 +320,8 @@
     "evaluatedFor": "Öffnungsstatus für {date}",
     "foodOnSite": "Essen vor Ort",
     "freshnessHeading": "Datenstand",
+    "freshnessVerified": "Zuletzt geprüft am {date}",
+    "freshnessWarning": "Zuletzt geprüft am {date}; bitte die offizielle Website prüfen",
     "heat": "Hitzetauglichkeit",
     "holidayRule": "Feiertage",
     "holidayRules": {
@@ -358,6 +360,30 @@
     "transport": "Verkehrsmittel",
     "uncategorized": "Ausflugsziel",
     "unknown": "Nicht verifiziert",
+    "report": {
+      "heading": "Information korrigieren",
+      "open": "Information melden",
+      "close": "Meldung schließen",
+      "category": "Was stimmt nicht?",
+      "categories": {
+        "WRONG_HOURS": "Öffnungszeiten",
+        "WRONG_PRICE": "Preis",
+        "CLOSED": "Ort dauerhaft geschlossen",
+        "ACCESS_ISSUE": "Zugänglichkeit",
+        "INCORRECT_INFO": "Andere Information",
+        "OTHER": "Sonstiges"
+      },
+      "message": "Hinweis (optional)",
+      "noPersonalData": "Bitte keine persönlichen Daten eingeben.",
+      "note": "Die Meldung wird anonym geprüft und verändert die veröffentlichten Daten nicht sofort.",
+      "cancel": "Abbrechen",
+      "submit": "Meldung senden",
+      "sending": "Wird gesendet …",
+      "success": "Danke. Deine Meldung wurde zur Prüfung übermittelt.",
+      "done": "Schließen",
+      "failed": "Die Meldung konnte nicht gesendet werden. Bitte versuche es später erneut.",
+      "limited": "Zu viele Meldungen in kurzer Zeit. Bitte versuche es später erneut."
+    },
     "values": {
       "ADULT": "Erwachsene",
       "ALLOWED": "Erlaubt",

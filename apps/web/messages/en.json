@@ -312,6 +312,8 @@
     "evaluatedFor": "Opening status for {date}",
     "foodOnSite": "Food on site",
     "freshnessHeading": "Data status",
+    "freshnessVerified": "Last checked {date}",
+    "freshnessWarning": "Last checked {date}; please check the official website",
     "heat": "Heat suitability",
     "holidayRule": "Public holidays",
     "holidayRules": {
@@ -350,6 +352,30 @@
     "transport": "Transport",
     "uncategorized": "Attraction",
     "unknown": "Not verified",
+    "report": {
+      "heading": "Correct information",
+      "open": "Report incorrect information",
+      "close": "Close report",
+      "category": "What is incorrect?",
+      "categories": {
+        "WRONG_HOURS": "Opening hours",
+        "WRONG_PRICE": "Price",
+        "CLOSED": "Place permanently closed",
+        "ACCESS_ISSUE": "Accessibility",
+        "INCORRECT_INFO": "Other information",
+        "OTHER": "Other"
+      },
+      "message": "Note (optional)",
+      "noPersonalData": "Please do not enter personal data.",
+      "note": "Your report is reviewed anonymously and does not change published data immediately.",
+      "cancel": "Cancel",
+      "submit": "Send report",
+      "sending": "Sending …",
+      "success": "Thank you. Your report was submitted for review.",
+      "done": "Close",
+      "failed": "The report could not be sent. Please try again later.",
+      "limited": "Too many reports in a short period. Please try again later."
+    },
     "values": {
       "ADULT": "Adults",
       "ALLOWED": "Allowed",
