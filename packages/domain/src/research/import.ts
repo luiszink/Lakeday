@@ -5,6 +5,7 @@ import {
 } from '../dedup/index.js';
 
 import type { ResearchOutput } from './schema.js';
+import { findCopiedProse, type CopiedProseMatch } from './prose-guard.js';
 
 export type ResearchImportAction = 'CREATE' | 'UPDATE' | 'HOLD' | 'REJECT';
 export type ResearchImportFactKey =
@@ -49,6 +50,7 @@ export type ResearchImportPlan = Readonly<{
   regionCode: string | null;
   shorelineDistanceM: number;
   duplicate: Readonly<{ candidateId: string; score: DuplicateScore }> | null;
+  proseMatches: readonly CopiedProseMatch[];
   reasons: readonly string[];
   proposals: readonly ResearchImportProposal[];
 }>;
@@ -255,6 +257,7 @@ export function buildResearchImportPlan(
   const candidate = regionCode ? candidateFromRecord(record, regionCode) : null;
   const reasons: string[] = [];
   const proposals = [...collectResearchFacts(record), ...reviewFlagProposals(record)];
+  const proseMatches = findCopiedProse(record);
 
   if (!candidate) {
     return {
@@ -264,6 +267,7 @@ export function buildResearchImportPlan(
       regionCode,
       shorelineDistanceM: context.shorelineDistanceM,
       duplicate: null,
+      proseMatches,
       reasons: ['A found name, coordinates, municipality, and assigned region are required.'],
       proposals,
     };
@@ -276,7 +280,24 @@ export function buildResearchImportPlan(
       regionCode,
       shorelineDistanceM: context.shorelineDistanceM,
       duplicate: null,
+      proseMatches,
       reasons: ['Coordinates are outside the product scope and no exception was proposed.'],
+      proposals,
+    };
+  }
+  if (proseMatches.length > 0) {
+    return {
+      action: 'REJECT',
+      targetAttractionId: null,
+      candidateId: record.identity.candidateId,
+      regionCode,
+      shorelineDistanceM: context.shorelineDistanceM,
+      duplicate: null,
+      proseMatches,
+      reasons: proseMatches.map(
+        ({ field, similarity }) =>
+          `Copied prose detected in ${field} (similarity ${similarity.toFixed(3)}).`,
+      ),
       proposals,
     };
   }
@@ -291,6 +312,7 @@ export function buildResearchImportPlan(
       regionCode,
       shorelineDistanceM: context.shorelineDistanceM,
       duplicate: null,
+      proseMatches,
       reasons,
       proposals,
     };
@@ -313,6 +335,7 @@ export function buildResearchImportPlan(
     regionCode,
     shorelineDistanceM: context.shorelineDistanceM,
     duplicate: { candidateId: duplicate.candidate.id, score: duplicate.score },
+    proseMatches,
     reasons,
     proposals,
   };

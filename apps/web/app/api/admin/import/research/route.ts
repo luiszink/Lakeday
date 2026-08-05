@@ -1,14 +1,20 @@
 import { NextResponse } from 'next/server';
 
-import { validateResearchRecord, type ResearchImportPlan } from '@lake/domain';
+import {
+  validateResearchRecord,
+  type ResearchImportPlan,
+  type ResearchValidationIssue,
+} from '@lake/domain';
 
 import { requireRole } from '../../../../../src/auth/admin-guard';
 import { hasSameOrigin } from '../../../../../src/auth/csrf';
 import {
   ImportValidationError,
   SourceOriginNotApprovedError,
+  listResearchImportBatches,
   persistResearchImport,
   prepareResearchImport,
+  recordResearchImportBatch,
 } from '../../../../../src/admin/import/repository';
 
 export const runtime = 'nodejs';
@@ -25,8 +31,12 @@ type ImportResult = Readonly<{
   attractionId: string | null;
   reasons: readonly string[];
   duplicate: ResearchImportPlan['duplicate'];
-  errors?: readonly Readonly<{ path: string; code: string; message: string }>[];
+  proseMatches?: ResearchImportPlan['proseMatches'];
+  proposalIds?: readonly string[];
+  errors?: readonly ResearchValidationIssue[];
 }>;
+
+type ImportBody = Readonly<{ records: unknown[]; dryRun: boolean }>;
 
 function clientKey(request: Request) {
   return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
@@ -65,9 +75,38 @@ function recordsFromBody(body: unknown): unknown[] | null {
   return null;
 }
 
+function importBody(body: unknown): ImportBody | null {
+  const records = recordsFromBody(body);
+  if (!records) return null;
+  const dryRun =
+    typeof body === 'object' && body !== null && 'dryRun' in body
+      ? (body as { dryRun?: unknown }).dryRun === true
+      : false;
+  return { records, dryRun };
+}
+
+function resultFromPlan(plan: ResearchImportPlan): ImportResult {
+  return {
+    candidateId: plan.candidateId,
+    status:
+      plan.action === 'CREATE'
+        ? 'created'
+        : plan.action === 'UPDATE'
+          ? 'updated'
+          : plan.action === 'HOLD'
+            ? 'held'
+            : 'rejected',
+    attractionId: plan.targetAttractionId,
+    reasons: plan.reasons,
+    duplicate: plan.duplicate,
+    proseMatches: plan.proseMatches,
+    proposalIds: [],
+  };
+}
+
 function rejected(
   candidateId: string | null,
-  errors: readonly Readonly<{ path: string; code: string; message: string }>[],
+  errors: readonly ResearchValidationIssue[],
 ): ImportResult {
   return {
     candidateId,
@@ -77,6 +116,20 @@ function rejected(
     duplicate: null,
     errors,
   };
+}
+
+export async function GET() {
+  const session = await requireRole('REVIEWER');
+  if (!session) {
+    return NextResponse.json(
+      { error: { code: 'FORBIDDEN', message: 'Reviewer role required.' } },
+      { status: 403 },
+    );
+  }
+  const batches = await listResearchImportBatches();
+  return NextResponse.json({
+    batches: batches.map((batch) => ({ ...batch, createdAt: batch.createdAt.toISOString() })),
+  });
 }
 
 export async function POST(request: Request) {
@@ -123,8 +176,8 @@ export async function POST(request: Request) {
       { status: 413 },
     );
   }
-  const records = recordsFromBody(body);
-  if (!records || records.length === 0 || records.length > MAX_RECORDS) {
+  const parsedBody = importBody(body);
+  if (!parsedBody || parsedBody.records.length === 0 || parsedBody.records.length > MAX_RECORDS) {
     return NextResponse.json(
       {
         error: {
@@ -135,6 +188,7 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
+  const { records, dryRun } = parsedBody;
 
   const results: ImportResult[] = [];
   for (const input of records) {
@@ -146,24 +200,25 @@ export async function POST(request: Request) {
     const candidateId = validation.record.identity.candidateId;
     try {
       const prepared = await prepareResearchImport(validation.record);
+      if (dryRun) {
+        results.push(resultFromPlan(prepared.plan));
+        continue;
+      }
       const persisted = await persistResearchImport(
         validation.record,
         prepared.plan,
         prepared.resolvedEvidence,
       );
       results.push({
-        candidateId,
-        status:
-          persisted.action === 'CREATE'
-            ? 'created'
-            : persisted.action === 'UPDATE'
-              ? 'updated'
-              : persisted.action === 'HOLD'
-                ? 'held'
-                : 'rejected',
-        attractionId: persisted.attractionId,
-        reasons: persisted.reasons,
-        duplicate: persisted.duplicate,
+        ...resultFromPlan({
+          ...prepared.plan,
+          action: persisted.action,
+          targetAttractionId: persisted.attractionId,
+          reasons: persisted.reasons,
+          duplicate: persisted.duplicate,
+          proseMatches: persisted.proseMatches,
+        }),
+        proposalIds: persisted.proposalIds,
       });
     } catch (error) {
       if (error instanceof SourceOriginNotApprovedError) {
@@ -196,14 +251,17 @@ export async function POST(request: Request) {
   }
 
   const rejectedCount = results.filter((result) => result.status === 'rejected').length;
+  const summary = {
+    total: results.length,
+    created: results.filter((result) => result.status === 'created').length,
+    updated: results.filter((result) => result.status === 'updated').length,
+    held: results.filter((result) => result.status === 'held').length,
+    rejected: rejectedCount,
+  };
+  await recordResearchImportBatch(session.userId, dryRun, summary);
   return NextResponse.json({
+    dryRun,
     results,
-    summary: {
-      total: results.length,
-      created: results.filter((result) => result.status === 'created').length,
-      updated: results.filter((result) => result.status === 'updated').length,
-      held: results.filter((result) => result.status === 'held').length,
-      rejected: rejectedCount,
-    },
+    summary,
   });
 }

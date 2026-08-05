@@ -758,6 +758,7 @@ model AdminUser {
   mergedAliases           AttractionAlias[]
   loginAudits             LoginAudit[]
   passwordResetTokens     PasswordResetToken[]
+  researchImportBatches   ResearchImportBatch[]
 
   @@map("admin_user")
 }
@@ -797,6 +798,21 @@ model PasswordResetToken {
 
   @@index([adminUserId, expiresAt], map: "password_reset_user_expiry_ix")
   @@map("password_reset_token")
+}
+model ResearchImportBatch {
+  id          String    @id @default(uuid()) @db.Uuid
+  adminUserId String    @map("admin_user_id") @db.Uuid
+  dryRun      Boolean   @default(false) @map("dry_run")
+  total       Int
+  created     Int
+  updated     Int
+  held        Int
+  rejected    Int
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Restrict)
+
+  @@index([createdAt], map: "research_import_batch_created_ix")
+  @@map("research_import_batch")
 }
 
 model Licence {

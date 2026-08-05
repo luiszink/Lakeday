@@ -12,7 +12,7 @@ Status: **architectural decision** (PostgreSQL + PostGIS + Prisma; [ADR-009](../
 
 Tables map 1:1 to the entities in [domain-model.md](domain-model.md#entities):
 
-`attraction`, `attraction_localization`, `category`, `attraction_category`, `interest`, `attraction_interest`, `audience`, `attraction_audience`, `editorial_tag`, `attraction_tag`, `opening_schedule`, `opening_rule`, `exceptional_closure`, `price_info`, `source_record`, `fact_provenance`, `change_proposal`, `external_identifier`, `attraction_image`, `region`, `plan`, `plan_stop`, `user_report`, `admin_user`, `licence`, `attraction_alias` (merge redirects), `holiday_calendar` (seeded public holidays per country/subdivision).
+`attraction`, `attraction_localization`, `category`, `attraction_category`, `interest`, `attraction_interest`, `audience`, `attraction_audience`, `editorial_tag`, `attraction_tag`, `opening_schedule`, `opening_rule`, `exceptional_closure`, `price_info`, `source_record`, `fact_provenance`, `change_proposal`, `external_identifier`, `attraction_image`, `region`, `plan`, `plan_stop`, `user_report`, `admin_user`, `licence`, `attraction_alias` (merge redirects), `holiday_calendar` (seeded public holidays per country/subdivision), `research_import_batch` (immutable import audit summary).
 
 Naming: `snake_case` tables/columns; Prisma maps to camelCase. Enums as native Postgres enums for closed sets that change with code (status, verification); as lookup tables for editor-extensible vocabularies (category, interest, audience — see [../data/tag-and-filter-taxonomy.md](../data/tag-and-filter-taxonomy.md#governance)).
 

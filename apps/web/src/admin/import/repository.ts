@@ -573,9 +573,10 @@ async function persistProposals(
   sourceRecords: readonly Readonly<{ factKey: FactKey | null; id: string }>[],
   attractionId: string,
 ) {
+  const proposalIds: string[] = [];
   for (const proposal of proposals) {
     const sourceRecordId = recordIdForFact(sourceRecords, proposal.factKey as FactKey);
-    await transaction.changeProposal.create({
+    const created = await transaction.changeProposal.create({
       data: {
         attractionId,
         factKey: proposal.factKey as FactKey,
@@ -589,7 +590,9 @@ async function persistProposals(
         reviewNote: proposal.reason,
       },
     });
+    proposalIds.push(created.id);
   }
+  return proposalIds;
 }
 
 export type PersistedImportResult = Readonly<{
@@ -598,7 +601,46 @@ export type PersistedImportResult = Readonly<{
   candidateId: string;
   reasons: readonly string[];
   duplicate: ResearchImportPlan['duplicate'];
+  proseMatches: ResearchImportPlan['proseMatches'];
+  proposalIds: readonly string[];
 }>;
+
+export type ResearchImportBatchSummary = Readonly<{
+  total: number;
+  created: number;
+  updated: number;
+  held: number;
+  rejected: number;
+}>;
+
+export async function recordResearchImportBatch(
+  adminUserId: string,
+  dryRun: boolean,
+  summary: ResearchImportBatchSummary,
+) {
+  return database.researchImportBatch.create({
+    data: { adminUserId, dryRun, ...summary },
+    select: { id: true, createdAt: true },
+  });
+}
+
+export async function listResearchImportBatches() {
+  return database.researchImportBatch.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 20,
+    select: {
+      id: true,
+      dryRun: true,
+      total: true,
+      created: true,
+      updated: true,
+      held: true,
+      rejected: true,
+      createdAt: true,
+      adminUser: { select: { email: true } },
+    },
+  });
+}
 
 export async function persistResearchImport(
   record: ResearchOutput,
@@ -612,10 +654,13 @@ export async function persistResearchImport(
       candidateId: plan.candidateId,
       reasons: plan.reasons,
       duplicate: plan.duplicate,
+      proseMatches: plan.proseMatches,
+      proposalIds: [],
     };
   }
 
   const attractionId = plan.targetAttractionId ?? randomUUID();
+  let proposalIds: readonly string[] = [];
   await database.$transaction(async (transaction) => {
     if (plan.action === 'CREATE') {
       const point = foundValue(record.geo.coordinates);
@@ -652,8 +697,9 @@ export async function persistResearchImport(
       plan.action === 'HOLD'
         ? plan.proposals
         : plan.proposals.filter((item) => item.confidence === 'LOW');
-    if (proposals.length > 0)
-      await persistProposals(transaction, proposals, sourceRecords, attractionId);
+    if (proposals.length > 0) {
+      proposalIds = await persistProposals(transaction, proposals, sourceRecords, attractionId);
+    }
   });
 
   return {
@@ -662,6 +708,8 @@ export async function persistResearchImport(
     candidateId: plan.candidateId,
     reasons: plan.reasons,
     duplicate: plan.duplicate,
+    proseMatches: plan.proseMatches,
+    proposalIds,
   };
 }
 

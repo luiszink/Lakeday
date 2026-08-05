@@ -1,10 +1,16 @@
 import type { ResearchOutput } from './schema.js';
+import { findCopiedProse, type CopiedProseMatch } from './prose-guard.js';
 import { researchOutputSchema } from './schema.js';
 
 export type ResearchValidationIssue = Readonly<{
   path: string;
   code: string;
   message: string;
+  details?: Readonly<{
+    field: CopiedProseMatch['field'];
+    matchedQuote: string;
+    similarity: number;
+  }>;
 }>;
 
 export type ResearchValidationResult = Readonly<{
@@ -227,6 +233,18 @@ function addStaticIssues(record: ResearchOutput, filePath?: string): ResearchVal
     audienceCodes,
   );
   addFileConventionIssue(issues, filePath, record.researchMeta.sector);
+  for (const match of findCopiedProse(record)) {
+    issues.push({
+      path: match.field,
+      code: 'prose.copied',
+      message: `Localization text is too similar to an evidence quote (similarity ${match.similarity.toFixed(3)}).`,
+      details: {
+        field: match.field,
+        matchedQuote: match.matchedQuote,
+        similarity: match.similarity,
+      },
+    });
+  }
   return issues;
 }
 

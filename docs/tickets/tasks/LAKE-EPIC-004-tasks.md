@@ -97,7 +97,7 @@ Epic: [LAKE-EPIC-004](../epics/LAKE-EPIC-004-attraction-ingestion.md). Global [d
 
 ## LAKE-021 — Copied-prose guard and rejection reporting
 
-**Status:** open · **Phase:** MVP/M3 · **Parallel:** yes (after 019)
+**Status:** done · **Phase:** MVP/M3 · **Parallel:** yes (after 019)
 
 **Objective:** Enforce REQ-DATA-05 at import: reject summaries/descriptions too similar to any evidence quote (trigram similarity > 0.7), with clear per-field rejection reporting for agent retries.
 
@@ -109,9 +109,9 @@ Epic: [LAKE-EPIC-004](../epics/LAKE-EPIC-004-attraction-ingestion.md). Global [d
 **Dependencies:** LAKE-019. **Files:** `packages/domain/src/research/prose-guard.ts`, db helper.
 
 **Acceptance criteria:**
-- [ ] Fixture with copied sentence rejected naming the matched quote; original-prose fixture passes
-- [ ] Paraphrase slightly above threshold rejected; clearly original text below threshold passes (calibration fixtures)
-- [ ] Rejection payload machine-readable for agent retry loops
+- [x] Fixture with copied sentence rejected naming the matched quote; original-prose fixture passes
+- [x] Paraphrase slightly above threshold rejected; clearly original text below threshold passes (calibration fixtures)
+- [x] Rejection payload machine-readable for agent retry loops
 
 **Domain rules:** guard applies to `summary`/`description`/`practicalNotes`, both locales.
 **API/DB/UI/DE-EN/A11y/Privacy:** rides on LAKE-019.
@@ -122,7 +122,7 @@ Epic: [LAKE-EPIC-004](../epics/LAKE-EPIC-004-attraction-ingestion.md). Global [d
 
 ## LAKE-022 — Admin import UI
 
-**Status:** open · **Phase:** MVP/M3 · **Parallel:** yes (after 019)
+**Status:** done · **Phase:** MVP/M3 · **Parallel:** yes (after 019)
 
 **Objective:** Admin screen to upload/paste research JSON, run the import, and review per-record results with links to created drafts and held proposals.
 
@@ -140,11 +140,11 @@ Epic: [LAKE-EPIC-004](../epics/LAKE-EPIC-004-attraction-ingestion.md). Global [d
 **Privacy/security:** REVIEWER role; client-side file size guard mirrors server cap.
 
 **Acceptance criteria:**
-- [ ] Dry-run of the invalid fixture set shows all rejections without writes
-- [ ] Real import shows per-record outcomes with working links
-- [ ] Batch history lists past imports with counts
+- [x] Dry-run of the invalid fixture set shows all rejections without writes
+- [x] Real import shows per-record outcomes with working links
+- [x] Batch history lists past imports with counts
 
-**Domain rules / API / DB changes:** none beyond 019.
+**Domain rules / API / DB changes:** `dryRun` and batch-history API additions; additive `research_import_batch` audit table.
 **Tests:** E2E: dry-run + import happy path with fixtures. Integration: none new. Unit: none significant.
 **Manual validation:** upload pilot sample files on staging.
 **Commands:** `pnpm test:e2e -g import-ui`. **Rollback:** UI only.
