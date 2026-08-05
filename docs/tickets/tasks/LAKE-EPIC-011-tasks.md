@@ -40,7 +40,7 @@ Epic: [LAKE-EPIC-011](../epics/LAKE-EPIC-011-manual-plans.md). Global [definitio
 
 ## LAKE-046 — Plan validation engine
 
-**Status:** open · **Phase:** MVP/M4 · **Parallel:** no (after 045)
+**Status:** done · **Phase:** MVP/M4 · **Parallel:** no (after 045)
 
 **Objective:** REQ-PLAN-06/07: the pure `validatePlan` engine — timeline computation, travel-time heuristic, total duration, and the five conflict checks — shared verbatim by client and server.
 
