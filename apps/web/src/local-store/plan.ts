@@ -24,6 +24,7 @@ export type PlanStop = Readonly<{
 export type LocalPlan = Readonly<{
   id: string;
   date: string | null;
+  dayStart: string;
   startPoint: PlanStartPoint | null;
   locale: 'de' | 'en';
   createdAt: string;
@@ -42,10 +43,14 @@ export type PlansStore = Readonly<{
   add: (attractionId: string, plannedDurationMin?: number | null) => Promise<PlanAddResult>;
   getActive: () => Promise<LocalPlan>;
   getSnapshots: () => Promise<readonly LocalPlan[]>;
+  deleteSnapshot: (id: string) => Promise<void>;
+  duplicateSnapshot: (id: string) => Promise<LocalPlan | null>;
   move: (attractionId: string, direction: 'up' | 'down') => Promise<LocalPlan>;
   remove: (attractionId: string) => Promise<LocalPlan>;
+  restoreSnapshot: (id: string) => Promise<LocalPlan | null>;
   saveSnapshot: () => Promise<LocalPlan>;
   setDate: (date: string | null) => Promise<LocalPlan>;
+  setDayStart: (dayStart: string) => Promise<LocalPlan>;
   setDuration: (attractionId: string, plannedDurationMin: number) => Promise<LocalPlan>;
   setStartPoint: (startPoint: PlanStartPoint | null) => Promise<LocalPlan>;
   getAvailability: () => Promise<PlanStorageMode>;
@@ -64,6 +69,7 @@ const emptyPlan = (locale: 'de' | 'en' = 'en'): LocalPlan => {
   return {
     id: 'active',
     date: null,
+    dayStart: '09:00',
     startPoint: null,
     locale,
     createdAt: now,
@@ -133,6 +139,33 @@ class BrowserPlansStore implements PlansStore {
     return this.snapshots;
   }
 
+  async deleteSnapshot(id: string) {
+    await this.hydrate();
+    this.snapshots = this.snapshots.filter((snapshot) => snapshot.id !== id);
+    if (await this.getAvailability() === 'persistent') {
+      try {
+        const database = await this.openDatabase();
+        const transaction = database.transaction(planStoreName, 'readwrite');
+        transaction.objectStore(planStoreName).delete(id);
+        await transactionComplete(transaction);
+      } catch {
+        this.mode = 'session';
+      }
+    }
+    this.publish();
+  }
+
+  async duplicateSnapshot(id: string) {
+    await this.hydrate();
+    const source = this.snapshots.find((snapshot) => snapshot.id === id);
+    if (!source) return null;
+    const duplicate = { ...source, id: newPlanId(), createdAt: new Date().toISOString() };
+    this.snapshots = [duplicate, ...this.snapshots];
+    await this.persistSnapshot(duplicate);
+    this.publish();
+    return duplicate;
+  }
+
   async move(attractionId: string, direction: 'up' | 'down') {
     await this.hydrate();
     const index = this.active.stops.findIndex((stop) => stop.attractionId === attractionId);
@@ -159,6 +192,15 @@ class BrowserPlansStore implements PlansStore {
     return next;
   }
 
+  async restoreSnapshot(id: string) {
+    await this.hydrate();
+    const source = this.snapshots.find((snapshot) => snapshot.id === id);
+    if (!source) return null;
+    const restored = { ...source, id: activePlanKey, updatedAt: new Date().toISOString() };
+    await this.persistActive(restored);
+    return restored;
+  }
+
   async saveSnapshot() {
     await this.hydrate();
     const snapshot = { ...this.active, id: newPlanId(), createdAt: new Date().toISOString() };
@@ -170,6 +212,10 @@ class BrowserPlansStore implements PlansStore {
 
   async setDate(date: string | null) {
     return this.updateActive({ date });
+  }
+
+  async setDayStart(dayStart: string) {
+    return this.updateActive({ dayStart });
   }
 
   async setDuration(attractionId: string, plannedDurationMin: number) {
@@ -232,14 +278,14 @@ class BrowserPlansStore implements PlansStore {
     return () => this.listeners.delete(listener);
   }
 
-  private async updateActive(change: Partial<Pick<LocalPlan, 'date' | 'startPoint'>>) {
+  private async updateActive(change: Partial<Pick<LocalPlan, 'date' | 'dayStart' | 'startPoint'>>) {
     await this.hydrate();
     const next = this.update(change);
     await this.persistActive(next);
     return next;
   }
 
-  private update(change: Partial<Pick<LocalPlan, 'date' | 'startPoint' | 'stops'>>) {
+  private update(change: Partial<Pick<LocalPlan, 'date' | 'dayStart' | 'startPoint' | 'stops'>>) {
     return { ...this.active, ...change, updatedAt: new Date().toISOString() };
   }
 

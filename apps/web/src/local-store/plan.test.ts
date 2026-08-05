@@ -41,6 +41,7 @@ describe('plans-store', () => {
     await store.add(firstId);
 
     await store.setDate('2026-08-12');
+    await store.setDayStart('08:30');
     await store.setStartPoint({
       coordinates: { latitude: 47.66, longitude: 9.17 },
       label: 'Konstanz',
@@ -50,9 +51,17 @@ describe('plans-store', () => {
     await store.remove(firstId);
 
     expect(saved.date).toBe('2026-08-12');
+    expect(saved.dayStart).toBe('08:30');
     expect(saved.startPoint?.label).toBe('Konstanz');
     expect(saved.stops[0]?.plannedDurationMin).toBe(90);
     expect((await store.getSnapshots()).map((snapshot) => snapshot.id)).toContain(saved.id);
     expect((await store.getActive()).stops).toEqual([]);
+
+    const duplicate = await store.duplicateSnapshot(saved.id);
+    expect(duplicate?.id).not.toBe(saved.id);
+    await store.restoreSnapshot(saved.id);
+    expect((await store.getActive()).stops[0]?.attractionId).toBe(firstId);
+    await store.deleteSnapshot(saved.id);
+    expect((await store.getSnapshots()).map((snapshot) => snapshot.id)).not.toContain(saved.id);
   });
 });

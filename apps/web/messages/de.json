@@ -492,6 +492,7 @@
     "added": "Zu Mein Tag hinzugefügt.",
     "adding": "Wird hinzugefügt …",
     "date": "Datum",
+    "dayStart": "Tagesstart",
     "duration": "Besuchsdauer",
     "duplicate": "Bereits in Mein Tag.",
     "empty": {
@@ -503,6 +504,7 @@
     "limit": "Mein Tag kann höchstens 20 Orte enthalten.",
     "loading": "Dein Plan wird geladen …",
     "minutes": "Min.",
+    "noDateNotice": "Die Öffnungszeiten werden als typische Zeiten angezeigt. Wähle ein Datum für genaue Prüfungen.",
     "moveDown": "{name} nach unten verschieben",
     "moveUp": "{name} nach oben verschieben",
     "pastDate": "Dieses Datum liegt in der Vergangenheit. Du kannst den Plan trotzdem behalten.",
@@ -511,10 +513,36 @@
     "stopCount": "{count, plural, =0 {Keine Stopps} one {# Stopp} other {# Stopps}}",
     "stopsLabel": "Stopps deines Tages",
     "saved": {
+      "delete": "Löschen",
+      "duplicate": "Duplizieren",
       "empty": "Noch keine Pläne gespeichert.",
       "noDate": "Kein Datum",
       "save": "Plan speichern",
+      "restore": "Wiederherstellen",
       "title": "Gespeicherte Pläne"
+    },
+    "suggestion": "Mit Stopp {position} tauschen, um den Konflikt zu verringern",
+    "timeline": "Ankunft {arrival} · Abfahrt {departure}",
+    "totals": {
+      "approximation": "Fahrzeiten sind grobe Schätzungen. Verkehr und Fähren werden nicht modelliert.",
+      "label": "Plan-Gesamtdauer",
+      "overall": "Gesamt {minutes} Min.",
+      "travel": "Fahrt {minutes} Min.",
+      "visit": "Besuche {minutes} Min."
+    },
+    "conflicts": {
+      "arrival": "Du kommst um {arrival} an; dieser Ort schließt um {closes}.",
+      "closed": "An diesem Datum geschlossen. Nächste Öffnung: {nextOpenDate}.",
+      "dayLong": "Dieser Plan wirkt länger als ein 12-Stunden-Tag.",
+      "noDate": "Kein Datum gewählt; typische Öffnungszeiten werden verwendet.",
+      "severity": {
+        "error": "Prüfen",
+        "info": "Info",
+        "warning": "Warnung"
+      },
+      "stale": "Die Öffnungszeiten könnten veraltet sein. Prüfe die offizielle Website.",
+      "unknown": "Öffnungszeiten sind nicht verifiziert. Prüfe die offizielle Website.",
+      "visit": "Der Besuch endet um {departure}, nach der Schließzeit um {closes}."
     },
     "unavailable": "Ort nicht mehr verfügbar",
     "unavailableDescription": "Dieser Ort ist nicht mehr veröffentlicht. Entferne ihn aus deinem Plan.",

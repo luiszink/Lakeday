@@ -484,6 +484,7 @@
     "added": "Added to My Day.",
     "adding": "Adding …",
     "date": "Date",
+    "dayStart": "Day starts at",
     "duration": "Visit duration",
     "duplicate": "Already in My Day.",
     "empty": {
@@ -495,6 +496,7 @@
     "limit": "My Day can contain up to 20 places.",
     "loading": "Loading your plan …",
     "minutes": "min",
+    "noDateNotice": "Opening hours are shown as typical hours. Pick a date for exact checks.",
     "moveDown": "Move {name} down",
     "moveUp": "Move {name} up",
     "pastDate": "This date is in the past. You can still keep this plan.",
@@ -503,10 +505,36 @@
     "stopCount": "{count, plural, =0 {No stops} one {# stop} other {# stops}}",
     "stopsLabel": "Stops in your day",
     "saved": {
+      "delete": "Delete",
+      "duplicate": "Duplicate",
       "empty": "No saved plans yet.",
       "noDate": "No date",
       "save": "Save plan",
+      "restore": "Restore",
       "title": "Saved plans"
+    },
+    "suggestion": "Swap with stop {position} to reduce this conflict",
+    "timeline": "Arrival {arrival} · departure {departure}",
+    "totals": {
+      "approximation": "Travel times are rough estimates. Traffic and ferries are not modelled.",
+      "label": "Plan totals",
+      "overall": "Total {minutes} min",
+      "travel": "Travel {minutes} min",
+      "visit": "Visits {minutes} min"
+    },
+    "conflicts": {
+      "arrival": "You arrive at {arrival}; this place closes at {closes}.",
+      "closed": "Closed on this date. Next opening: {nextOpenDate}.",
+      "dayLong": "This plan looks longer than a 12-hour day.",
+      "noDate": "No date selected; typical hours are used.",
+      "severity": {
+        "error": "Check",
+        "info": "Info",
+        "warning": "Warning"
+      },
+      "stale": "Opening hours may be out of date. Check the official site.",
+      "unknown": "Opening hours are unverified. Check the official site.",
+      "visit": "The visit ends at {departure}, after closing at {closes}."
     },
     "unavailable": "Place no longer available",
     "unavailableDescription": "This place is no longer published. Remove it from your plan.",

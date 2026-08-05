@@ -70,7 +70,7 @@ Epic: [LAKE-EPIC-011](../epics/LAKE-EPIC-011-manual-plans.md). Global [definitio
 
 ## LAKE-047 — Plan screen integration
 
-**Status:** open · **Phase:** MVP/M4 · **Parallel:** no (after 046)
+**Status:** done · **Phase:** MVP/M4 · **Parallel:** no (after 046)
 
 **Objective:** REQ-PLAN-06/07/08 UI: the complete My Day screen — timeline with arrival estimates, inline conflict warnings with reorder suggestions, total-duration bar, and save/snapshot management.
 
