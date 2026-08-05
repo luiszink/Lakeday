@@ -61,7 +61,7 @@ Body: `{ attractionId, category, message? (≤1000 chars), locale }`. No PII fie
 |---|---|
 | `GET/POST/PATCH /api/admin/attractions` | CRUD incl. draft/publish transitions (`publishAttraction()` enforces invariants); `POST …/scope` recalculates shoreline distance and scope verdict |
 | `GET /api/admin/review-queue`, `GET …/{id}`, `POST …/{id}/decision` | ChangeProposal listing/detail + approve/reject/edit and merge decisions (F7 in [../ux/core-user-flows.md](../ux/core-user-flows.md#f7-editor-reviews-a-change-proposal-admin)) |
-| `POST /api/admin/import/research` | Upload research-output JSON; validated against [../data/research-output-schema.md](../data/research-output-schema.md); returns per-record accept/duplicate/error results |
+| `POST /api/admin/import/research` | Reviewer-only batch body `{ records: ResearchOutput[] }` (≤100 records, ≤5 MB); validates schema/static rules, requires approved source origins, creates/updates DRAFTs with provenance, or returns held/rejected per-record results |
 | `GET/POST /api/admin/sources`, `PATCH/DELETE …/{id}` | Source origins; non-pending approval changes require ADMIN |
 | `GET/POST /api/admin/licences`, `PATCH/DELETE …/{id}` | Source and content licence registries |
 | `GET /api/admin/reports` | User-report triage |

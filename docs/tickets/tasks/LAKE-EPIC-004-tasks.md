@@ -6,7 +6,7 @@ Epic: [LAKE-EPIC-004](../epics/LAKE-EPIC-004-attraction-ingestion.md). Global [d
 
 ## LAKE-020 — Research output schema in code
 
-**Status:** open · **Phase:** MVP/M3 · **Parallel:** no (first in epic)
+**Status:** done · **Phase:** MVP/M3 · **Parallel:** no (first in epic)
 
 **Objective:** Implement the research-output contract as zod schemas with JSON-Schema export, exactly matching [research-output-schema.md](../../data/research-output-schema.md) v1.0.0.
 
@@ -36,7 +36,7 @@ Epic: [LAKE-EPIC-004](../epics/LAKE-EPIC-004-attraction-ingestion.md). Global [d
 
 ## LAKE-018 — Research validation CLI and conventions
 
-**Status:** open · **Phase:** MVP/M3 · **Parallel:** yes (with 019)
+**Status:** done · **Phase:** MVP/M3 · **Parallel:** yes (with 019)
 
 **Objective:** `pnpm research:validate` CLI validating research JSON files against the schema plus static checks, and the `data/research/` directory conventions.
 
@@ -64,7 +64,7 @@ Epic: [LAKE-EPIC-004](../epics/LAKE-EPIC-004-attraction-ingestion.md). Global [d
 
 ## LAKE-019 — Research import endpoint
 
-**Status:** open · **Phase:** MVP/M3 · **Parallel:** yes (with 018)
+**Status:** done · **Phase:** MVP/M3 · **Parallel:** yes (with 018)
 
 **Objective:** `POST /api/admin/import/research`: validate records, run duplicate detection, create/update DRAFT attractions with complete SourceRecords and FactProvenance, route flagged records to the review queue, and return per-record results.
 
