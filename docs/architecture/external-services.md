@@ -27,6 +27,11 @@ Legend: ✅ verified against public docs at planning time · ⚠️ **verificati
 | Estimated future cost | 0 € MVP; ~50–200 €/mo at strong seasonal traffic |
 | Manual approval needed | Account signup only |
 
+LAKE-032 records the provider boundary and attribution contract. The MapLibre adapter
+loads the configured style lazily and the fake adapter is used for tests. Before staging
+or production, verify the selected tile provider's current attribution wording, API
+limits, referrer restrictions, and commercial terms; record the provider and plan here.
+
 ### Geocoding {#geocoding}
 
 | Aspect | Assessment |
