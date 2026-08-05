@@ -85,6 +85,42 @@
     },
     "resultCount": "{count, plural, =0 {No places to visit} one {# place to visit} other {# places to visit}}",
     "resultsLabel": "Places to visit",
+    "sort": {
+      "distance": "Distance",
+      "label": "Sort by",
+      "locationRequired": "Choose a location above to sort by distance.",
+      "relevance": "Relevance"
+    },
+    "zeroResults": {
+      "dropFilter": "Remove {filter}",
+      "filters": {
+        "age": "Child age",
+        "audience": "Suitable for",
+        "cafe": "Cafe",
+        "cat": "Category",
+        "dogs": "Dogs",
+        "dur": "Duration",
+        "food": "Food",
+        "heat": "Heat suitability",
+        "interest": "Interests",
+        "io": "Indoor or outdoor",
+        "lang": "Languages",
+        "mode": "Transport",
+        "noresv": "No reservation",
+        "open": "Opening hours",
+        "picnic": "Picnic",
+        "price": "Price",
+        "r": "Radius",
+        "rain": "Rain suitability",
+        "region": "Region",
+        "season": "Season",
+        "stroller": "Stroller access",
+        "wheelchair": "Wheelchair access"
+      },
+      "openToday": "Check places open today",
+      "title": "Why are there no results?",
+      "widenRadius": "Widen radius to {radius} km"
+    },
     "search": {
       "clear": "Clear search",
       "fallback": "Search is currently unavailable. The unfiltered list is shown.",

@@ -4,6 +4,11 @@ import { attractionListQuerySchema } from '../api/attractions';
 import { filterSpecSchema } from './index';
 
 describe('filter query schema', () => {
+  it('accepts the deterministic sort modes', () => {
+    expect(attractionListQuerySchema.parse({ sort: 'distance' }).sort).toBe('distance');
+    expect(attractionListQuerySchema.parse({ sort: 'relevance' }).sort).toBe('relevance');
+  });
+
   it('normalizes comma-separated values and boolean must filters', () => {
     const result = attractionListQuerySchema.parse({
       cat: 'museum,museum,castle_palace',

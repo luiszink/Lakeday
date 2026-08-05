@@ -4,6 +4,7 @@ import type { AttractionListResponse } from '@lake/domain';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
+import { usePathname, useRouter } from '../i18n/navigation';
 import { distanceMeters, type LocalLocation } from '../location/local-location';
 import { AttractionCard } from './attraction-card';
 
@@ -48,6 +49,8 @@ export function DiscoverList({
   searchQuery,
 }: DiscoverListProps) {
   const translate = useTranslations('discover');
+  const pathname = usePathname();
+  const router = useRouter();
   const [items, setItems] = useState(initialData?.items ?? []);
   const [nextCursor, setNextCursor] = useState(initialData?.nextCursor ?? null);
   const [isLoading, setIsLoading] = useState(false);
@@ -99,6 +102,21 @@ export function DiscoverList({
     return () => observer.disconnect();
   }, [filterQuery, nextCursor, isLoading]);
 
+  function applyRelaxation(change: (parameters: URLSearchParams) => void) {
+    const parameters = new URLSearchParams(window.location.search);
+    parameters.delete('cursor');
+    change(parameters);
+    router.replace(`${pathname}?${parameters.toString()}`);
+  }
+
+  const zeroResultHints = initialData?.zeroResultHints ?? [];
+  const radius = Number(new URLSearchParams(filterQuery).get('r'));
+  const nextRadius = [1, 2, 5, 10, 25, 50].find((value) => value > radius);
+  const niceHint = zeroResultHints.find(
+    (hint) =>
+      !['age', 'dogs', 'r', 'stroller', 'wheelchair'].includes(hint.filter) && hint.count > 0,
+  );
+
   if (initialError && items.length === 0) {
     return (
       <section
@@ -132,6 +150,60 @@ export function DiscoverList({
             ? translate('empty.searchDescription', { query: searchQuery })
             : translate('empty.description')}
         </p>
+        {initialData?.total === 0 && zeroResultHints.length > 0 ? (
+          <div className="mt-6 border-t border-slate-800 pt-5">
+            <h3 className="text-sm font-semibold text-white">{translate('zeroResults.title')}</h3>
+            <ul className="mt-3 space-y-2 text-sm text-slate-400">
+              {zeroResultHints.map((hint) => (
+                <li key={hint.filter}>
+                  {translate(`zeroResults.filters.${hint.filter}` as never)}: {hint.count}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-5 flex flex-wrap gap-3">
+              {nextRadius ? (
+                <button
+                  className="rounded-md bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                  onClick={() =>
+                    applyRelaxation((parameters) => parameters.set('r', String(nextRadius)))
+                  }
+                  type="button"
+                >
+                  {translate('zeroResults.widenRadius', { radius: nextRadius })}
+                </button>
+              ) : null}
+              {niceHint ? (
+                <button
+                  className="rounded-md border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                  onClick={() =>
+                    applyRelaxation((parameters) => parameters.delete(niceHint.filter))
+                  }
+                  type="button"
+                >
+                  {translate('zeroResults.dropFilter', {
+                    filter: translate(`zeroResults.filters.${niceHint.filter}` as never),
+                  })}
+                </button>
+              ) : null}
+              {new URLSearchParams(filterQuery).get('open') === 'now' ? (
+                <button
+                  className="rounded-md border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                  onClick={() =>
+                    applyRelaxation((parameters) =>
+                      parameters.set(
+                        'open',
+                        `date:${new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich' }).format(new Date())}`,
+                      ),
+                    )
+                  }
+                  type="button"
+                >
+                  {translate('zeroResults.openToday')}
+                </button>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
       </section>
     );
   }

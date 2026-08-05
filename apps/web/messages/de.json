@@ -85,6 +85,42 @@
     },
     "resultCount": "{count, plural, =0 {Keine Ausflugsziele} one {# Ausflugsziel} other {# Ausflugsziele}}",
     "resultsLabel": "Ausflugsziele",
+    "sort": {
+      "distance": "Entfernung",
+      "label": "Sortieren nach",
+      "locationRequired": "Wähle oben einen Ort aus, um nach Entfernung zu sortieren.",
+      "relevance": "Relevanz"
+    },
+    "zeroResults": {
+      "dropFilter": "{filter} entfernen",
+      "filters": {
+        "age": "Kinderalter",
+        "audience": "Geeignet für",
+        "cafe": "Café",
+        "cat": "Kategorie",
+        "dogs": "Hunde",
+        "dur": "Dauer",
+        "food": "Essen",
+        "heat": "Hitzetauglichkeit",
+        "interest": "Interessen",
+        "io": "Drinnen oder draußen",
+        "lang": "Sprachen",
+        "mode": "Anreise",
+        "noresv": "Keine Reservierung",
+        "open": "Öffnungszeiten",
+        "picnic": "Picknick",
+        "price": "Preis",
+        "r": "Radius",
+        "rain": "Regentauglichkeit",
+        "region": "Region",
+        "season": "Jahreszeit",
+        "stroller": "Kinderwagen",
+        "wheelchair": "Rollstuhlzugang"
+      },
+      "openToday": "Heute geöffnet prüfen",
+      "title": "Warum gibt es keine Treffer?",
+      "widenRadius": "Radius auf {radius} km erweitern"
+    },
     "search": {
       "clear": "Suche leeren",
       "fallback": "Die Suche ist gerade nicht verfügbar. Die ungefilterte Liste wird angezeigt.",

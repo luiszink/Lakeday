@@ -1,8 +1,10 @@
 import {
   attractionListQuerySchema,
   attractionListResponseSchema,
+  haversineDistanceM,
   isOpenOnDate,
   openStateAt,
+  scoreRelevance,
   summarizeDay,
   type OpeningSchedule,
 } from '@lake/domain';
@@ -28,6 +30,30 @@ const rateLimit = 120;
 const rateWindowMs = 60_000;
 
 type Cursor = Readonly<{ updatedAt: string; id: string; rank?: number }>;
+const hintFilterKeys = [
+  'age',
+  'audience',
+  'cafe',
+  'cat',
+  'dogs',
+  'dur',
+  'food',
+  'heat',
+  'interest',
+  'io',
+  'lang',
+  'mode',
+  'noresv',
+  'open',
+  'picnic',
+  'price',
+  'r',
+  'rain',
+  'region',
+  'season',
+  'stroller',
+  'wheelchair',
+] as const;
 
 function errorResponse(code: string, message: string, details?: unknown, status = 400) {
   return NextResponse.json(
@@ -141,6 +167,48 @@ function openingContext(closures: ReadonlyArray<{ dateFrom: Date; dateTo: Date }
   };
 }
 
+function freshnessScore(lastVerifiedAt: Date | null, now: Date): number {
+  if (!lastVerifiedAt) return 0;
+  const ageInDays = Math.max(0, (now.getTime() - lastVerifiedAt.getTime()) / 86_400_000);
+  return Math.max(0, 1 - ageInDays / 365);
+}
+
+function relevanceScore(
+  record: Readonly<{
+    categories: ReadonlyArray<unknown>;
+    editorialImportance: Prisma.Decimal;
+    lastVerifiedAt: Date | null;
+    openingSchedule: OpeningScheduleRow | null;
+    priceLevel: unknown;
+    typicalDurationMax: number | null;
+    typicalDurationMin: number | null;
+  }>,
+  now: Date,
+  proximity?: number,
+) {
+  const knownFields = [
+    record.categories.length > 0,
+    record.editorialImportance !== null,
+    record.lastVerifiedAt !== null,
+    record.openingSchedule && !record.openingSchedule.hoursUnknown,
+    record.priceLevel !== null,
+    record.typicalDurationMin !== null || record.typicalDurationMax !== null,
+  ];
+  return scoreRelevance({
+    dataCompleteness: knownFields.filter(Boolean).length / knownFields.length,
+    editorialImportance: Number(record.editorialImportance),
+    freshness: freshnessScore(record.lastVerifiedAt, now),
+    ...(proximity === undefined ? {} : { proximity }),
+    seasonFit: 1,
+  });
+}
+
+function removeFilter<T extends Record<string, unknown>>(filter: T, key: string): T {
+  const copy = { ...filter };
+  delete copy[key];
+  return copy;
+}
+
 function freshnessLevel(lastVerifiedAt: Date | null) {
   if (!lastVerifiedAt) return 'UNKNOWN' as const;
   const ageInDays = (Date.now() - lastVerifiedAt.getTime()) / 86_400_000;
@@ -180,6 +248,17 @@ export async function GET(request: Request) {
   if (parsedQuery.data.cursor && !cursor) {
     return errorResponse('VALIDATION_ERROR', 'Invalid cursor.', [
       { path: ['cursor'], code: 'invalid_cursor', message: 'Cursor is not valid.' },
+    ]);
+  }
+
+  const sortMode = parsedQuery.data.sort ?? (parsedQuery.data.near ? 'distance' : 'relevance');
+  if (sortMode === 'distance' && !parsedQuery.data.near) {
+    return errorResponse('LOCATION_REQUIRED', 'Distance sorting requires a selected location.', [
+      {
+        path: ['near'],
+        code: 'location_required',
+        message: 'near is required for distance sorting.',
+      },
     ]);
   }
 
@@ -232,6 +311,56 @@ export async function GET(request: Request) {
       : boundsIds
         ? [...boundsIds]
         : null;
+  async function countMatches(
+    filterVariant: typeof filter,
+    openVariant: string | undefined,
+  ): Promise<number> {
+    let candidateIds = hasActiveAttractionFilter(filterVariant)
+      ? await findPublishedAttractionIds(database, filterVariant)
+      : null;
+    if (boundsIds) {
+      candidateIds = candidateIds
+        ? candidateIds.filter((id) => boundsIds.includes(id))
+        : [...boundsIds];
+    }
+    if (openVariant) {
+      const openCandidates =
+        candidateIds ?? (await findPublishedAttractionIds(database, filterVariant));
+      const schedules = await database.attraction.findMany({
+        where: { status: 'PUBLISHED', id: { in: [...openCandidates] } },
+        select: {
+          id: true,
+          openingSchedule: { include: { rules: true } },
+          closures: { select: { dateFrom: true, dateTo: true } },
+        },
+      });
+      candidateIds = schedules
+        .filter((candidate) => {
+          const schedule = toOpeningSchedule(candidate.openingSchedule);
+          const context = openingContext(candidate.closures);
+          return openVariant === 'now'
+            ? openStateAt(schedule, now.toISOString(), context) === 'OPEN'
+            : isOpenOnDate(schedule, openVariant.slice('date:'.length), context);
+        })
+        .map((candidate) => candidate.id);
+    }
+    if (filter.q) {
+      const searchVariant = await searchPublishedAttractions(database, {
+        ...(candidateIds ? { allowedIds: candidateIds } : {}),
+        ...(bounds ? { bounds } : {}),
+        query: filter.q,
+        locale,
+        limit: 1,
+      });
+      return searchVariant.total;
+    }
+    return database.attraction.count({
+      where: {
+        ...baseWhere,
+        ...(candidateIds ? { id: { in: [...candidateIds] } } : {}),
+      },
+    });
+  }
   const search = parsedQuery.data.q
     ? await searchPublishedAttractions(database, {
         ...(scopedIds ? { allowedIds: scopedIds } : {}),
@@ -253,18 +382,9 @@ export async function GET(request: Request) {
   const searchIds = search?.matches.slice(0, parsedQuery.data.limit).map((match) => match.id);
   const where = searchIds
     ? { ...baseWhere, id: { in: searchIds } }
-    : cursor
-      ? {
-          ...baseWhere,
-          ...(scopedIds ? { id: { in: scopedIds } } : {}),
-          OR: [
-            { updatedAt: { lt: new Date(cursor.updatedAt) } },
-            { updatedAt: new Date(cursor.updatedAt), id: { lt: cursor.id } },
-          ],
-        }
-      : scopedIds
-        ? { ...baseWhere, id: { in: scopedIds } }
-        : baseWhere;
+    : scopedIds
+      ? { ...baseWhere, id: { in: scopedIds } }
+      : baseWhere;
 
   const [total, records] = await Promise.all([
     search
@@ -275,13 +395,14 @@ export async function GET(request: Request) {
     database.attraction.findMany({
       where,
       orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],
-      take: searchIds ? searchIds.length : parsedQuery.data.limit + 1,
+      ...(searchIds ? { take: searchIds.length } : {}),
       select: {
         id: true,
         municipality: true,
         regionCode: true,
         updatedAt: true,
         lastVerifiedAt: true,
+        editorialImportance: true,
         priceLevel: true,
         typicalDurationMin: true,
         typicalDurationMax: true,
@@ -307,17 +428,55 @@ export async function GET(request: Request) {
     }),
   ]);
 
+  const coordinatesById = new Map(
+    await Promise.all(
+      records.map(
+        async (record) => [record.id, await readWgs84Point(database, record.id)] as const,
+      ),
+    ),
+  );
   const recordsById = new Map(records.map((record) => [record.id, record]));
-  const page = searchIds
+  const searchRecords = searchIds
     ? searchIds.map((id) => recordsById.get(id)).filter((record) => record !== undefined)
-    : records.slice(0, parsedQuery.data.limit);
+    : null;
+  const orderedRecords = [...(searchRecords ?? records)].sort((left, right) => {
+    const leftCoordinates = coordinatesById.get(left.id);
+    const rightCoordinates = coordinatesById.get(right.id);
+    const leftDistance =
+      parsedQuery.data.near && leftCoordinates
+        ? haversineDistanceM(parsedQuery.data.near, leftCoordinates)
+        : Number.POSITIVE_INFINITY;
+    const rightDistance =
+      parsedQuery.data.near && rightCoordinates
+        ? haversineDistanceM(parsedQuery.data.near, rightCoordinates)
+        : Number.POSITIVE_INFINITY;
+    if (sortMode === 'distance' && leftDistance !== rightDistance) {
+      return leftDistance - rightDistance;
+    }
+
+    const leftProximity = Number.isFinite(leftDistance)
+      ? Math.max(0, 1 - leftDistance / ((parsedQuery.data.r ?? 50) * 1_000))
+      : undefined;
+    const rightProximity = Number.isFinite(rightDistance)
+      ? Math.max(0, 1 - rightDistance / ((parsedQuery.data.r ?? 50) * 1_000))
+      : undefined;
+    const relevanceDifference =
+      relevanceScore(left, now, leftProximity) - relevanceScore(right, now, rightProximity);
+    if (relevanceDifference !== 0) return relevanceDifference > 0 ? -1 : 1;
+    const updatedDifference = right.updatedAt.getTime() - left.updatedAt.getTime();
+    return updatedDifference || right.id.localeCompare(left.id);
+  });
+  const cursorIndex =
+    !search && cursor ? orderedRecords.findIndex((record) => record.id === cursor.id) : -1;
+  const pageStart = cursorIndex >= 0 ? cursorIndex + 1 : 0;
+  const page = orderedRecords.slice(pageStart, pageStart + parsedQuery.data.limit);
   const hasNextPage = search
     ? search.matches.length > parsedQuery.data.limit
-    : records.length > parsedQuery.data.limit;
+    : pageStart + parsedQuery.data.limit < orderedRecords.length;
   const items = await Promise.all(
     page.map(async (record) => {
       const localization = record.localizations[0];
-      const coordinates = await readWgs84Point(database, record.id);
+      const coordinates = coordinatesById.get(record.id) ?? null;
       if (!localization || !coordinates) return null;
 
       const schedule = toOpeningSchedule(record.openingSchedule);
@@ -367,6 +526,19 @@ export async function GET(request: Request) {
     }),
   );
   const validItems = items.filter((item): item is NonNullable<typeof item> => item !== null);
+  const activeHintKeys = hintFilterKeys.filter((key) => filter[key] !== undefined);
+  const zeroResultHints =
+    total === 0 && activeHintKeys.length > 0
+      ? await Promise.all(
+          activeHintKeys.map(async (key) => ({
+            filter: key,
+            count: await countMatches(
+              removeFilter(filter, key),
+              key === 'open' ? undefined : openFilter,
+            ),
+          })),
+        )
+      : undefined;
   const lastSearchMatch = search?.matches[parsedQuery.data.limit - 1];
   const nextCursor =
     hasNextPage && page.length > 0
@@ -388,6 +560,7 @@ export async function GET(request: Request) {
     nextCursor,
     total,
     ...(bounds ? { truncated: hasNextPage } : {}),
+    ...(zeroResultHints ? { zeroResultHints } : {}),
   });
 
   return NextResponse.json(response, {

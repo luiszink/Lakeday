@@ -8,5 +8,6 @@ export * from './opening-hours/index.js';
 export * from './publish.js';
 export * from './research/index.js';
 export * from './result.js';
+export * from './relevance.js';
 export * from './review/index.js';
 export * from './scope.js';

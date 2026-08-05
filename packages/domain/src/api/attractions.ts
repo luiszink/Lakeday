@@ -12,6 +12,7 @@ export const attractionListQuerySchema = z
     limit: z.coerce.number().int().min(1).max(200).default(20),
     locale: attractionLocaleSchema.default('de'),
     q: z.string().trim().min(2).max(120).optional(),
+    sort: z.enum(['distance', 'relevance']).optional(),
   })
   .merge(filterSpecSchema)
   .strict();
@@ -65,6 +66,14 @@ export const attractionListResponseSchema = z.object({
   nextCursor: z.string().nullable(),
   total: z.number().int().nonnegative(),
   truncated: z.boolean().optional(),
+  zeroResultHints: z
+    .array(
+      z.object({
+        filter: z.string().min(1),
+        count: z.number().int().nonnegative(),
+      }),
+    )
+    .optional(),
 });
 
 export type AttractionListQuery = z.infer<typeof attractionListQuerySchema>;
