@@ -1,5 +1,6 @@
 import type { AttractionListResponse } from '@lake/domain';
 import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 type AttractionCardProps = Readonly<{
   attraction: AttractionListResponse['items'][number];
@@ -92,7 +93,14 @@ export function AttractionCard({ attraction, distanceM }: AttractionCardProps) {
               <span aria-hidden="true">•</span>
               {attraction.category?.label ?? translate('uncategorized')}
             </p>
-            <h2 className="text-xl font-semibold tracking-tight text-white">{attraction.name}</h2>
+            <h2 className="text-xl font-semibold tracking-tight text-white">
+              <Link
+                className="rounded-sm focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                href={`/${locale}/${locale === 'de' ? 'orte' : 'places'}/${encodeURIComponent(attraction.slug)}`}
+              >
+                {attraction.name}
+              </Link>
+            </h2>
             <p className="mt-1 text-sm text-slate-400">
               {attraction.municipality} · {attraction.region.name}
             </p>
