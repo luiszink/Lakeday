@@ -25,6 +25,12 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Validate committed research outputs
+        if: ${{ hashFiles('data/research/**/*.json') != '' }}
+        run: pnpm research:validate "data/research/**/*.json"
+      - name: Skip research validation until pilot data is committed
+        if: ${{ hashFiles('data/research/**/*.json') == '' }}
+        run: echo "No committed research JSON yet; LAKE-023 will add pilot outputs."
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm --filter @lake/domain test

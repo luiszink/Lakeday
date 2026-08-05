@@ -3,3 +3,4 @@ node_modules/
 dist/
 coverage/
 pnpm-lock.yaml
+packages/domain/schemas/research-output.schema.json

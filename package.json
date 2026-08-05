@@ -17,7 +17,8 @@
     "db:seed": "corepack pnpm --filter @lake/db db:seed",
     "db:diff": "corepack pnpm --filter @lake/db db:diff",
     "db:reset": "docker compose down --volumes && docker compose up --detach --wait && corepack pnpm db:migrate && corepack pnpm db:seed",
-    "format": "prettier --check ."
+    "format": "prettier --check .",
+    "research:validate": "corepack pnpm --filter @lake/domain build && node tools/research-validate.mjs"
   },
   "devDependencies": {
     "prettier": "^3.6.2"

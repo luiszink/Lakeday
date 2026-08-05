@@ -1,0 +1,515 @@
+{
+  "schemaVersion": "1.0.0",
+  "researchMeta": {
+    "sector": "BS-01",
+    "researchedAt": "2026-08-04T10:00:00Z",
+    "agent": "research-agent-fixture",
+    "promptVersion": "1.0.0",
+    "pipelineStep": "translated"
+  },
+  "identity": {
+    "candidateId": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "nameDe": {
+      "value": "Stadtmuseum Konstanz",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Stadtmuseum Konstanz"
+        }
+      ]
+    },
+    "officialWebsite": {
+      "value": "https://example.com/museum",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Official website"
+        }
+      ]
+    },
+    "externalIds": [
+      {
+        "system": "wikidata",
+        "id": "Q123456"
+      }
+    ]
+  },
+  "geo": {
+    "coordinates": {
+      "value": {
+        "lat": 47.66,
+        "lon": 9.17
+      },
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "47.660, 9.170"
+        }
+      ]
+    },
+    "countryCode": "DE",
+    "municipality": {
+      "value": "Konstanz",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Konstanz"
+        }
+      ]
+    },
+    "scopeCheck": {
+      "withinBand": true,
+      "estimatedShorelineDistanceM": 300
+    },
+    "suggestedRegionCode": "OBERSEE_NORD"
+  },
+  "classification": {
+    "primaryCategory": {
+      "value": "CULTURE_HISTORY",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Museum"
+        }
+      ]
+    },
+    "subcategories": {
+      "value": ["museum"],
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Museum"
+        }
+      ]
+    },
+    "interests": {
+      "value": ["history", "architecture"],
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Regional history collection"
+        }
+      ]
+    },
+    "audiences": {
+      "value": ["families", "couples"],
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Family programme"
+        }
+      ]
+    },
+    "childAgeBands": {
+      "value": ["6-9", "10-13"],
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Suitable for school-age children"
+        }
+      ]
+    },
+    "indoorOutdoor": {
+      "value": "INDOOR",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Indoor museum"
+        }
+      ]
+    },
+    "rainSuitability": {
+      "value": "EXCELLENT",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Indoor exhibition"
+        }
+      ]
+    },
+    "heatSuitability": {
+      "value": "GOOD",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Climate-controlled galleries"
+        }
+      ]
+    },
+    "seasons": {
+      "value": ["ALL_YEAR"],
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Open throughout the year"
+        }
+      ]
+    },
+    "typicalDurationMin": {
+      "value": 60,
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Recommended visit: one hour"
+        }
+      ]
+    },
+    "typicalDurationMax": {
+      "value": 120,
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum",
+          "sourceType": "tourism_org",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Recommended visit: up to two hours"
+        }
+      ]
+    }
+  },
+  "practical": {
+    "openingHours": {
+      "value": {
+        "validFrom": "2026-01-01",
+        "validTo": "2026-12-31",
+        "rules": [
+          {
+            "days": ["TUE", "WED", "THU", "FRI", "SAT", "SUN"],
+            "opens": "10:00",
+            "closes": "18:00",
+            "holidays": "AS_WEEKDAY"
+          }
+        ]
+      },
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/hours",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Tuesday to Sunday, 10:00 to 18:00"
+        }
+      ]
+    },
+    "exceptionalClosures": {
+      "value": [],
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/hours",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "No exceptional closures listed"
+        }
+      ]
+    },
+    "priceLevel": {
+      "value": "LOW",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/prices",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Adult admission 5 EUR"
+        }
+      ]
+    },
+    "prices": {
+      "value": [
+        {
+          "audience": "ADULT",
+          "amount": 5,
+          "currency": "EUR"
+        }
+      ],
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/prices",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Adult admission 5 EUR"
+        }
+      ]
+    },
+    "bookingRequirement": {
+      "value": "NONE",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/visit",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Tickets are available at the entrance"
+        }
+      ]
+    },
+    "bookingUrl": {
+      "value": null,
+      "status": "not_found",
+      "confidence": "low",
+      "evidence": []
+    },
+    "foodOnSite": {
+      "value": false,
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/visit",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "No food service listed"
+        }
+      ]
+    },
+    "cafeOnSite": {
+      "value": false,
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/visit",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "No cafe listed"
+        }
+      ]
+    },
+    "picnicAllowed": {
+      "value": false,
+      "status": "not_found",
+      "confidence": "low",
+      "evidence": []
+    },
+    "toilets": {
+      "value": true,
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/visit",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Visitor toilets available"
+        }
+      ]
+    },
+    "strollerSuitable": {
+      "value": "PARTIAL",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/accessibility",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Some rooms are accessible with a stroller"
+        }
+      ]
+    },
+    "wheelchairAccess": {
+      "value": "FULL",
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/accessibility",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "All public rooms are wheelchair accessible"
+        }
+      ]
+    },
+    "wheelchairToilet": {
+      "value": true,
+      "status": "found",
+      "confidence": "high",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/accessibility",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Accessible toilet available"
+        }
+      ]
+    },
+    "dogPolicy": {
+      "value": "NO",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/visit",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Dogs are not permitted"
+        }
+      ]
+    },
+    "visitorLanguages": {
+      "value": ["de", "en"],
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/visit",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Information available in German and English"
+        }
+      ]
+    },
+    "transportModes": {
+      "value": ["WALK", "PUBLIC_TRANSPORT"],
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/visit",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Five minutes from the train station"
+        }
+      ]
+    },
+    "nearestStop": {
+      "value": {
+        "name": "Konstanz Bahnhof",
+        "distanceM": 450
+      },
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/visit",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Five minutes from the train station"
+        }
+      ]
+    },
+    "parking": {
+      "value": "NEARBY",
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/visit",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Public parking is available nearby"
+        }
+      ]
+    },
+    "bicycleAccess": {
+      "value": true,
+      "status": "found",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "sourceUrl": "https://example.com/museum/visit",
+          "sourceType": "official_website",
+          "retrievedAt": "2026-08-04T10:00:00Z",
+          "quoteOrData": "Bicycle stands are available"
+        }
+      ]
+    }
+  },
+  "localizations": {
+    "de": {
+      "name": "Stadtmuseum Konstanz",
+      "summary": "Das kleine Stadtmuseum zeigt die Geschichte von Konstanz mit wechselnden Sammlungen, anschaulichen Objekten und kurzen Vermittlungsangeboten. Die Ausstellung liegt zentral und eignet sich fuer einen ruhigen Besuch bei jedem Wetter. Familien, Kulturinteressierte und neugierige Reisende erhalten einen gut zugaenglichen Einblick in die regionale Vergangenheit.",
+      "description": "Die Sammlung verbindet Stadtgeschichte mit wechselnden Themen.",
+      "practicalNotes": "Ein ruhiger Besuch ist auch bei Regen moeglich."
+    },
+    "en": {
+      "name": "Konstanz City Museum",
+      "summary": "This small city museum presents Konstanz history through changing collections, accessible objects, and short interpretation offers. The exhibition is centrally located and works well for a calm visit in any weather. Families, culture enthusiasts, and curious travellers receive a clear introduction to the region's past.",
+      "description": "The collection combines city history with changing themes.",
+      "practicalNotes": "A quiet visit is possible even on rainy days.",
+      "translationMeta": {
+        "translatedAt": "2026-08-04T10:00:00Z",
+        "sourceLocale": "de",
+        "promptVersion": "1.0.0"
+      }
+    }
+  },
+  "duplicateCheck": {
+    "checkedAgainst": "fixture-snapshot-2026-08-04",
+    "candidates": [
+      {
+        "matchType": "name",
+        "matchedId": "fixture-other-1",
+        "score": 0.12,
+        "resolution": "distinct",
+        "reasoning": "Different location and official URL"
+      }
+    ]
+  },
+  "unmappedSignals": [],
+  "reviewFlags": []
+}

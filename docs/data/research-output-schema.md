@@ -1,6 +1,6 @@
 # Research output schema
 
-Status: **architectural decision** — this JSON Schema is the binding contract between research agents and the import pipeline. Version: `1.0.0` (semver; import endpoint accepts same-major). The machine-readable copy lives at `packages/domain/schemas/research-output.schema.json` once scaffolding exists (ticket LAKE-020); until then this document is authoritative.
+Status: **architectural decision** — this JSON Schema is the binding contract between research agents and the import pipeline. Version: `1.0.0` (semver; import endpoint accepts same-major). The runtime implementation is `packages/domain/src/research/schema.ts`; the generated machine-readable copy lives at `packages/domain/schemas/research-output.schema.json` and is kept in sync by the Domain test and generator script.
 
 ## Design rules
 
@@ -38,9 +38,16 @@ Constraints: `status=found` ⇒ ≥1 evidence entry; `sourceType` `osm|wikidata|
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://bodenseeguide.example/schemas/research-output/1.0.0",
   "type": "object",
-  "required": ["schemaVersion", "researchMeta", "identity", "geo", "classification", "localizations"],
+  "required": [
+    "schemaVersion",
+    "researchMeta",
+    "identity",
+    "geo",
+    "classification",
+    "localizations"
+  ],
   "properties": {
-    "schemaVersion": { "const": "1.0.0" },
+    "schemaVersion": { "pattern": "^1\\.\\d+\\.\\d+$" },
     "researchMeta": {
       "type": "object",
       "required": ["sector", "researchedAt", "agent", "promptVersion"],
@@ -61,8 +68,11 @@ Constraints: `status=found` ⇒ ≥1 evidence entry; `sourceType` `osm|wikidata|
         "officialWebsite": { "$ref": "#/$defs/evidenced" },
         "externalIds": {
           "type": "array",
-          "items": { "type": "object", "required": ["system", "id"],
-            "properties": { "system": { "enum": ["osm", "wikidata", "official"] }, "id": {} } }
+          "items": {
+            "type": "object",
+            "required": ["system", "id"],
+            "properties": { "system": { "enum": ["osm", "wikidata", "official"] }, "id": {} }
+          }
         }
       }
     },
@@ -83,7 +93,19 @@ Constraints: `status=found` ⇒ ≥1 evidence entry; `sourceType` `osm|wikidata|
             "exceptionJustification": { "type": "string" }
           }
         },
-        "suggestedRegionCode": { "enum": ["UEBERLINGER_SEE", "OBERSEE_NORD", "BAYERN_UFER", "VORARLBERG_UFER", "OBERSEE_SUED", "THURGAU_UFER", "KONSTANZ_SEERHEIN", "UNTERSEE_NORD", "UNTERSEE_SUED"] }
+        "suggestedRegionCode": {
+          "enum": [
+            "UEBERLINGER_SEE",
+            "OBERSEE_NORD",
+            "BAYERN_UFER",
+            "VORARLBERG_UFER",
+            "OBERSEE_SUED",
+            "THURGAU_UFER",
+            "KONSTANZ_SEERHEIN",
+            "UNTERSEE_NORD",
+            "UNTERSEE_SUED"
+          ]
+        }
       }
     },
     "classification": {
@@ -105,10 +127,16 @@ Constraints: `status=found` ⇒ ≥1 evidence entry; `sourceType` `osm|wikidata|
     "practical": {
       "type": "object",
       "properties": {
-        "openingHours": { "$ref": "#/$defs/evidenced", "description": "value: structured rules {validFrom, validTo, rules:[{days, opens, closes, holidays}]} or {hoursUnknown:true}" },
+        "openingHours": {
+          "$ref": "#/$defs/evidenced",
+          "description": "value: structured rules {validFrom, validTo, rules:[{days, opens, closes, holidays}]} or {hoursUnknown:true}"
+        },
         "exceptionalClosures": { "$ref": "#/$defs/evidenced" },
         "priceLevel": { "$ref": "#/$defs/evidenced" },
-        "prices": { "$ref": "#/$defs/evidenced", "description": "value: [{audience, amount, currency}]" },
+        "prices": {
+          "$ref": "#/$defs/evidenced",
+          "description": "value: [{audience, amount, currency}]"
+        },
         "bookingRequirement": { "$ref": "#/$defs/evidenced" },
         "bookingUrl": { "$ref": "#/$defs/evidenced" },
         "foodOnSite": { "$ref": "#/$defs/evidenced" },
@@ -130,28 +158,72 @@ Constraints: `status=found` ⇒ ≥1 evidence entry; `sourceType` `osm|wikidata|
       "type": "object",
       "required": ["de"],
       "properties": {
-        "de": { "type": "object", "required": ["name", "summary"],
-          "properties": { "name": {}, "summary": { "description": "original prose, 40–80 words, no copied sentences" }, "description": {}, "practicalNotes": {} } },
-        "en": { "type": "object",
-          "properties": { "name": {}, "summary": {}, "description": {}, "practicalNotes": {},
-            "translationMeta": { "required": ["translatedAt", "sourceLocale", "promptVersion"] } } }
+        "de": {
+          "type": "object",
+          "required": ["name", "summary"],
+          "properties": {
+            "name": {},
+            "summary": { "description": "original prose, 40–80 words, no copied sentences" },
+            "description": {},
+            "practicalNotes": {}
+          }
+        },
+        "en": {
+          "type": "object",
+          "properties": {
+            "name": {},
+            "summary": {},
+            "description": {},
+            "practicalNotes": {},
+            "translationMeta": { "required": ["translatedAt", "sourceLocale", "promptVersion"] }
+          }
+        }
       }
     },
     "duplicateCheck": {
       "type": "object",
       "properties": {
         "checkedAgainst": { "description": "dataset snapshot id / batch ids" },
-        "candidates": { "type": "array", "items": { "required": ["matchType", "matchedId", "score"],
-          "properties": { "matchType": { "enum": ["external_id", "official_url", "coordinates", "name"] }, "matchedId": {}, "score": {}, "resolution": { "enum": ["distinct", "duplicate", "unclear"] }, "reasoning": {} } } }
+        "candidates": {
+          "type": "array",
+          "items": {
+            "required": ["matchType", "matchedId", "score"],
+            "properties": {
+              "matchType": { "enum": ["external_id", "official_url", "coordinates", "name"] },
+              "matchedId": {},
+              "score": {},
+              "resolution": { "enum": ["distinct", "duplicate", "unclear"] },
+              "reasoning": {}
+            }
+          }
+        }
       }
     },
     "unmappedSignals": {
       "type": "array",
-      "items": { "required": ["signal", "sourceUrl"], "properties": { "signal": {}, "sourceUrl": {}, "suggestedDimension": {} } }
+      "items": {
+        "required": ["signal", "sourceUrl"],
+        "properties": { "signal": {}, "sourceUrl": {}, "suggestedDimension": {} }
+      }
     },
     "reviewFlags": {
       "type": "array",
-      "items": { "required": ["reason"], "properties": { "reason": { "enum": ["low_confidence_critical_field", "conflicting_sources", "possible_duplicate", "scope_exception", "unmapped_signals", "other"] }, "detail": {} } }
+      "items": {
+        "required": ["reason"],
+        "properties": {
+          "reason": {
+            "enum": [
+              "low_confidence_critical_field",
+              "conflicting_sources",
+              "possible_duplicate",
+              "scope_exception",
+              "unmapped_signals",
+              "other"
+            ]
+          },
+          "detail": {}
+        }
+      }
     }
   },
   "$defs": { "evidenced": { "description": "Evidence envelope as defined above" } }

@@ -3,6 +3,7 @@ export * from './editor/index.js';
 export * from './entities/index.js';
 export * from './opening-hours/index.js';
 export * from './publish.js';
+export * from './research/index.js';
 export * from './result.js';
 export * from './review/index.js';
 export * from './scope.js';
