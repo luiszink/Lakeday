@@ -2,8 +2,7 @@
 
 import { useEffect } from 'react';
 
-const supportedLocales = ['de', 'en'] as const;
-type SupportedLocale = (typeof supportedLocales)[number];
+type SupportedLocale = 'de' | 'en';
 
 function isSupportedLocale(value: string | null): value is SupportedLocale {
   return value === 'de' || value === 'en';
