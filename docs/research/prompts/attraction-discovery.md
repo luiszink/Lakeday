@@ -18,8 +18,11 @@ HARD RULES — violations make the output unusable:
    where you found it, and a one-line "whatItIs" note.
 3. Facts without a source URL are prohibited. If you cannot access sources, say so
    and stop — do not produce results from memory.
-4. Output MUST be JSON conforming to the research-output schema (pipelineStep
-   "discovery"). No prose report. You may add a short JSON "notes" field per candidate.
+4. Output MUST be one JSON object per candidate, conforming to the research-output
+   schema (pipelineStep "discovery"). No prose report. You may add a short JSON
+   "notes" field per candidate. Save each object as its own file under
+   `data/research/{sector}/{candidate-slug}.json`; the admin import UI combines
+   those objects into its `records` array.
 5. Do not copy descriptive sentences from any source.
 
 SOURCE PRIORITY for discovery:
@@ -58,7 +61,8 @@ Steps:
 1. Fetch the official tourism listing(s) for each municipality; record URLs.
 2. Query/inspect OSM and Wikidata for the bbox; record feature IDs as externalIds.
 3. Merge findings; flag suspected duplicates against each other AND the existing list.
-4. Emit one JSON array of candidate records (schema pipelineStep "discovery").
+4. Emit one schema-conformant JSON object for each candidate. Do not wrap the
+   objects in a JSON array at this stage.
 ```
 
 ## Acceptance checks (validator + human spot-check)
