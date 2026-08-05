@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 import type { MapProviderConfig } from '../providers/map/types';
 import { DiscoverList } from './discover-list';
+import { FilterPanel } from './filters/filter-panel';
 import { LocationPicker } from './location-picker';
 import { MapExperience } from './map/map-experience';
 import {
@@ -17,6 +18,7 @@ import {
 type DiscoverExperienceProps = Readonly<{
   initialData: AttractionListResponse | null;
   initialError: boolean;
+  initialFilterQuery: string;
   initialView: 'list' | 'map';
   locale: 'de' | 'en';
   mapProviderConfig: MapProviderConfig;
@@ -28,6 +30,7 @@ type DiscoverExperienceProps = Readonly<{
 export function DiscoverExperience({
   initialData,
   initialError,
+  initialFilterQuery,
   initialView,
   locale,
   mapProviderConfig,
@@ -59,6 +62,12 @@ export function DiscoverExperience({
   return (
     <>
       <LocationPicker locale={locale} location={location} onChange={handleLocationChange} />
+      <FilterPanel
+        initialQuery={initialFilterQuery}
+        initialTotal={initialData?.total ?? 0}
+        locale={locale}
+        location={location}
+      />
       <div className="mb-6 flex justify-end">
         <div
           aria-label={translate('view.label')}
@@ -83,6 +92,7 @@ export function DiscoverExperience({
           <DiscoverList
             initialData={initialData}
             initialError={initialError}
+            filterQuery={initialFilterQuery}
             locale={locale}
             location={location}
             searchError={searchError}
@@ -93,10 +103,10 @@ export function DiscoverExperience({
           <MapExperience
             initialData={initialData}
             initialError={initialError}
+            filterQuery={initialFilterQuery}
             locale={locale}
             providerConfig={mapProviderConfig}
             providerKind={mapProviderKind}
-            searchQuery={searchQuery}
           />
         </div>
       </div>

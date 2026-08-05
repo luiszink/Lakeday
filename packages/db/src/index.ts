@@ -37,3 +37,4 @@ export {
 export type { AttractionFilter } from './attraction-query.js';
 export { searchPublishedAttractions } from './search.js';
 export type { SearchCursor, SearchMatch } from './search.js';
+export { isPublicHoliday } from './holiday-calendars.js';

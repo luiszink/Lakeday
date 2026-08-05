@@ -31,4 +31,11 @@ describe('filter query schema', () => {
     expect(result.near).toEqual({ latitude: 47.661, longitude: 9.175 });
     expect(() => filterSpecSchema.parse({ near: '47.6605,9.1751' })).toThrow();
   });
+
+  it('accepts open-now and open-on-date values', () => {
+    expect(filterSpecSchema.parse({ open: 'now' }).open).toBe('now');
+    expect(filterSpecSchema.parse({ open: 'date:2026-05-25' }).open).toBe('date:2026-05-25');
+    expect(() => filterSpecSchema.parse({ open: 'date:tomorrow' })).toThrow();
+    expect(() => filterSpecSchema.parse({ open: 'date:2026-02-30' })).toThrow();
+  });
 });

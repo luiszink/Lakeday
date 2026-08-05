@@ -20,6 +20,19 @@ const enumCsv = csv.refine(
   'Filter values must be stable vocabulary codes.',
 );
 
+function isIsoDate(value: string) {
+  const date = value.slice('date:'.length);
+  const parsed = new Date(`${date}T00:00:00Z`);
+  return Number.isFinite(parsed.getTime()) && parsed.toISOString().startsWith(date);
+}
+
+const openFilter = z
+  .string()
+  .refine(
+    (value) => value === 'now' || (/^date:\d{4}-\d{2}-\d{2}$/u.test(value) && isIsoDate(value)),
+    'open must be now or date:YYYY-MM-DD.',
+  );
+
 const near = z
   .string()
   .trim()
@@ -60,6 +73,7 @@ export const filterSpecSchema = z
     mode: enumCsv.optional(),
     near: near.optional(),
     noresv: trueFlag.optional(),
+    open: openFilter.optional(),
     picnic: trueFlag.optional(),
     price: enumCsv.optional(),
     r: z.coerce

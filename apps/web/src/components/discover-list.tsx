@@ -10,6 +10,7 @@ import { AttractionCard } from './attraction-card';
 type DiscoverListProps = Readonly<{
   initialData: AttractionListResponse | null;
   initialError: boolean;
+  filterQuery: string;
   locale: 'de' | 'en';
   location: LocalLocation | null;
   searchError: boolean;
@@ -40,6 +41,7 @@ function LoadingSkeleton() {
 export function DiscoverList({
   initialData,
   initialError,
+  filterQuery,
   locale,
   location,
   searchError,
@@ -64,7 +66,13 @@ export function DiscoverList({
     setError(false);
     try {
       const response = await fetch(
-        `/api/attractions?locale=${locale}&limit=20${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ''}&cursor=${encodeURIComponent(nextCursor)}`,
+        (() => {
+          const parameters = new URLSearchParams(filterQuery);
+          parameters.set('locale', locale);
+          parameters.set('limit', '20');
+          parameters.set('cursor', nextCursor);
+          return `/api/attractions?${parameters.toString()}`;
+        })(),
       );
       if (!response.ok) throw new Error('Attractions request failed.');
       const page = (await response.json()) as AttractionListResponse;
@@ -89,7 +97,7 @@ export function DiscoverList({
     );
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [nextCursor, isLoading]);
+  }, [filterQuery, nextCursor, isLoading]);
 
   if (initialError && items.length === 0) {
     return (

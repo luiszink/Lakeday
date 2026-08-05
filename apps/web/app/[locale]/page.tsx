@@ -7,21 +7,22 @@ import { getMapProviderSettings } from '../../src/providers/map/config';
 
 type LocaleHomePageProps = Readonly<{
   params: Promise<{ locale: 'de' | 'en' }>;
-  searchParams: Promise<{ q?: string | string[]; view?: string | string[] }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }>;
 
 export const revalidate = 60;
 
 async function fetchInitialAttractions(
   locale: 'de' | 'en',
-  query?: string,
+  queryString: string,
 ): Promise<AttractionListResponse | null> {
   try {
     const baseUrl = process.env.PUBLIC_BASE_URL ?? 'http://localhost:3000';
     const endpoint = new URL('/api/attractions', baseUrl);
-    endpoint.searchParams.set('locale', locale);
-    endpoint.searchParams.set('limit', '20');
-    if (query) endpoint.searchParams.set('q', query);
+    const parameters = new URLSearchParams(queryString);
+    parameters.set('locale', locale);
+    parameters.set('limit', '20');
+    endpoint.search = parameters.toString();
     const response = await fetch(endpoint, { next: { revalidate: 60 } });
     if (!response.ok) return null;
     return (await response.json()) as AttractionListResponse;
@@ -32,20 +33,33 @@ async function fetchInitialAttractions(
 
 async function loadInitialAttractions(
   locale: 'de' | 'en',
-  query?: string,
+  queryString: string,
+  searchQuery?: string,
 ): Promise<Readonly<{ data: AttractionListResponse | null; searchFailed: boolean }>> {
-  const data = await fetchInitialAttractions(locale, query);
-  if (data || !query) return { data, searchFailed: false };
-  return { data: await fetchInitialAttractions(locale), searchFailed: true };
+  const data = await fetchInitialAttractions(locale, queryString);
+  if (data || !searchQuery) return { data, searchFailed: false };
+  const fallbackParameters = new URLSearchParams(queryString);
+  fallbackParameters.delete('q');
+  return {
+    data: await fetchInitialAttractions(locale, fallbackParameters.toString()),
+    searchFailed: true,
+  };
 }
 
 export default async function LocaleHomePage({ params, searchParams }: LocaleHomePageProps) {
   const { locale } = await params;
   const queryParameters = await searchParams;
   const searchQuery = typeof queryParameters.q === 'string' ? queryParameters.q.trim() : undefined;
+  const initialFilterParameters = new URLSearchParams();
+  for (const [key, value] of Object.entries(queryParameters)) {
+    if (key === 'view' || value === undefined) continue;
+    for (const item of Array.isArray(value) ? value : [value])
+      initialFilterParameters.append(key, item);
+  }
+  const initialFilterQuery = initialFilterParameters.toString();
   const initialView = queryParameters.view === 'map' ? 'map' : 'list';
   const translate = await getTranslations('discover');
-  const initialLoad = await loadInitialAttractions(locale, searchQuery);
+  const initialLoad = await loadInitialAttractions(locale, initialFilterQuery, searchQuery);
   const providerSettings = getMapProviderSettings(process.env);
 
   return (
@@ -69,6 +83,7 @@ export default async function LocaleHomePage({ params, searchParams }: LocaleHom
             initialData={initialLoad.data}
             initialError={!initialLoad.data}
             initialView={initialView}
+            initialFilterQuery={initialFilterQuery}
             locale={locale}
             mapProviderConfig={providerSettings.config}
             mapProviderKind={providerSettings.kind}

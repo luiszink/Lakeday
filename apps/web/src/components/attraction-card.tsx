@@ -39,6 +39,20 @@ export function AttractionCard({ attraction, distanceM }: AttractionCardProps) {
             ),
           })
         : translate('distanceM', { distance: distanceM });
+  const openingDate = attraction.openDate
+    ? new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'Europe/Zurich' }).format(
+        new Date(`${attraction.openDate}T12:00:00Z`),
+      )
+    : null;
+  const openingUntil = attraction.openUntil
+    ? attraction.openDate ===
+      new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich' }).format(new Date())
+      ? translate('openUntilToday', { time: attraction.openUntil })
+      : translate('openUntilDate', {
+          date: openingDate ?? attraction.openDate ?? '',
+          time: attraction.openUntil,
+        })
+    : null;
 
   return (
     <article className="group grid gap-4 border-b border-slate-800/80 py-5 first:pt-0 sm:grid-cols-[12rem_1fr] sm:gap-5">
@@ -100,6 +114,7 @@ export function AttractionCard({ attraction, distanceM }: AttractionCardProps) {
             />
             {translate(`openState.${attraction.openState}`)}
           </span>
+          {openingUntil ? <span>{openingUntil}</span> : null}
           <span>{priceLabel(attraction.priceLevel, translate)}</span>
           <span>{duration}</span>
           {distance ? <span>{distance}</span> : null}

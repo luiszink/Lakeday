@@ -37,6 +37,11 @@ export const attractionCardSchema = z.object({
   }),
   priceLevel: z.string().nullable(),
   openState: openStateSchema,
+  openDate: z.string().date().nullable(),
+  openUntil: z
+    .string()
+    .regex(/^\d{2}:\d{2}$/u)
+    .nullable(),
   typicalDuration: z
     .object({
       min: z.number().int().positive().nullable(),

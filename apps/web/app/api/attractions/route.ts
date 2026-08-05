@@ -1,14 +1,18 @@
 import {
   attractionListQuerySchema,
   attractionListResponseSchema,
+  isOpenOnDate,
   openStateAt,
+  summarizeDay,
   type OpeningSchedule,
 } from '@lake/domain';
 import {
   findAttractionIdsWithinBounds,
   findPublishedAttractionIds,
   hasActiveAttractionFilter,
+  isPublicHoliday,
   Locale,
+  Prisma,
   readWgs84Point,
   searchPublishedAttractions,
   type Wgs84Bounds,
@@ -97,6 +101,46 @@ function timeValue(value: Date | null) {
   return value ? value.toISOString().slice(11, 16) : null;
 }
 
+type OpeningScheduleRow = Prisma.OpeningScheduleGetPayload<{ include: { rules: true } }>;
+
+function toOpeningSchedule(schedule: OpeningScheduleRow | null): OpeningSchedule | null {
+  if (!schedule) return null;
+  return {
+    validFrom: dateValue(schedule.validFrom),
+    validTo: dateValue(schedule.validTo),
+    hoursUnknown: schedule.hoursUnknown,
+    rules: schedule.rules.map((rule) => ({
+      daysOfWeek: rule.daysOfWeek,
+      opens: timeValue(rule.opens),
+      closes: timeValue(rule.closes),
+      appliesOnPublicHolidays: rule.appliesOnPublicHolidays,
+      holidayCalendarCode: rule.holidayCalendarCode,
+    })),
+  } satisfies OpeningSchedule;
+}
+
+function localDate(value: Date) {
+  const parts = new Intl.DateTimeFormat('en', {
+    day: '2-digit',
+    month: '2-digit',
+    timeZone: 'Europe/Zurich',
+    year: 'numeric',
+  }).formatToParts(value);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+function openingContext(closures: ReadonlyArray<{ dateFrom: Date; dateTo: Date }>) {
+  return {
+    timeZone: 'Europe/Zurich',
+    isPublicHoliday,
+    closures: closures.map((closure) => ({
+      dateFrom: dateValue(closure.dateFrom),
+      dateTo: dateValue(closure.dateTo),
+    })),
+  };
+}
+
 function freshnessLevel(lastVerifiedAt: Date | null) {
   if (!lastVerifiedAt) return 'UNKNOWN' as const;
   const ageInDays = (Date.now() - lastVerifiedAt.getTime()) / 86_400_000;
@@ -141,6 +185,12 @@ export async function GET(request: Request) {
 
   const locale = parsedQuery.data.locale === 'en' ? 'en' : 'de';
   const databaseLocale = locale === 'en' ? Locale.en : Locale.de;
+  const now = new Date();
+  const openFilter = parsedQuery.data.open;
+  const currentDate = localDate(now);
+  const evaluationDate = openFilter?.startsWith('date:')
+    ? openFilter.slice('date:'.length)
+    : currentDate;
   const baseWhere = {
     status: 'PUBLISHED' as const,
     localizations: { some: { locale: databaseLocale } },
@@ -150,16 +200,41 @@ export async function GET(request: Request) {
   const filterIds = hasActiveAttractionFilter(filter)
     ? await findPublishedAttractionIds(database, filter)
     : null;
-  const scopedIds = filterIds
+  let openIds: readonly string[] | null = null;
+  if (openFilter) {
+    const candidateIds = filterIds ?? (await findPublishedAttractionIds(database, filter));
+    const candidates = await database.attraction.findMany({
+      where: { status: 'PUBLISHED', id: { in: [...candidateIds] } },
+      select: {
+        id: true,
+        openingSchedule: { include: { rules: true } },
+        closures: { select: { dateFrom: true, dateTo: true } },
+      },
+    });
+    openIds = candidates
+      .filter((candidate) => {
+        const schedule = toOpeningSchedule(candidate.openingSchedule);
+        const context = openingContext(candidate.closures);
+        return openFilter === 'now'
+          ? openStateAt(schedule, now.toISOString(), context) === 'OPEN'
+          : isOpenOnDate(schedule, evaluationDate, context);
+      })
+      .map((candidate) => candidate.id);
+  }
+  const scopedIds = openIds
     ? boundsIds
-      ? filterIds.filter((id) => boundsIds.includes(id))
-      : [...filterIds]
-    : boundsIds
-      ? [...boundsIds]
-      : null;
+      ? openIds.filter((id) => boundsIds.includes(id))
+      : [...openIds]
+    : filterIds
+      ? boundsIds
+        ? filterIds.filter((id) => boundsIds.includes(id))
+        : [...filterIds]
+      : boundsIds
+        ? [...boundsIds]
+        : null;
   const search = parsedQuery.data.q
     ? await searchPublishedAttractions(database, {
-        ...(filterIds ? { allowedIds: filterIds } : {}),
+        ...(scopedIds ? { allowedIds: scopedIds } : {}),
         ...(bounds ? { bounds } : {}),
         query: parsedQuery.data.q,
         locale,
@@ -181,6 +256,7 @@ export async function GET(request: Request) {
     : cursor
       ? {
           ...baseWhere,
+          ...(scopedIds ? { id: { in: scopedIds } } : {}),
           OR: [
             { updatedAt: { lt: new Date(cursor.updatedAt) } },
             { updatedAt: new Date(cursor.updatedAt), id: { lt: cursor.id } },
@@ -238,27 +314,22 @@ export async function GET(request: Request) {
   const hasNextPage = search
     ? search.matches.length > parsedQuery.data.limit
     : records.length > parsedQuery.data.limit;
-  const now = new Date();
   const items = await Promise.all(
     page.map(async (record) => {
       const localization = record.localizations[0];
       const coordinates = await readWgs84Point(database, record.id);
       if (!localization || !coordinates) return null;
 
-      const schedule = record.openingSchedule
-        ? ({
-            validFrom: dateValue(record.openingSchedule.validFrom),
-            validTo: dateValue(record.openingSchedule.validTo),
-            hoursUnknown: record.openingSchedule.hoursUnknown,
-            rules: record.openingSchedule.rules.map((rule) => ({
-              daysOfWeek: rule.daysOfWeek,
-              opens: timeValue(rule.opens),
-              closes: timeValue(rule.closes),
-              appliesOnPublicHolidays: rule.appliesOnPublicHolidays,
-              holidayCalendarCode: rule.holidayCalendarCode,
-            })),
-          } satisfies OpeningSchedule)
-        : null;
+      const schedule = toOpeningSchedule(record.openingSchedule);
+      const context = openingContext(record.closures);
+      const summary = summarizeDay(schedule, evaluationDate, context);
+      const openState = openFilter
+        ? openFilter === 'now'
+          ? openStateAt(schedule, now.toISOString(), context)
+          : summary.state
+        : openStateAt(schedule, now.toISOString(), context);
+      const openUntil =
+        summary.state === 'OPEN' ? (summary.intervals.at(-1)?.closes ?? null) : null;
 
       return attractionListResponseSchema.shape.items.element.parse({
         id: record.id,
@@ -280,14 +351,9 @@ export async function GET(request: Request) {
         municipality: record.municipality,
         coordinates,
         priceLevel: record.priceLevel,
-        openState: openStateAt(schedule, now.toISOString(), {
-          timeZone: 'Europe/Zurich',
-          isPublicHoliday: () => false,
-          closures: record.closures.map((closure) => ({
-            dateFrom: dateValue(closure.dateFrom),
-            dateTo: dateValue(closure.dateTo),
-          })),
-        }),
+        openState,
+        openDate: openState === 'OPEN' ? evaluationDate : null,
+        openUntil: openState === 'OPEN' ? openUntil : null,
         typicalDuration:
           record.typicalDurationMin !== null || record.typicalDurationMax !== null
             ? { min: record.typicalDurationMin, max: record.typicalDurationMax }

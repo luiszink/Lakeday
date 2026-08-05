@@ -27,10 +27,10 @@ const wholeLakeBounds: MapBounds = {
 type MapExperienceProps = Readonly<{
   initialData: AttractionListResponse | null;
   initialError: boolean;
+  filterQuery?: string;
   locale: 'de' | 'en';
   providerConfig: MapProviderConfig;
   providerKind: 'fake' | 'maplibre';
-  searchQuery?: string | undefined;
 }>;
 
 type LoadState = 'loading' | 'ready' | 'error';
@@ -42,10 +42,10 @@ function markerCoordinates(coordinates: MapCoordinate) {
 export function MapExperience({
   initialData,
   initialError,
+  filterQuery = '',
   locale,
   providerConfig,
   providerKind,
-  searchQuery,
 }: MapExperienceProps) {
   const translate = useTranslations('map');
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -146,12 +146,11 @@ export function MapExperience({
     setAreaLoading(true);
     setRequestError(false);
     try {
-      const query = new URLSearchParams({
-        bbox: [bounds.west, bounds.south, bounds.east, bounds.north].join(','),
-        limit: '200',
-        locale,
-      });
-      if (searchQuery) query.set('q', searchQuery);
+      const query = new URLSearchParams(filterQuery);
+      query.set('bbox', [bounds.west, bounds.south, bounds.east, bounds.north].join(','));
+      query.set('limit', '200');
+      query.set('locale', locale);
+      query.delete('cursor');
       const response = await fetch(`/api/attractions?${query.toString()}`);
       if (!response.ok) throw new Error('Map query failed.');
       const data = (await response.json()) as AttractionListResponse;
