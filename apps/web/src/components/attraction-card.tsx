@@ -2,6 +2,8 @@ import type { AttractionListResponse } from '@lake/domain';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 
+import { FavoriteToggle } from './favorite-toggle';
+
 type AttractionCardProps = Readonly<{
   attraction: AttractionListResponse['items'][number];
   distanceM?: number | null;
@@ -111,13 +113,7 @@ export function AttractionCard({ attraction, distanceM }: AttractionCardProps) {
               {attraction.municipality} · {attraction.region.name}
             </p>
           </div>
-          <button
-            aria-label={translate('favorite', { name: attraction.name })}
-            className="flex size-11 shrink-0 items-center justify-center rounded-full border border-slate-700 text-xl text-slate-300 transition hover:border-cyan-300 hover:text-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300"
-            type="button"
-          >
-            <span aria-hidden="true">♡</span>
-          </button>
+          <FavoriteToggle attractionId={attraction.id} name={attraction.name} />
         </div>
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-300">

@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { ReportForm } from './report-form';
 import { ImageGallery } from './image-gallery';
+import { FavoriteToggle } from '../favorite-toggle';
 
 type AttractionDetailPageProps = Readonly<{
   detail: AttractionDetailResponse;
@@ -66,9 +67,16 @@ export function AttractionDetailPage({ detail, locale }: AttractionDetailPagePro
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-cyan-300">
               {detail.categories[0]?.label ?? translate('uncategorized')}
             </p>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-              {detail.localization.name}
-            </h1>
+            <div className="mt-3 flex items-start justify-between gap-4">
+              <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+                {detail.localization.name}
+              </h1>
+              <FavoriteToggle
+                attractionId={detail.id}
+                className="shrink-0"
+                name={detail.localization.name}
+              />
+            </div>
             <p className="mt-3 text-base text-slate-300">
               {detail.municipality} · {detail.region.name}
             </p>

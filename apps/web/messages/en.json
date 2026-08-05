@@ -9,6 +9,11 @@
     "licences": "Open sources and licences",
     "title": "Your day at Lake Constance starts here"
   },
+  "favorites": {
+    "add": "Add {name} to favorites",
+    "remove": "Remove {name} from favorites",
+    "sessionOnly": "Favorites are available for this session only."
+  },
   "discover": {
     "aside": {
       "description": "The list grows with verified places to visit across Germany, Austria and Switzerland.",

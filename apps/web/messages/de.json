@@ -9,6 +9,11 @@
     "licences": "Quellen und Lizenzen öffnen",
     "title": "Dein Tag am Bodensee beginnt hier"
   },
+  "favorites": {
+    "add": "{name} zu Favoriten hinzufügen",
+    "remove": "{name} aus Favoriten entfernen",
+    "sessionOnly": "Favoriten sind nur für diese Sitzung verfügbar."
+  },
   "discover": {
     "aside": {
       "description": "Die Liste wächst mit geprüften Ausflugszielen aus Deutschland, Österreich und der Schweiz.",

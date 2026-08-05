@@ -6,7 +6,7 @@ Epic: [LAKE-EPIC-010](../epics/LAKE-EPIC-010-favorites.md). Global [definition o
 
 ## LAKE-043 — Local favorites store and toggles
 
-**Status:** open · **Phase:** MVP/M4 · **Parallel:** yes (lane C)
+**Status:** done · **Phase:** MVP/M4 · **Parallel:** yes (lane C)
 
 **Objective:** REQ-FAV-01/02/03: the IndexedDB favorites store (sync-ready record shape) and heart toggles on cards, mini-cards, and detail pages — fully offline, zero server contact.
 

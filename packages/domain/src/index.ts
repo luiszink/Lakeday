@@ -7,6 +7,7 @@ export * from './entities/index.js';
 export * from './filter/index.js';
 export * from './geocoding/index.js';
 export * from './opening-hours/index.js';
+export * from './local-store/index.js';
 export * from './publish.js';
 export * from './research/index.js';
 export * from './result.js';
