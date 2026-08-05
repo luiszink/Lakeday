@@ -514,6 +514,15 @@
       "title": "Saved plans"
     },
     "suggestion": "Swap with stop {position} to reduce this conflict",
+    "share": {
+      "button": "Share plan",
+      "copy": "Copy link",
+      "created": "Share link created.",
+      "creating": "Creating link …",
+      "error": "The plan could not be shared. It remains local.",
+      "sharedText": "Lake Constance day plan",
+      "title": "Lake Constance plan"
+    },
     "timeline": "Arrival {arrival} · departure {departure}",
     "totals": {
       "approximation": "Travel times are rough estimates. Traffic and ferries are not modelled.",

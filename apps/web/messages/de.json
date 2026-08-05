@@ -522,6 +522,15 @@
       "title": "Gespeicherte Pläne"
     },
     "suggestion": "Mit Stopp {position} tauschen, um den Konflikt zu verringern",
+    "share": {
+      "button": "Plan teilen",
+      "copy": "Link kopieren",
+      "created": "Teilungslink erstellt.",
+      "creating": "Link wird erstellt …",
+      "error": "Der Plan konnte nicht geteilt werden. Er bleibt lokal.",
+      "sharedText": "Tagesplan für den Bodensee",
+      "title": "Bodensee-Plan"
+    },
     "timeline": "Ankunft {arrival} · Abfahrt {departure}",
     "totals": {
       "approximation": "Fahrzeiten sind grobe Schätzungen. Verkehr und Fähren werden nicht modelliert.",

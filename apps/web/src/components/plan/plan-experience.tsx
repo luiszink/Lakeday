@@ -11,6 +11,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 
 import { LocationPicker } from '../location-picker';
+import { ShareButton } from './share-button';
 import { readLocalLocation, type LocalLocation } from '../../location/local-location';
 import {
   getPlansStore,
@@ -396,6 +397,7 @@ export function PlanExperience() {
           >
             {translate('saved.save')}
           </button>
+          <ShareButton plan={activePlan} />
         </div>
         {snapshots.length > 0 ? (
           <ul className="mt-3 grid gap-2 text-sm text-slate-400 sm:grid-cols-2">

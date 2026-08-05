@@ -6,7 +6,7 @@ Epic: [LAKE-EPIC-012](../epics/LAKE-EPIC-012-sharing.md). Global [definition of 
 
 ## LAKE-048 — Plan share API
 
-**Status:** open · **Phase:** MVP/M4 · **Parallel:** no
+**Status:** done · **Phase:** MVP/M4 · **Parallel:** no
 
 **Objective:** REQ-PLAN-08/09 + REQ-SEC-02: `POST /api/plans` creating immutable server snapshots behind ≥128-bit tokens, with validation, rate limiting, retention, and `GET /api/plans/{token}` with server-side revalidation.
 
