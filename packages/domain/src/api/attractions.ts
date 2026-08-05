@@ -9,6 +9,7 @@ export const attractionListQuerySchema = z
     cursor: z.string().trim().min(1).optional(),
     limit: z.coerce.number().int().min(1).max(50).default(20),
     locale: attractionLocaleSchema.default('de'),
+    q: z.string().trim().min(2).max(120).optional(),
   })
   .strict();
 

@@ -39,6 +39,8 @@
     },
     "empty": {
       "description": "Für diese Ansicht sind noch keine geprüften Ausflugsziele veröffentlicht. Schau später wieder vorbei.",
+      "searchDescription": "Für „{query}“ wurden keine Ausflugsziele gefunden.",
+      "searchTitle": "Keine Ergebnisse",
       "title": "Noch keine Ausflugsziele"
     },
     "error": {
@@ -51,6 +53,13 @@
     "loadMore": "Weitere Ausflugsziele laden",
     "resultCount": "{count, plural, =0 {Keine Ausflugsziele} one {# Ausflugsziel} other {# Ausflugsziele}}",
     "resultsLabel": "Ausflugsziele",
+    "search": {
+      "clear": "Suche leeren",
+      "fallback": "Die Suche ist gerade nicht verfügbar. Die ungefilterte Liste wird angezeigt.",
+      "label": "Ausflugsziele durchsuchen",
+      "placeholder": "Name, Ort oder Stichwort suchen",
+      "searching": "Suche …"
+    },
     "title": "Finde dein nächstes Ziel"
   },
   "locale": {

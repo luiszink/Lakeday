@@ -4,7 +4,7 @@ import {
   openStateAt,
   type OpeningSchedule,
 } from '@lake/domain';
-import { Locale, readWgs84Point } from '@lake/db';
+import { Locale, readWgs84Point, searchPublishedAttractions } from '@lake/db';
 import { NextResponse } from 'next/server';
 
 import { database } from '../../../src/auth/database';
@@ -15,7 +15,7 @@ const requestCounts = new Map<string, { count: number; windowStartedAt: number }
 const rateLimit = 120;
 const rateWindowMs = 60_000;
 
-type Cursor = Readonly<{ updatedAt: string; id: string }>;
+type Cursor = Readonly<{ updatedAt: string; id: string; rank?: number }>;
 
 function errorResponse(code: string, message: string, details?: unknown, status = 400) {
   return NextResponse.json(
@@ -30,7 +30,12 @@ function parseCursor(value: string | undefined): Cursor | null {
     const decoded = JSON.parse(Buffer.from(value, 'base64url').toString('utf8')) as Partial<Cursor>;
     if (typeof decoded.updatedAt !== 'string' || typeof decoded.id !== 'string') return null;
     if (Number.isNaN(Date.parse(decoded.updatedAt))) return null;
-    return { updatedAt: decoded.updatedAt, id: decoded.id };
+    if (decoded.rank !== undefined && typeof decoded.rank !== 'number') return null;
+    return {
+      updatedAt: decoded.updatedAt,
+      id: decoded.id,
+      ...(decoded.rank !== undefined ? { rank: decoded.rank } : {}),
+    };
   } catch {
     return null;
   }
@@ -100,22 +105,41 @@ export async function GET(request: Request) {
     status: 'PUBLISHED' as const,
     localizations: { some: { locale: databaseLocale } },
   };
-  const where = cursor
-    ? {
-        ...baseWhere,
-        OR: [
-          { updatedAt: { lt: new Date(cursor.updatedAt) } },
-          { updatedAt: new Date(cursor.updatedAt), id: { lt: cursor.id } },
-        ],
-      }
-    : baseWhere;
+  const search = parsedQuery.data.q
+    ? await searchPublishedAttractions(database, {
+        query: parsedQuery.data.q,
+        locale,
+        limit: parsedQuery.data.limit,
+        ...(cursor?.rank !== undefined
+          ? {
+              cursor: {
+                id: cursor.id,
+                rank: cursor.rank,
+                updatedAt: new Date(cursor.updatedAt),
+              },
+            }
+          : {}),
+      })
+    : null;
+  const searchIds = search?.matches.slice(0, parsedQuery.data.limit).map((match) => match.id);
+  const where = searchIds
+    ? { ...baseWhere, id: { in: searchIds } }
+    : cursor
+      ? {
+          ...baseWhere,
+          OR: [
+            { updatedAt: { lt: new Date(cursor.updatedAt) } },
+            { updatedAt: new Date(cursor.updatedAt), id: { lt: cursor.id } },
+          ],
+        }
+      : baseWhere;
 
   const [total, records] = await Promise.all([
-    database.attraction.count({ where: baseWhere }),
+    search ? Promise.resolve(search.total) : database.attraction.count({ where: baseWhere }),
     database.attraction.findMany({
       where,
       orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],
-      take: parsedQuery.data.limit + 1,
+      take: searchIds ? searchIds.length : parsedQuery.data.limit + 1,
       select: {
         id: true,
         municipality: true,
@@ -147,8 +171,13 @@ export async function GET(request: Request) {
     }),
   ]);
 
-  const hasNextPage = records.length > parsedQuery.data.limit;
-  const page = records.slice(0, parsedQuery.data.limit);
+  const recordsById = new Map(records.map((record) => [record.id, record]));
+  const page = searchIds
+    ? searchIds.map((id) => recordsById.get(id)).filter((record) => record !== undefined)
+    : records.slice(0, parsedQuery.data.limit);
+  const hasNextPage = search
+    ? search.matches.length > parsedQuery.data.limit
+    : records.length > parsedQuery.data.limit;
   const now = new Date();
   const items = await Promise.all(
     page.map(async (record) => {
@@ -212,9 +241,22 @@ export async function GET(request: Request) {
     }),
   );
   const validItems = items.filter((item): item is NonNullable<typeof item> => item !== null);
-  const nextCursor = hasNextPage && page.length > 0
-    ? encodeCursor({ updatedAt: page[page.length - 1]!.updatedAt.toISOString(), id: page[page.length - 1]!.id })
-    : null;
+  const lastSearchMatch = search?.matches[parsedQuery.data.limit - 1];
+  const nextCursor =
+    hasNextPage && page.length > 0
+      ? encodeCursor(
+          lastSearchMatch
+            ? {
+                updatedAt: lastSearchMatch.updatedAt.toISOString(),
+                id: lastSearchMatch.id,
+                rank: lastSearchMatch.rank,
+              }
+            : {
+                updatedAt: page[page.length - 1]!.updatedAt.toISOString(),
+                id: page[page.length - 1]!.id,
+              },
+        )
+      : null;
   const response = attractionListResponseSchema.parse({ items: validItems, nextCursor, total });
 
   return NextResponse.json(response, {

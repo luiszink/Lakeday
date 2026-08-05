@@ -39,6 +39,8 @@
     },
     "empty": {
       "description": "There are no verified places to visit published for this view yet. Check back later.",
+      "searchDescription": "No places to visit were found for \"{query}\".",
+      "searchTitle": "No results",
       "title": "No places to visit yet"
     },
     "error": {
@@ -51,6 +53,13 @@
     "loadMore": "Load more places",
     "resultCount": "{count, plural, =0 {No places to visit} one {# place to visit} other {# places to visit}}",
     "resultsLabel": "Places to visit",
+    "search": {
+      "clear": "Clear search",
+      "fallback": "Search is currently unavailable. The unfiltered list is shown.",
+      "label": "Search places to visit",
+      "placeholder": "Search by name, place or keyword",
+      "searching": "Searching …"
+    },
     "title": "Find your next destination"
   },
   "locale": {
