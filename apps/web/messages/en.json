@@ -523,6 +523,16 @@
       "sharedText": "Lake Constance day plan",
       "title": "Lake Constance plan"
     },
+    "print": {
+      "button": "Print",
+      "closed": "Closed",
+      "emptyHint": "Add at least one stop first.",
+      "noDate": "No date selected",
+      "timestamp": "As of",
+      "title": "Lake Constance day plan",
+      "typicalHours": "Typical hours; no date selected",
+      "unknownHours": "Opening hours unknown"
+    },
     "timeline": "Arrival {arrival} · departure {departure}",
     "totals": {
       "approximation": "Travel times are rough estimates. Traffic and ferries are not modelled.",
@@ -586,6 +596,16 @@
       "title": "Plan not found"
     },
     "openMyDay": "Open My Day",
+    "print": {
+      "button": "Print",
+      "closed": "Closed",
+      "noDate": "No date selected",
+      "timestamp": "As of",
+      "title": "Lake Constance day plan",
+      "typicalHours": "Typical hours; no date selected",
+      "unknownHours": "Opening hours unknown",
+      "visit": "Visit duration"
+    },
     "stale": "Some opening hours may be out of date. Check official pages before visiting.",
     "start": "Start",
     "stopCount": "{count, plural, one {# stop} other {# stops}}",

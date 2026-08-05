@@ -74,7 +74,7 @@ Epic: [LAKE-EPIC-012](../epics/LAKE-EPIC-012-sharing.md). Global [definition of 
 
 ## LAKE-050 — Print and export
 
-**Status:** open · **Phase:** MVP/M4 · **Parallel:** yes (after 047; independent of 048/049 for local plans)
+**Status:** done · **Phase:** MVP/M4 · **Parallel:** yes (after 047; independent of 048/049 for local plans)
 
 **Objective:** REQ-PLAN-10: print stylesheet producing a usable one-page day sheet (browser print-to-PDF as export), for local and shared plans.
 

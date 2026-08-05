@@ -531,6 +531,16 @@
       "sharedText": "Tagesplan für den Bodensee",
       "title": "Bodensee-Plan"
     },
+    "print": {
+      "button": "Drucken",
+      "closed": "Geschlossen",
+      "emptyHint": "Füge zuerst mindestens einen Stopp hinzu.",
+      "noDate": "Kein Datum gewählt",
+      "timestamp": "Stand",
+      "title": "Bodensee-Tagesplan",
+      "typicalHours": "Typische Zeiten; kein Datum gewählt",
+      "unknownHours": "Öffnungszeiten unbekannt"
+    },
     "timeline": "Ankunft {arrival} · Abfahrt {departure}",
     "totals": {
       "approximation": "Fahrzeiten sind grobe Schätzungen. Verkehr und Fähren werden nicht modelliert.",
@@ -594,6 +604,16 @@
       "title": "Plan nicht gefunden"
     },
     "openMyDay": "Mein Tag öffnen",
+    "print": {
+      "button": "Drucken",
+      "closed": "Geschlossen",
+      "noDate": "Kein Datum gewählt",
+      "timestamp": "Stand",
+      "title": "Bodensee-Tagesplan",
+      "typicalHours": "Typische Zeiten; kein Datum gewählt",
+      "unknownHours": "Öffnungszeiten unbekannt",
+      "visit": "Besuchsdauer"
+    },
     "stale": "Einige Öffnungszeiten könnten veraltet sein. Prüfe die offiziellen Seiten vor dem Besuch.",
     "start": "Start",
     "stopCount": "{count, plural, one {# Stopp} other {# Stopps}}",

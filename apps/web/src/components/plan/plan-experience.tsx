@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  summarizeDay,
   type AttractionDetailResponse,
   type AttractionListResponse,
   type PlanConflict,
@@ -11,6 +12,8 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 
 import { LocationPicker } from '../location-picker';
+import { PrintButton } from './print-button';
+import { PrintPlanSheet } from './print-plan-sheet';
 import { ShareButton } from './share-button';
 import { readLocalLocation, type LocalLocation } from '../../location/local-location';
 import {
@@ -130,6 +133,7 @@ export function PlanExperience() {
   if (!plan) return <p>{translate('loading')}</p>;
   const activePlan = plan;
   const itemById = new Map(items.map((item) => [item.id, item]));
+  const detailById = new Map(details.map((detail) => [detail.id, detail]));
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich' }).format(new Date());
   const validation: PlanValidation | null =
     details.length > 0
@@ -153,6 +157,35 @@ export function PlanExperience() {
           })),
         )
       : null;
+
+  const printStops = plan.stops.map((stop, index) => {
+    const detail = detailById.get(stop.attractionId);
+    const item = itemById.get(stop.attractionId);
+    const timelineEntry = validation?.timeline.find((entry) => entry.stopIndex === index);
+    const date = plan.date;
+    const hours = !date
+      ? translate('print.typicalHours')
+      : detail
+        ? (() => {
+            const summary = summarizeDay(detail.openingSchedule, date, {
+              closures: detail.exceptionalClosures,
+              isPublicHoliday: () => false,
+              timeZone: 'Europe/Zurich',
+            });
+            if (summary.state === 'UNKNOWN') return translate('print.unknownHours');
+            if (summary.state === 'CLOSED') return translate('print.closed');
+            return summary.intervals.map((interval) => `${interval.opens}–${interval.closes}`).join(', ');
+          })()
+        : translate('print.unknownHours');
+    return {
+      address: detail?.municipality ?? item?.municipality ?? translate('unavailable'),
+      arrival: timelineEntry?.arrival ?? null,
+      duration: stop.plannedDurationMin ?? (item ? defaultDuration(item) : null),
+      hours,
+      name: detail?.localization.name ?? item?.name ?? translate('unavailable'),
+      url: detail?.officialWebsite ?? null,
+    };
+  });
 
   function conflictMessage(conflict: PlanConflict) {
     const parameters = conflict.parameters;
@@ -218,7 +251,8 @@ export function PlanExperience() {
   }
 
   return (
-    <div className="grid gap-8">
+    <div className="print-plan-wrapper">
+      <div className="grid gap-8 print-screen-content">
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-slate-800 pb-6">
         <div>
           <label className="block text-sm font-semibold text-slate-200" htmlFor="plan-date">
@@ -247,9 +281,16 @@ export function PlanExperience() {
             value={plan.dayStart}
           />
         </div>
-        <p aria-live="polite" className="text-sm text-slate-400">
-          {translate('stopCount', { count: plan.stops.length })}
-        </p>
+        <div className="flex flex-wrap items-end gap-4">
+          <p aria-live="polite" className="text-sm text-slate-400">
+            {translate('stopCount', { count: plan.stops.length })}
+          </p>
+          <PrintButton
+            disabled={plan.stops.length === 0}
+            hint={plan.stops.length === 0 ? translate('print.emptyHint') : ''}
+            label={translate('print.button')}
+          />
+        </div>
       </div>
 
       <section aria-labelledby="start-point-heading">
@@ -416,6 +457,17 @@ export function PlanExperience() {
           <p className="mt-2 text-sm text-slate-500">{translate('saved.empty')}</p>
         )}
       </section>
+      </div>
+      <PrintPlanSheet
+        date={plan.date}
+        locale={locale}
+        startLabel={plan.startPoint?.label ?? null}
+        stops={printStops}
+        title={translate('print.title')}
+        timestampLabel={translate('print.timestamp')}
+        unknownHoursLabel={translate('print.noDate')}
+        visitLabel={translate('duration')}
+      />
     </div>
   );
 }

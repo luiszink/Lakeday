@@ -1,5 +1,6 @@
 'use client';
 
+import { summarizeDay } from '@lake/domain';
 import type {
   ExceptionalClosure,
   OpeningSchedule,
@@ -12,6 +13,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from '../../i18n/navigation';
 import { getPlansStore, PLAN_MAXIMUM_STOPS, type LocalPlan, type SharedPlanCopy } from '../../local-store/plan';
 import type { MapProviderConfig } from '../../providers/map/types';
+import { PrintButton } from './print-button';
+import { PrintPlanSheet } from './print-plan-sheet';
 import { SharedPlanMap } from './shared-plan-map';
 
 const store = getPlansStore();
@@ -25,6 +28,7 @@ type SharedPlanStop = Readonly<{
   municipality: string;
   name: string | null;
   openingSchedule: OpeningSchedule | null;
+  officialWebsite: string | null;
   plannedDurationMin: number | null;
   sortIndex: number;
   typicalDuration: { max: number | null; min: number | null };
@@ -185,6 +189,29 @@ export function SharedPlanExperience({
       : null,
     stops: incomingStops,
   };
+  const printStops = data.stops.map((stop, index) => {
+    const timelineEntry = data.validation.timeline.find((entry) => entry.stopIndex === index);
+    const hours = !data.date
+      ? translate('print.typicalHours')
+      : (() => {
+          const summary = summarizeDay(stop.openingSchedule, data.date, {
+            closures: stop.exceptionalClosures,
+            isPublicHoliday: () => false,
+            timeZone: 'Europe/Zurich',
+          });
+          if (summary.state === 'UNKNOWN') return translate('print.unknownHours');
+          if (summary.state === 'CLOSED') return translate('print.closed');
+          return summary.intervals.map((interval) => `${interval.opens}–${interval.closes}`).join(', ');
+        })();
+    return {
+      address: stop.municipality,
+      arrival: timelineEntry?.arrival ?? null,
+      duration: stop.plannedDurationMin,
+      hours,
+      name: stop.name ?? translate('unavailable'),
+      url: stop.officialWebsite,
+    };
+  });
 
   async function copy(mode: 'merge' | 'replace') {
     setCopyState('copying');
@@ -241,6 +268,7 @@ export function SharedPlanExperience({
             </span>
           ) : null}
           {copyState === 'error' ? <span aria-live="polite" className="text-sm text-rose-200">{translate('copyError')}</span> : null}
+          <PrintButton label={translate('print.button')} />
         </div>
       </header>
 
@@ -329,6 +357,16 @@ export function SharedPlanExperience({
           </div>
         </div>
       ) : null}
+      <PrintPlanSheet
+        date={data.date}
+        locale={locale}
+        startLabel={data.startPoint?.label ?? null}
+        stops={printStops}
+        title={translate('print.title')}
+        timestampLabel={translate('print.timestamp')}
+        unknownHoursLabel={translate('print.noDate')}
+        visitLabel={translate('print.visit')}
+      />
     </div>
   );
 }

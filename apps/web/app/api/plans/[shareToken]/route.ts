@@ -25,6 +25,16 @@ function timeValue(value: Date | null) {
   return value ? value.toISOString().slice(11, 16) : null;
 }
 
+function safeUrl(value: string | null) {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'http:' || url.protocol === 'https:' ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 function toOpeningSchedule(
   schedule: Prisma.OpeningScheduleGetPayload<{ include: { rules: true } }> | null,
 ): OpeningSchedule | null {
@@ -110,6 +120,7 @@ export async function GET(request: Request, context: RouteProps) {
         municipality: attraction.municipality,
         name: localization?.name ?? null,
         openingSchedule: toOpeningSchedule(attraction.openingSchedule),
+        officialWebsite: attraction.status === 'PUBLISHED' ? safeUrl(attraction.officialWebsite) : null,
         plannedDurationMin: stop.plannedDurationMin,
         sortIndex: stop.sortIndex,
         typicalDuration: {
