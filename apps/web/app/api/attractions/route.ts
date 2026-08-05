@@ -6,6 +6,8 @@ import {
 } from '@lake/domain';
 import {
   findAttractionIdsWithinBounds,
+  findPublishedAttractionIds,
+  hasActiveAttractionFilter,
   Locale,
   readWgs84Point,
   searchPublishedAttractions,
@@ -144,9 +146,20 @@ export async function GET(request: Request) {
     localizations: { some: { locale: databaseLocale } },
   };
   const boundsIds = bounds ? await findAttractionIdsWithinBounds(database, bounds) : null;
-  const scopedIds = boundsIds ? [...boundsIds] : null;
+  const filter = parsedQuery.data;
+  const filterIds = hasActiveAttractionFilter(filter)
+    ? await findPublishedAttractionIds(database, filter)
+    : null;
+  const scopedIds = filterIds
+    ? boundsIds
+      ? filterIds.filter((id) => boundsIds.includes(id))
+      : [...filterIds]
+    : boundsIds
+      ? [...boundsIds]
+      : null;
   const search = parsedQuery.data.q
     ? await searchPublishedAttractions(database, {
+        ...(filterIds ? { allowedIds: filterIds } : {}),
         ...(bounds ? { bounds } : {}),
         query: parsedQuery.data.q,
         locale,
@@ -180,7 +193,9 @@ export async function GET(request: Request) {
   const [total, records] = await Promise.all([
     search
       ? Promise.resolve(search.total)
-      : database.attraction.count({ where: scopedIds ? { ...baseWhere, id: { in: scopedIds } } : baseWhere }),
+      : database.attraction.count({
+          where: scopedIds ? { ...baseWhere, id: { in: scopedIds } } : baseWhere,
+        }),
     database.attraction.findMany({
       where,
       orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],

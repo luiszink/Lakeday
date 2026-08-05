@@ -29,5 +29,11 @@ export {
   updateAttractionPoint,
 } from './geo.js';
 export type { DatabaseExecutor, Wgs84Bounds, Wgs84Point } from './geo.js';
+export {
+  buildAttractionFilterSql,
+  findPublishedAttractionIds,
+  hasActiveAttractionFilter,
+} from './attraction-query.js';
+export type { AttractionFilter } from './attraction-query.js';
 export { searchPublishedAttractions } from './search.js';
 export type { SearchCursor, SearchMatch } from './search.js';

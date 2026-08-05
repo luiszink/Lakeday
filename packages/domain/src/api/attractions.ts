@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { openStateSchema } from '../opening-hours/index.js';
+import { filterSpecSchema } from '../filter/index.js';
 
 export const attractionLocaleSchema = z.enum(['de', 'en']);
 
@@ -12,6 +13,7 @@ export const attractionListQuerySchema = z
     locale: attractionLocaleSchema.default('de'),
     q: z.string().trim().min(2).max(120).optional(),
   })
+  .merge(filterSpecSchema)
   .strict();
 
 export const attractionCardSchema = z.object({

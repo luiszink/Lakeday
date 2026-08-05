@@ -11,8 +11,25 @@ export type FixtureAttraction = Readonly<{
   primaryCategoryCode: string;
   categoryCodes: readonly string[];
   priceLevel: 'FREE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'PREMIUM';
+  indoorOutdoor?: 'INDOOR' | 'OUTDOOR' | 'MIXED';
+  rainSuitability?: 'POOR' | 'OK' | 'GOOD' | 'EXCELLENT';
+  heatSuitability?: 'POOR' | 'OK' | 'GOOD' | 'EXCELLENT';
+  seasons?: readonly ('SPRING' | 'SUMMER' | 'AUTUMN' | 'WINTER' | 'ALL_YEAR')[];
+  childAgeBands?: readonly ('0-2' | '3-5' | '6-9' | '10-13' | '14+')[];
+  typicalDurationMin?: number;
+  typicalDurationMax?: number;
+  foodOnSite?: boolean;
+  cafeOnSite?: boolean;
+  picnicAllowed?: boolean;
+  bookingRequirement?: 'NONE' | 'RECOMMENDED' | 'REQUIRED';
+  strollerSuitable?: 'YES' | 'PARTIAL' | 'NO' | 'UNKNOWN';
   price?: Readonly<{ amount: number; currency: 'EUR' | 'CHF' }>;
   wheelchairAccess: 'FULL' | 'PARTIAL' | 'NONE' | 'UNKNOWN';
+  dogPolicy?: 'ALLOWED' | 'LEASHED' | 'NO' | 'UNKNOWN';
+  visitorLanguages?: readonly ('DE' | 'EN' | 'FR' | 'IT')[];
+  transportModes?: readonly ('WALK' | 'BICYCLE' | 'PUBLIC_TRANSPORT' | 'CAR')[];
+  interestCodes?: readonly string[];
+  audienceCodes?: readonly string[];
   hoursUnknown?: boolean;
   scopeException?: boolean;
   scopeExceptionReason?: string;
@@ -59,7 +76,7 @@ const baseFixtures = categoryGroups.flatMap(([primaryCategoryCode, subcategories
   subcategories.map((subcategoryCode, subcategoryIndex) => {
     const fixtureIndex = groupIndex * 6 + subcategoryIndex;
     const [regionCode, countryCode, municipality, latitude, longitude] =
-      locations[fixtureIndex % locations.length]!;
+      locations[fixtureIndex === 14 ? 6 : fixtureIndex % locations.length]!;
     const slug = `fixture-${subcategoryCode}`;
     return {
       id: `00000000-0000-4000-8000-${String(fixtureIndex + 1).padStart(12, '0')}`,
@@ -74,7 +91,30 @@ const baseFixtures = categoryGroups.flatMap(([primaryCategoryCode, subcategories
       primaryCategoryCode,
       categoryCodes: [primaryCategoryCode, subcategoryCode],
       priceLevel: priceLevels[fixtureIndex % priceLevels.length]!,
+      indoorOutdoor:
+        fixtureIndex % 3 === 0 ? 'INDOOR' : fixtureIndex % 3 === 1 ? 'OUTDOOR' : 'MIXED',
+      rainSuitability:
+        fixtureIndex % 4 === 0 ? 'EXCELLENT' : fixtureIndex % 4 === 1 ? 'GOOD' : 'OK',
+      heatSuitability: fixtureIndex % 3 === 0 ? 'GOOD' : 'OK',
+      seasons: ['ALL_YEAR'],
+      childAgeBands: fixtureIndex === 14 ? ['0-2', '3-5'] : [],
+      typicalDurationMin: fixtureIndex % 3 === 0 ? 30 : fixtureIndex % 3 === 1 ? 90 : 180,
+      typicalDurationMax: fixtureIndex % 3 === 0 ? 60 : fixtureIndex % 3 === 1 ? 120 : 240,
+      foodOnSite: fixtureIndex % 3 === 0,
+      cafeOnSite: fixtureIndex % 4 === 0,
+      picnicAllowed: fixtureIndex % 2 === 0,
+      bookingRequirement: fixtureIndex % 5 === 0 ? 'RECOMMENDED' : 'NONE',
+      strollerSuitable:
+        fixtureIndex === 14 ? 'YES' : fixtureIndex % 4 === 0 ? 'PARTIAL' : 'UNKNOWN',
       wheelchairAccess: fixtureIndex % 2 === 0 ? 'FULL' : 'UNKNOWN',
+      dogPolicy: fixtureIndex % 3 === 0 ? 'ALLOWED' : 'UNKNOWN',
+      visitorLanguages: fixtureIndex % 4 === 0 ? ['DE', 'EN', 'FR'] : ['DE', 'EN'],
+      transportModes:
+        fixtureIndex % 3 === 0
+          ? ['WALK', 'PUBLIC_TRANSPORT', 'BICYCLE']
+          : ['WALK', 'PUBLIC_TRANSPORT'],
+      interestCodes: fixtureIndex % 2 === 0 ? ['nature'] : ['history'],
+      audienceCodes: fixtureIndex === 14 ? ['families'] : ['couples'],
     } satisfies FixtureAttraction;
   }),
 );

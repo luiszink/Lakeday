@@ -15,6 +15,7 @@ export type SearchMatch = Readonly<{
 }>;
 
 type SearchInput = Readonly<{
+  allowedIds?: readonly string[];
   cursor?: SearchCursor;
   bounds?: Wgs84Bounds;
   limit: number;
@@ -135,6 +136,15 @@ const searchMatchesCte = (input: SearchInput) => Prisma.sql`
                   ST_MakeEnvelope(${input.bounds.west}, ${input.bounds.south}, ${input.bounds.east}, ${input.bounds.north}, 4326)
                 )
               `
+            : Prisma.sql`TRUE`
+        }
+      )
+      AND (
+        ${
+          input.allowedIds
+            ? input.allowedIds.length
+              ? Prisma.sql`attraction.id IN (${Prisma.join(input.allowedIds.map((id) => Prisma.sql`${id}::uuid`))})`
+              : Prisma.sql`FALSE`
             : Prisma.sql`TRUE`
         }
       )
