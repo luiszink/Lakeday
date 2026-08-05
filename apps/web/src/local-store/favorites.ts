@@ -7,7 +7,7 @@ import {
 } from '@lake/domain';
 
 const databaseName = 'lake-local';
-const databaseVersion = 1;
+export const localDatabaseVersion = 2;
 const objectStoreName = 'favorites';
 
 type FavoritesStoreOptions = Readonly<{
@@ -142,11 +142,14 @@ class BrowserFavoritesStore implements FavoritesStore {
     if (this.databasePromise) return this.databasePromise;
     if (!this.indexedDB) return Promise.reject(new Error('IndexedDB is unavailable.'));
     this.databasePromise = new Promise((resolve, reject) => {
-      const request = this.indexedDB!.open(this.databaseName, databaseVersion);
+      const request = this.indexedDB!.open(this.databaseName, localDatabaseVersion);
       request.onupgradeneeded = () => {
         const database = request.result;
         if (!database.objectStoreNames.contains(objectStoreName)) {
           database.createObjectStore(objectStoreName, { keyPath: 'attractionId' });
+        }
+        if (!database.objectStoreNames.contains('plans')) {
+          database.createObjectStore('plans', { keyPath: 'id' });
         }
       };
       request.onsuccess = () => resolve(request.result);

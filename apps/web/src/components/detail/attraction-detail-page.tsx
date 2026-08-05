@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { ReportForm } from './report-form';
 import { ImageGallery } from './image-gallery';
 import { FavoriteToggle } from '../favorite-toggle';
+import { AddToPlan } from '../add-to-plan';
 
 type AttractionDetailPageProps = Readonly<{
   detail: AttractionDetailResponse;
@@ -75,6 +76,10 @@ export function AttractionDetailPage({ detail, locale }: AttractionDetailPagePro
                 attractionId={detail.id}
                 className="shrink-0"
                 name={detail.localization.name}
+              />
+              <AddToPlan
+                attractionId={detail.id}
+                className="shrink-0"
               />
             </div>
             <p className="mt-3 text-base text-slate-300">

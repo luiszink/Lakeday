@@ -484,7 +484,41 @@
     "label": "Hauptnavigation",
     "map": "Karte",
     "more": "Mehr",
-    "myDay": "Mein Tag"
+    "myDay": "Mein Tag",
+    "stopCount": "{count, plural, one {# Stopp} other {# Stopps}}"
+  },
+  "plan": {
+    "add": "Zu Mein Tag hinzufügen",
+    "added": "Zu Mein Tag hinzugefügt.",
+    "adding": "Wird hinzugefügt …",
+    "date": "Datum",
+    "duration": "Besuchsdauer",
+    "duplicate": "Bereits in Mein Tag.",
+    "empty": {
+      "cta": "Orte entdecken",
+      "description": "Füge Orte aus der Entdeckung, den Favoriten, der Karte oder einer Detailseite hinzu.",
+      "title": "Dein Tag ist leer"
+    },
+    "error": "Die aktuellen Orte konnten nicht geladen werden. Dein lokaler Plan ist weiterhin verfügbar.",
+    "limit": "Mein Tag kann höchstens 20 Orte enthalten.",
+    "loading": "Dein Plan wird geladen …",
+    "minutes": "Min.",
+    "moveDown": "{name} nach unten verschieben",
+    "moveUp": "{name} nach oben verschieben",
+    "pastDate": "Dieses Datum liegt in der Vergangenheit. Du kannst den Plan trotzdem behalten.",
+    "remove": "Entfernen",
+    "startPoint": "Startpunkt",
+    "stopCount": "{count, plural, =0 {Keine Stopps} one {# Stopp} other {# Stopps}}",
+    "stopsLabel": "Stopps deines Tages",
+    "saved": {
+      "empty": "Noch keine Pläne gespeichert.",
+      "noDate": "Kein Datum",
+      "save": "Plan speichern",
+      "title": "Gespeicherte Pläne"
+    },
+    "unavailable": "Ort nicht mehr verfügbar",
+    "unavailableDescription": "Dieser Ort ist nicht mehr veröffentlicht. Entferne ihn aus deinem Plan.",
+    "undo": "Rückgängig"
   },
   "screens": {
     "favorites": {

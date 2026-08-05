@@ -6,7 +6,7 @@ Epic: [LAKE-EPIC-011](../epics/LAKE-EPIC-011-manual-plans.md). Global [definitio
 
 ## LAKE-045 — Plan store and stop management
 
-**Status:** open · **Phase:** MVP/M4 · **Parallel:** no (chain start)
+**Status:** done · **Phase:** MVP/M4 · **Parallel:** no (chain start)
 
 **Objective:** REQ-PLAN-01…05, 11: the local plan store (IndexedDB, server-shape-compatible) and stop management UI — add from anywhere, remove, reorder (drag + accessible buttons), date picker, start-point selection.
 

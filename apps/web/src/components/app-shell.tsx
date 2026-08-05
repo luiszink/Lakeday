@@ -4,7 +4,9 @@ import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Link, usePathname } from '../i18n/navigation';
+import { getPlansStore } from '../local-store/plan';
 import { LocaleSwitcher } from './locale-switcher';
+import { useEffect, useSyncExternalStore } from 'react';
 
 type AppShellProps = Readonly<{
   children: ReactNode;
@@ -18,9 +20,21 @@ const navigation = [
   { href: '/more', key: 'more' },
 ] as const;
 
+const plansStore = getPlansStore();
+
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
   const translate = useTranslations('nav');
+  const planSnapshot = useSyncExternalStore(
+    (listener) => plansStore.subscribe(listener),
+    () => plansStore.getSnapshot(),
+    () => 'unknown|0|',
+  );
+  const planStopCount = Number(planSnapshot.split('|')[1] ?? 0);
+
+  useEffect(() => {
+    void plansStore.hydrate();
+  }, []);
 
   function isActive(href: string) {
     if (href === '/') return pathname === '/';
@@ -51,6 +65,11 @@ export function AppShell({ children }: AppShellProps) {
                 key={item.key}
               >
                 {translate(item.key)}
+                {item.key === 'myDay' && planStopCount > 0 ? (
+                  <span aria-label={translate('stopCount', { count: planStopCount })} className="ml-1 text-cyan-300">
+                    ({planStopCount})
+                  </span>
+                ) : null}
               </Link>
             ))}
           </nav>
@@ -77,6 +96,11 @@ export function AppShell({ children }: AppShellProps) {
                 href={item.href}
               >
                 {translate(item.key)}
+                {item.key === 'myDay' && planStopCount > 0 ? (
+                  <span aria-label={translate('stopCount', { count: planStopCount })} className="ml-1">
+                    ({planStopCount})
+                  </span>
+                ) : null}
               </Link>
             </li>
           ))}

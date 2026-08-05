@@ -3,6 +3,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import { FavoriteToggle } from './favorite-toggle';
+import { AddToPlan } from './add-to-plan';
 
 type AttractionCardProps = Readonly<{
   attraction: AttractionListResponse['items'][number];
@@ -130,12 +131,15 @@ export function AttractionCard({ attraction, distanceM }: AttractionCardProps) {
           {distance ? <span>{distance}</span> : null}
         </div>
 
-        <div className="flex items-center justify-between gap-3 text-xs text-slate-500">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
           <span className={attraction.freshness.level === 'STALE' ? 'text-amber-300' : undefined}>
             {translate(`freshness.${attraction.freshness.level}`)}
           </span>
           <span className="text-slate-600">{attraction.slug}</span>
         </div>
+        <AddToPlan
+          attractionId={attraction.id}
+        />
       </div>
     </article>
   );

@@ -476,7 +476,41 @@
     "label": "Main navigation",
     "map": "Map",
     "more": "More",
-    "myDay": "My Day"
+    "myDay": "My Day",
+    "stopCount": "{count, plural, one {# stop} other {# stops}}"
+  },
+  "plan": {
+    "add": "Add to My Day",
+    "added": "Added to My Day.",
+    "adding": "Adding …",
+    "date": "Date",
+    "duration": "Visit duration",
+    "duplicate": "Already in My Day.",
+    "empty": {
+      "cta": "Discover places",
+      "description": "Add places from discovery, favorites, the map or a detail page to build your day.",
+      "title": "Your day is empty"
+    },
+    "error": "The current places could not be loaded. Your local plan is still available.",
+    "limit": "My Day can contain up to 20 places.",
+    "loading": "Loading your plan …",
+    "minutes": "min",
+    "moveDown": "Move {name} down",
+    "moveUp": "Move {name} up",
+    "pastDate": "This date is in the past. You can still keep this plan.",
+    "remove": "Remove",
+    "startPoint": "Starting point",
+    "stopCount": "{count, plural, =0 {No stops} one {# stop} other {# stops}}",
+    "stopsLabel": "Stops in your day",
+    "saved": {
+      "empty": "No saved plans yet.",
+      "noDate": "No date",
+      "save": "Save plan",
+      "title": "Saved plans"
+    },
+    "unavailable": "Place no longer available",
+    "unavailableDescription": "This place is no longer published. Remove it from your plan.",
+    "undo": "Undo"
   },
   "screens": {
     "favorites": {
