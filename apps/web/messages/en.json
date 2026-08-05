@@ -16,6 +16,8 @@
     },
     "card": {
       "duration": "{min}–{max} min",
+      "distanceKm": "{distance} km away",
+      "distanceM": "{distance} m away",
       "favorite": "Add {name} to favorites",
       "free": "Free",
       "high": "Higher budget",
@@ -51,6 +53,34 @@
     "eyebrow": "Discover",
     "intro": "Compare verified places to visit around the entire Lake Constance shoreline.",
     "loadMore": "Load more places",
+    "location": {
+      "choose": "Choose a place",
+      "control": "Near: {label}",
+      "current": "My location",
+      "error": "The place could not be loaded.",
+      "geolocationDenied": "Location access was not granted. Choose a place instead.",
+      "geolocationUnavailable": "Location access is not available on this device.",
+      "minChars": "Enter at least two characters.",
+      "noResults": "No matching places found in the region.",
+      "providerUnavailable": "Place search is currently unavailable. You can still choose a region.",
+      "quickPicks": "Choose a region",
+      "regions": {
+        "bregenz": "Bregenz",
+        "friedrichshafen": "Friedrichshafen",
+        "konstanz": "Constance",
+        "lindau": "Lindau",
+        "meersburg": "Meersburg",
+        "radolfzell": "Radolfzell",
+        "romanshorn": "Romanshorn",
+        "steinAmRhein": "Stein am Rhein"
+      },
+      "resultsLabel": "Place search results",
+      "search": "Search",
+      "searchLabel": "Search for a place or accommodation",
+      "searchPlaceholder": "Place or accommodation",
+      "searching": "Searching …",
+      "useCurrent": "Use my current location"
+    },
     "resultCount": "{count, plural, =0 {No places to visit} one {# place to visit} other {# places to visit}}",
     "resultsLabel": "Places to visit",
     "search": {

@@ -36,6 +36,12 @@ Legend: ✅ verified against public docs at planning time · ⚠️ **verificati
 | Fallback | Degrade to region picker + attraction-name search (no external dependency) |
 | Cost | Free tier sufficient for MVP ⚠️ verify limits |
 
+LAKE-031 adds an abstracted HTTP adapter and a fake; the adapter stays unavailable when
+`GEOCODER_URL` is not configured, so local development and provider outages degrade to
+the in-app region picker. Before staging or production, verify the selected provider's
+current rate limits and result-storage terms, record the provider and plan here, and
+complete the legal review. Results are not persisted by the geocoder proxy.
+
 ### Routing (phase 2 only)
 Coarse travel-time estimates in MVP are **heuristics** (straight-line distance × mode factor — [../planning/manual-planner.md](../planning/manual-planner.md#duration-estimation)), deliberately requiring **no** external routing provider. Phase 2 evaluates OSRM/Valhalla/openrouteservice self-host vs. hosted ⚠️ full evaluation deferred to phase-2 tickets.
 

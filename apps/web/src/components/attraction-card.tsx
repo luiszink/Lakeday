@@ -1,11 +1,15 @@
 import type { AttractionListResponse } from '@lake/domain';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 type AttractionCardProps = Readonly<{
   attraction: AttractionListResponse['items'][number];
+  distanceM?: number | null;
 }>;
 
-function priceLabel(priceLevel: string | null, translate: (key: 'unknown' | 'free' | 'low' | 'medium' | 'high' | 'premium') => string) {
+function priceLabel(
+  priceLevel: string | null,
+  translate: (key: 'unknown' | 'free' | 'low' | 'medium' | 'high' | 'premium') => string,
+) {
   if (!priceLevel) return translate('unknown');
   const normalizedPriceLevel = priceLevel.toLowerCase();
   if (normalizedPriceLevel === 'free') return translate('free');
@@ -16,7 +20,8 @@ function priceLabel(priceLevel: string | null, translate: (key: 'unknown' | 'fre
   return priceLevel;
 }
 
-export function AttractionCard({ attraction }: AttractionCardProps) {
+export function AttractionCard({ attraction, distanceM }: AttractionCardProps) {
+  const locale = useLocale();
   const translate = useTranslations('discover.card');
   const duration = attraction.typicalDuration
     ? translate('duration', {
@@ -24,6 +29,16 @@ export function AttractionCard({ attraction }: AttractionCardProps) {
         max: attraction.typicalDuration.max ?? attraction.typicalDuration.min ?? 0,
       })
     : translate('unknown');
+  const distance =
+    distanceM === null || distanceM === undefined
+      ? null
+      : distanceM >= 1_000
+        ? translate('distanceKm', {
+            distance: new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(
+              distanceM / 1_000,
+            ),
+          })
+        : translate('distanceM', { distance: distanceM });
 
   return (
     <article className="group grid gap-4 border-b border-slate-800/80 py-5 first:pt-0 sm:grid-cols-[12rem_1fr] sm:gap-5">
@@ -33,12 +48,19 @@ export function AttractionCard({ attraction }: AttractionCardProps) {
         role="img"
         style={
           attraction.thumbnail
-            ? { backgroundImage: `url(${JSON.stringify(attraction.thumbnail.storagePath)})`, backgroundPosition: 'center', backgroundSize: 'cover' }
+            ? {
+                backgroundImage: `url(${JSON.stringify(attraction.thumbnail.storagePath)})`,
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+              }
             : undefined
         }
       >
         {!attraction.thumbnail ? (
-          <span className="absolute inset-0 flex items-center justify-center text-3xl text-slate-700" aria-hidden="true">
+          <span
+            className="absolute inset-0 flex items-center justify-center text-3xl text-slate-700"
+            aria-hidden="true"
+          >
             +
           </span>
         ) : null}
@@ -80,6 +102,7 @@ export function AttractionCard({ attraction }: AttractionCardProps) {
           </span>
           <span>{priceLabel(attraction.priceLevel, translate)}</span>
           <span>{duration}</span>
+          {distance ? <span>{distance}</span> : null}
         </div>
 
         <div className="flex items-center justify-between gap-3 text-xs text-slate-500">

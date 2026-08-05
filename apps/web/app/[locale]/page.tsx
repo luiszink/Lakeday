@@ -1,7 +1,7 @@
 import type { AttractionListResponse } from '@lake/domain';
 import { getTranslations } from 'next-intl/server';
 
-import { DiscoverList } from '../../src/components/discover-list';
+import { DiscoverExperience } from '../../src/components/discover-experience';
 import { SearchBox } from '../../src/components/search-box';
 
 type LocaleHomePageProps = Readonly<{
@@ -62,7 +62,7 @@ export default async function LocaleHomePage({ params, searchParams }: LocaleHom
         </header>
 
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem]">
-          <DiscoverList
+          <DiscoverExperience
             initialData={initialLoad.data}
             initialError={!initialLoad.data}
             locale={locale}

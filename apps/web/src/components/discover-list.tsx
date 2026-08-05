@@ -4,12 +4,14 @@ import type { AttractionListResponse } from '@lake/domain';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
+import { distanceMeters, type LocalLocation } from '../location/local-location';
 import { AttractionCard } from './attraction-card';
 
 type DiscoverListProps = Readonly<{
   initialData: AttractionListResponse | null;
   initialError: boolean;
   locale: 'de' | 'en';
+  location: LocalLocation | null;
   searchError: boolean;
   searchQuery?: string | undefined;
 }>;
@@ -39,6 +41,7 @@ export function DiscoverList({
   initialData,
   initialError,
   locale,
+  location,
   searchError,
   searchQuery,
 }: DiscoverListProps) {
@@ -140,7 +143,13 @@ export function DiscoverList({
       </div>
       <div>
         {items.map((attraction) => (
-          <AttractionCard attraction={attraction} key={attraction.id} />
+          <AttractionCard
+            attraction={attraction}
+            distanceM={
+              location ? distanceMeters(location.coordinates, attraction.coordinates) : null
+            }
+            key={attraction.id}
+          />
         ))}
       </div>
       {error ? (

@@ -16,6 +16,8 @@
     },
     "card": {
       "duration": "{min}–{max} Min.",
+      "distanceKm": "{distance} km entfernt",
+      "distanceM": "{distance} m entfernt",
       "favorite": "{name} zu Favoriten hinzufügen",
       "free": "Kostenlos",
       "high": "Höheres Budget",
@@ -51,6 +53,34 @@
     "eyebrow": "Entdecken",
     "intro": "Vergleiche geprüfte Ausflugsziele am gesamten Bodensee auf einen Blick.",
     "loadMore": "Weitere Ausflugsziele laden",
+    "location": {
+      "choose": "Ort auswählen",
+      "control": "In der Nähe: {label}",
+      "current": "Mein Standort",
+      "error": "Der Ort konnte nicht geladen werden.",
+      "geolocationDenied": "Der Standortzugriff wurde nicht erteilt. Wähle stattdessen einen Ort.",
+      "geolocationUnavailable": "Standortzugriff ist auf diesem Gerät nicht verfügbar.",
+      "minChars": "Gib mindestens zwei Zeichen ein.",
+      "noResults": "Keine passenden Orte in der Region gefunden.",
+      "providerUnavailable": "Die Ortssuche ist gerade nicht verfügbar. Region auswählen bleibt möglich.",
+      "quickPicks": "Region auswählen",
+      "regions": {
+        "bregenz": "Bregenz",
+        "friedrichshafen": "Friedrichshafen",
+        "konstanz": "Konstanz",
+        "lindau": "Lindau",
+        "meersburg": "Meersburg",
+        "radolfzell": "Radolfzell",
+        "romanshorn": "Romanshorn",
+        "steinAmRhein": "Stein am Rhein"
+      },
+      "resultsLabel": "Ortsuchergebnisse",
+      "search": "Suchen",
+      "searchLabel": "Ort oder Unterkunft suchen",
+      "searchPlaceholder": "Ort oder Unterkunft",
+      "searching": "Suche …",
+      "useCurrent": "Meinen aktuellen Standort verwenden"
+    },
     "resultCount": "{count, plural, =0 {Keine Ausflugsziele} one {# Ausflugsziel} other {# Ausflugsziele}}",
     "resultsLabel": "Ausflugsziele",
     "search": {
