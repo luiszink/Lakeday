@@ -71,6 +71,7 @@ Complete planning and architecture documentation for the Lake Constance discover
 ### Operations
 | File | Contents |
 |---|---|
+| [operations/provider-setup.md](operations/provider-setup.md) | External accounts, provider keys, environment wiring, and go-live order |
 | [operations/deployment.md](operations/deployment.md) | Hosting, environments, CI/CD |
 | [operations/observability.md](operations/observability.md) | Logging, metrics, alerting |
 | [operations/analytics-and-seo.md](operations/analytics-and-seo.md) | Privacy-friendly analytics, SEO strategy |

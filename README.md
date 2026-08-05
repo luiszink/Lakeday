@@ -49,6 +49,8 @@ pnpm test
 pnpm build
 ```
 
+For connecting map tiles, geocoding, email, hosting, and production secrets, see [docs/operations/provider-setup.md](docs/operations/provider-setup.md).
+
 Copy `.env.example` to `.env` before adding local integrations. Its `DATABASE_URL` uses the local Docker database defaults. Values in that file are local defaults or placeholders only; do not commit real secrets.
 
 ### Local database
