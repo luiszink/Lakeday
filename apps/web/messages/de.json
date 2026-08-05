@@ -9,6 +9,50 @@
     "licences": "Quellen und Lizenzen öffnen",
     "title": "Dein Tag am Bodensee beginnt hier"
   },
+  "discover": {
+    "aside": {
+      "description": "Die Liste wächst mit geprüften Ausflugszielen aus Deutschland, Österreich und der Schweiz.",
+      "eyebrow": "Rund um den See"
+    },
+    "card": {
+      "duration": "{min}–{max} Min.",
+      "favorite": "{name} zu Favoriten hinzufügen",
+      "free": "Kostenlos",
+      "high": "Höheres Budget",
+      "imagePlaceholder": "Kein Bild verfügbar",
+      "low": "Kleines Budget",
+      "medium": "Mittleres Budget",
+      "premium": "Premium",
+      "freshness": {
+        "AGING": "Zuletzt vor längerer Zeit geprüft",
+        "FRESH": "Aktuell geprüft",
+        "STALE": "Prüfung empfohlen",
+        "UNKNOWN": "Prüfdatum unbekannt"
+      },
+      "openState": {
+        "CLOSED": "Geschlossen",
+        "OPEN": "Geöffnet",
+        "UNKNOWN": "Öffnungszeiten unbekannt"
+      },
+      "uncategorized": "Ausflugsziel",
+      "unknown": "Keine Angabe"
+    },
+    "empty": {
+      "description": "Für diese Ansicht sind noch keine geprüften Ausflugsziele veröffentlicht. Schau später wieder vorbei.",
+      "title": "Noch keine Ausflugsziele"
+    },
+    "error": {
+      "description": "Die Ausflugsziele konnten gerade nicht geladen werden.",
+      "retry": "Erneut versuchen",
+      "title": "Laden nicht möglich"
+    },
+    "eyebrow": "Entdecken",
+    "intro": "Vergleiche geprüfte Ausflugsziele am gesamten Bodensee auf einen Blick.",
+    "loadMore": "Weitere Ausflugsziele laden",
+    "resultCount": "{count, plural, =0 {Keine Ausflugsziele} one {# Ausflugsziel} other {# Ausflugsziele}}",
+    "resultsLabel": "Ausflugsziele",
+    "title": "Finde dein nächstes Ziel"
+  },
   "locale": {
     "de": "Deutsch",
     "en": "English",
