@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
 import { createMapProvider } from '../../providers/map';
+import { MapFailureBreaker } from '../../providers/map/failure-breaker';
 import type {
   MapAttribution as MapAttributionData,
   MapBounds,
@@ -57,14 +58,19 @@ export function MapExperience({
   const [viewport, setViewport] = useState<MapViewport | null>(null);
   const [attribution, setAttribution] = useState<MapAttributionData | null>(null);
   const [requestError, setRequestError] = useState(initialError);
+  const [providerFailed, setProviderFailed] = useState(false);
+  const [retryAttempts, setRetryAttempts] = useState(0);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
     const container = mapContainer.current;
     if (!container) return;
 
     const mapProvider = createMapProvider(providerKind, providerConfig);
+    const failureBreaker = new MapFailureBreaker();
     provider.current = mapProvider;
     setAttribution(mapProvider.getAttribution());
+    setProviderFailed(false);
 
     function handleMarkerClick(event: MouseEvent) {
       const target = event.target;
@@ -75,6 +81,18 @@ export function MapExperience({
 
     container.addEventListener('click', handleMarkerClick);
     let disposed = false;
+    const handleProviderError = () => {
+      if (disposed || !failureBreaker.recordFailure()) return;
+      setProviderFailed(true);
+      setLoadState('error');
+      mapProvider.destroy();
+      window.dispatchEvent(
+        new CustomEvent('map:provider-failure', {
+          detail: { provider: providerConfig.providerName },
+        }),
+      );
+    };
+    const unsubscribeError = mapProvider.onError(handleProviderError);
     void mapProvider
       .init(container)
       .then(() => {
@@ -91,7 +109,10 @@ export function MapExperience({
         setLoadState('ready');
       })
       .catch(() => {
-        if (!disposed) setLoadState('error');
+        if (!disposed) {
+          setProviderFailed(true);
+          setLoadState('error');
+        }
       });
 
     const unsubscribe = mapProvider.onViewportChange((nextViewport) => {
@@ -100,12 +121,25 @@ export function MapExperience({
 
     return () => {
       disposed = true;
+      unsubscribeError();
       unsubscribe();
       container.removeEventListener('click', handleMarkerClick);
       mapProvider.destroy();
       provider.current = null;
     };
-  }, [initialData, providerConfig, providerKind]);
+  }, [initialData, providerConfig, providerKind, retryKey]);
+
+  useEffect(() => {
+    if (!providerFailed || retryAttempts >= 2) return;
+    const retryDelay = 1_000 * 2 ** retryAttempts;
+    const timeoutId = window.setTimeout(() => {
+      setProviderFailed(false);
+      setLoadState('loading');
+      setRetryAttempts((current) => current + 1);
+      setRetryKey((current) => current + 1);
+    }, retryDelay);
+    return () => window.clearTimeout(timeoutId);
+  }, [providerFailed, retryAttempts]);
 
   async function searchArea() {
     const bounds = viewport?.bounds ?? wholeLakeBounds;
@@ -141,6 +175,13 @@ export function MapExperience({
   function focusAttraction(id: string) {
     setSelectedId(id);
     provider.current?.focusMarker(id);
+  }
+
+  function retryProvider() {
+    setProviderFailed(false);
+    setLoadState('loading');
+    setRetryAttempts(0);
+    setRetryKey((current) => current + 1);
   }
 
   const selected = items.find((item) => item.id === selectedId) ?? null;
@@ -186,6 +227,31 @@ export function MapExperience({
           </p>
         ) : null}
       </div>
+
+      {providerFailed ? (
+        <section
+          aria-label={translate('fallback.resultsLabel')}
+          aria-live="polite"
+          className="rounded-lg border border-amber-900/70 bg-amber-950/20 p-5"
+        >
+          <h2 className="text-lg font-semibold text-white">{translate('fallback.title')}</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-300">
+            {translate('fallback.description')}
+          </p>
+          <button
+            className="mt-4 rounded-md border border-amber-700 px-4 py-2 text-sm font-semibold text-amber-100 hover:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300"
+            onClick={retryProvider}
+            type="button"
+          >
+            {translate('retry')}
+          </button>
+          <div className="mt-6">
+            {items.map((item) => (
+              <AttractionCard attraction={item} key={item.id} />
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {truncated ? <p className="text-sm text-amber-300">{translate('truncated')}</p> : null}
       {requestError ? (

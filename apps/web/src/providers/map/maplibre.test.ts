@@ -48,6 +48,7 @@ class TestMap {
   readonly zoom = 8;
   fitBoundsValue: [[number, number], [number, number]] | null = null;
   moveEndListener: (() => void) | null = null;
+  errorListener: (() => void) | null = null;
   style = '';
 
   constructor(options: { style: string }) {
@@ -76,8 +77,9 @@ class TestMap {
     return this.zoom;
   }
 
-  on(_event: 'moveend', listener: () => void): void {
-    this.moveEndListener = listener;
+  on(event: 'moveend' | 'error', listener: () => void): void {
+    if (event === 'moveend') this.moveEndListener = listener;
+    else this.errorListener = listener;
   }
 
   remove(): void {}

@@ -21,7 +21,7 @@ type MapLibreMap = {
   };
   getCenter: () => { lat: number; lng: number };
   getZoom: () => number;
-  on: (event: 'moveend', listener: () => void) => void;
+  on: (event: 'moveend' | 'error', listener: () => void) => void;
   remove: () => void;
 };
 
@@ -58,6 +58,7 @@ export class MapLibreAdapter implements MapProvider {
   private clusterConfig: MapClusterConfig | undefined;
   private readonly markers = new Map<string, MapLibreMarker>();
   private readonly markerCoordinates = new Map<string, [number, number]>();
+  private readonly errorListeners = new Set<() => void>();
   private locationMarker: MapLibreMarker | null = null;
   private readonly listeners = new Set<(viewport: MapViewport) => void>();
 
@@ -74,6 +75,7 @@ export class MapLibreAdapter implements MapProvider {
       style: this.styleUrl(),
     });
     this.map.on('moveend', () => this.emitViewport());
+    this.map.on('error', () => this.emitError());
   }
 
   destroy(): void {
@@ -85,6 +87,7 @@ export class MapLibreAdapter implements MapProvider {
     this.map?.remove();
     this.map = null;
     this.module = null;
+    this.errorListeners.clear();
     this.listeners.clear();
   }
 
@@ -150,6 +153,11 @@ export class MapLibreAdapter implements MapProvider {
       .addTo(this.map);
   }
 
+  onError(listener: () => void): () => void {
+    this.errorListeners.add(listener);
+    return () => this.errorListeners.delete(listener);
+  }
+
   onViewportChange(listener: (viewport: MapViewport) => void): () => void {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
@@ -186,6 +194,10 @@ export class MapLibreAdapter implements MapProvider {
       zoom: this.map.getZoom(),
     } satisfies MapViewport;
     this.listeners.forEach((listener) => listener(viewport));
+  }
+
+  private emitError(): void {
+    this.errorListeners.forEach((listener) => listener());
   }
 }
 

@@ -105,6 +105,11 @@
     "empty": "No places to visit were found in this map area.",
     "error": "The map could not be loaded right now.",
     "eyebrow": "Map",
+    "fallback": {
+      "description": "The map is currently unavailable. The verified destinations are still available as a list.",
+      "resultsLabel": "Destinations as a list",
+      "title": "Map currently unavailable"
+    },
     "focusMarker": "Show {name} on the map",
     "intro": "See verified places to visit around the entire Lake Constance shoreline.",
     "loading": "Loading map …",

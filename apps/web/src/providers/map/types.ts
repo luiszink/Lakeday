@@ -62,6 +62,7 @@ export interface MapProvider {
   getAttribution(): MapAttribution;
   init(container: HTMLElement): Promise<void>;
   locateDot(coordinates: MapCoordinate | null): void;
+  onError(listener: () => void): () => void;
   onViewportChange(listener: (viewport: MapViewport) => void): () => void;
   setMarkers(markers: readonly MapMarker[], clusterConfig?: MapClusterConfig): void;
 }

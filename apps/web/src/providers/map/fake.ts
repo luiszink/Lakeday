@@ -10,6 +10,7 @@ export class FakeMapProvider implements MapProvider {
   private container: HTMLElement | null = null;
   private list: HTMLOListElement | null = null;
   private markers: readonly MapMarker[] = [];
+  private readonly errorListeners = new Set<() => void>();
   private readonly listeners = new Set<(viewport: MapViewport) => void>();
 
   constructor(private readonly config: MapProviderConfig) {}
@@ -28,6 +29,7 @@ export class FakeMapProvider implements MapProvider {
     this.container?.replaceChildren();
     this.container = null;
     this.list = null;
+    this.errorListeners.clear();
     this.listeners.clear();
   }
 
@@ -41,6 +43,11 @@ export class FakeMapProvider implements MapProvider {
   focusMarker(): void {}
 
   locateDot(): void {}
+
+  onError(listener: () => void): () => void {
+    this.errorListeners.add(listener);
+    return () => this.errorListeners.delete(listener);
+  }
 
   onViewportChange(listener: (viewport: MapViewport) => void): () => void {
     this.listeners.add(listener);

@@ -105,6 +105,11 @@
     "empty": "In diesem Kartenausschnitt wurden keine Ausflugsziele gefunden.",
     "error": "Die Karte konnte gerade nicht geladen werden.",
     "eyebrow": "Karte",
+    "fallback": {
+      "description": "Die Karte ist gerade nicht verfügbar. Die geprüften Ziele bleiben als Liste erreichbar.",
+      "resultsLabel": "Ausflugsziele als Liste",
+      "title": "Karte gerade nicht verfügbar"
+    },
     "focusMarker": "{name} auf der Karte anzeigen",
     "intro": "Sieh geprüfte Ausflugsziele rund um den gesamten Bodensee.",
     "loading": "Karte wird geladen …",
